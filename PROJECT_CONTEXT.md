@@ -1,6 +1,8 @@
 # Abstra Lab — Project Context
 
 > This file is a summary of the reference materials in `references/`. Read this first instead of parsing every source document. Sourced from `Welcome Document-Pionner.pdf`.
+>
+> For **codebase** documentation (setup, architecture, API, deploy), see [`docs/`](./docs/README.md). Production site: [https://alsp.ca](https://alsp.ca).
 
 ## What Is Astra Labs?
 
@@ -14,33 +16,33 @@ Astra Labs is a **student rocketry club at Seneca Polytechnic** building a high-
 
 ## Core Values
 
-| Value | Meaning |
-|-------|---------|
-| Reliability Over Complexity | Use proven COTS parts for flight-critical systems |
-| Safety Without Compromise | Every member is a safety officer; follow CAR and Launch Canada codes |
-| Radical Transparency | Single Source of Truth via Notion Hub |
-| Redundancy as Standard | No single points of failure |
-| Documentation for the Future | Engineering is 50% technical, 50% logistics — document everything |
+| Value                        | Meaning                                                              |
+| ---------------------------- | -------------------------------------------------------------------- |
+| Reliability Over Complexity  | Use proven COTS parts for flight-critical systems                    |
+| Safety Without Compromise    | Every member is a safety officer; follow CAR and Launch Canada codes |
+| Radical Transparency         | Single Source of Truth via Notion Hub                                |
+| Redundancy as Standard       | No single points of failure                                          |
+| Documentation for the Future | Engineering is 50% technical, 50% logistics — document everything    |
 
 ## Team Structure
 
-| Role | Responsibilities |
-|------|-----------------|
-| **Project Leads / Chief Engineer** | Cross-subsystem integration, resource management, timeline, safety |
-| **Mechanical Lead & Members** | Airframe CAD (SolidWorks), aerodynamic sims (OpenRocket), CFD/FEA, physical assembly |
-| **Electronics Lead & Members** | PCB design (KiCad), 3D integration (Fusion 360), embedded firmware (STM32), telemetry |
-| **Marketing/Ops Lead** | Branding, sponsorship, merchandise, budget, public presence |
-| **Members** | Follow instructions, ask questions, communicate blockers, update Notion, prioritize assigned tasks |
+| Role                               | Responsibilities                                                                                   |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Project Leads / Chief Engineer** | Cross-subsystem integration, resource management, timeline, safety                                 |
+| **Mechanical Lead & Members**      | Airframe CAD (SolidWorks), aerodynamic sims (OpenRocket), CFD/FEA, physical assembly               |
+| **Electronics Lead & Members**     | PCB design (KiCad), 3D integration (Fusion 360), embedded firmware (STM32), telemetry              |
+| **Marketing/Ops Lead**             | Branding, sponsorship, merchandise, budget, public presence                                        |
+| **Members**                        | Follow instructions, ask questions, communicate blockers, update Notion, prioritize assigned tasks |
 
 ## Communication & Tools
 
-| Tool | Purpose |
-|------|---------|
-| **WhatsApp** | Time-sensitive updates, immediate attention |
-| **Discord** | In-depth technical discussion, subsystem collaboration |
-| **Google Drive** | Formal documents and PDFs only (competition docs, reports, compliance) |
-| **GitHub** | Living engineering files — CAD, KiCad PCBs, datasheets, firmware, source code |
-| **Notion** | Task management, milestone tracking, Single Source of Truth |
+| Tool             | Purpose                                                                       |
+| ---------------- | ----------------------------------------------------------------------------- |
+| **WhatsApp**     | Time-sensitive updates, immediate attention                                   |
+| **Discord**      | In-depth technical discussion, subsystem collaboration                        |
+| **Google Drive** | Formal documents and PDFs only (competition docs, reports, compliance)        |
+| **GitHub**       | Living engineering files — CAD, KiCad PCBs, datasheets, firmware, source code |
+| **Notion**       | Task management, milestone tracking, Single Source of Truth                   |
 
 ## Member Commitment
 
