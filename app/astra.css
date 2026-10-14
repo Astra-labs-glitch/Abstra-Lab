@@ -543,7 +543,7 @@ a.adm-item__title:hover { color: var(--a-pink); }
 .adm-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
 .adm-field { display: grid; gap: 8px; }
 .adm-field > span { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--a-soft); display: flex; align-items: center; gap: 10px; }
-.adm-field small, .adm-seg small { font-size: 14px; color: var(--a-dim); }
+.adm-field small, .adm-seg small { font-size: 14px; color: var(--a-dim); text-transform: none; letter-spacing: 0; font-weight: 400; }
 .adm-field input, .adm-field textarea { font: inherit; font-size: 17px; color: var(--a-white); background: #141414; border: 1px solid #333; border-radius: 4px; padding: 12px 14px; width: 100%; }
 .adm-field textarea { resize: vertical; line-height: 1.55; }
 .adm-field input:focus, .adm-field textarea:focus, .adm-search input:focus, .adm-role select:focus { outline: 2px solid var(--a-red); outline-offset: 1px; border-color: transparent; }
