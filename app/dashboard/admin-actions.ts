@@ -243,7 +243,7 @@ export async function addEventPhoto(formData: FormData): Promise<{ ok: boolean; 
   if (file.size > MAX_PHOTO_BYTES) return { ok: false, error: "Photo is too big after resizing." };
   const last = await prisma.eventPhoto.aggregate({ where: { eventId }, _max: { sortOrder: true } });
   await prisma.eventPhoto.create({
-    data: { eventId, type: file.type, data: Buffer.from(await file.arrayBuffer()), sortOrder: (last._max.sortOrder ?? 0) + 1 },
+    data: { eventId, type: file.type, data: new Uint8Array(await file.arrayBuffer()), sortOrder: (last._max.sortOrder ?? 0) + 1 },
   });
   refreshEvents(eventId);
   return { ok: true };
@@ -376,7 +376,7 @@ export async function uploadAccountPhoto(formData: FormData): Promise<{ ok: bool
   if (!(file instanceof File) || !file.size) return { ok: false, error: "No photo." };
   if (!IMAGE_TYPES.has(file.type)) return { ok: false, error: "Photo must be JPG, PNG or WebP." };
   if (file.size > MAX_PHOTO_BYTES) return { ok: false, error: "Photo is too big." };
-  const data = { photo: Buffer.from(await file.arrayBuffer()), photoType: file.type, photoAt: new Date() };
+  const data = { photo: new Uint8Array(await file.arrayBuffer()), photoType: file.type, photoAt: new Date() };
   await prisma.astraProfile.upsert({ where: { userId: me.id }, create: { userId: me.id, ...data }, update: data });
   refreshTeam();
   revalidatePath("/dashboard/account");
@@ -390,7 +390,7 @@ export async function uploadResume(formData: FormData) {
   const ext = (file.name.split(".").pop() || "").toLowerCase();
   if (!RESUME_TYPES[ext] || file.size > 4 * 1024 * 1024) redirect("/dashboard/account?error=resume");
   const data = {
-    resume: Buffer.from(await file.arrayBuffer()),
+    resume: new Uint8Array(await file.arrayBuffer()),
     resumeName: file.name.replace(/[^\w.\- ()]/g, "_").slice(0, 120),
     resumeType: RESUME_TYPES[ext],
     resumeSize: file.size,

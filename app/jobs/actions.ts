@@ -44,14 +44,14 @@ export async function applyForRole(_prev: ApplyState, formData: FormData): Promi
   const file = formData.get("resume");
 
   if (!name || !EMAIL.test(email)) return { ok: false, message: "Add your name and a valid email." };
-  let resume: { bytes: Buffer; name: string; type: string; size: number } | null = null;
+  let resume: { bytes: Uint8Array<ArrayBuffer>; name: string; type: string; size: number } | null = null;
   if (file instanceof File && file.size > 0) {
     if (file.size > MAX_RESUME_BYTES) return { ok: false, message: "Résumé is too big. Keep it under 4 MB." };
     const ext = (file.name.split(".").pop() || "").toLowerCase();
     if (!RESUME_TYPES[ext]) return { ok: false, message: "Résumé must be a PDF or Word file." };
     const bytes = Buffer.from(await file.arrayBuffer());
     if (!looksLikeDocument(ext, bytes)) return { ok: false, message: "That file doesn't look like a PDF or Word document." };
-    resume = { bytes, name: file.name, type: RESUME_TYPES[ext], size: file.size };
+    resume = { bytes: new Uint8Array(bytes), name: file.name, type: RESUME_TYPES[ext], size: file.size };
   } else {
     // Signed-in members can apply with the résumé saved in My account.
     const me = await requireUser().catch(() => null);
@@ -59,7 +59,7 @@ export async function applyForRole(_prev: ApplyState, formData: FormData): Promi
       ? await prisma.astraProfile.findUnique({ where: { userId: me.id }, select: { resume: true, resumeName: true, resumeType: true, resumeSize: true } })
       : null;
     if (!saved?.resume) return { ok: false, message: "Attach your résumé." };
-    resume = { bytes: Buffer.from(saved.resume), name: saved.resumeName, type: saved.resumeType, size: saved.resumeSize };
+    resume = { bytes: new Uint8Array(saved.resume), name: saved.resumeName, type: saved.resumeType, size: saved.resumeSize };
   }
 
   const role = await prisma.jobRole.findUnique({ where: { id: roleId } });
