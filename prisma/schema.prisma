@@ -145,3 +145,53 @@ model TelemetryFrame {
 
   @@map("telemetry_telemetryframe")
 }
+
+// ── Oct 2026: job board, applications, editable site text ──
+
+model JobRole {
+  id           Int              @id @default(autoincrement())
+  title        String
+  subteam      String           @default("")
+  summary      String           @default("")
+  duties       String           @default("") // one per line
+  requirements String           @default("") // one per line
+  commitment   String           @default("")
+  status       String           @default("draft") // draft | open | closed
+  sortOrder    Int              @default(0) @map("sort_order")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+  applications JobApplication[]
+
+  @@map("astra_job_role")
+}
+
+model JobApplication {
+  id         Int      @id @default(autoincrement())
+  roleId     Int      @map("role_id")
+  role       JobRole  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  name       String
+  email      String
+  program    String   @default("")
+  year       String   @default("")
+  message    String   @default("")
+  links      String   @default("")
+  resumeName String   @map("resume_name")
+  resumeType String   @map("resume_type")
+  resumeSize Int      @map("resume_size")
+  resume     Bytes // private: only served to staff via /dashboard/applications/[id]/resume
+  status     String   @default("new") // new | reviewing | interview | accepted | declined
+  notes      String   @default("")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([roleId])
+  @@map("astra_job_application")
+}
+
+model SiteText {
+  key       String   @id
+  value     String
+  updatedBy String   @default("") @map("updated_by")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("astra_site_text")
+}

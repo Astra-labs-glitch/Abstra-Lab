@@ -5,8 +5,6 @@ import { redirect } from "next/navigation";
 import { requireUser } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
 import {
-  approveMember,
-  deactivateMember,
   deleteEvent,
   deleteMaterial,
   deletePost,
@@ -15,7 +13,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Staff",
+  title: "Posts & events",
   robots: { index: false, follow: false },
 };
 
@@ -24,7 +22,7 @@ export default async function DashboardStaffPage() {
   if (!user) redirect("/accounts/login");
   if (!user.isStaff && !user.isSuperuser) redirect("/dashboard");
 
-  const [posts, events, materials, members] = await Promise.all([
+  const [posts, events, materials] = await Promise.all([
     prisma.blogPost.findMany({ orderBy: { createdAt: "desc" }, take: 100 }),
     prisma.clubEvent.findMany({
       orderBy: [{ startsAt: "desc" }, { createdAt: "desc" }],
@@ -34,21 +32,14 @@ export default async function DashboardStaffPage() {
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
       take: 100,
     }),
-    prisma.user.findMany({
-      include: { profile: true },
-      orderBy: { dateJoined: "desc" },
-      take: 100,
-    }),
   ]);
-
-  const pending = members.filter((m) => !m.isActive);
 
   return (
     <>
       <header className="dash-page-head">
         <div>
-          <h1>Staff</h1>
-          <p>Create and manage posts, events, resources, and members.</p>
+          <h1>Posts &amp; events</h1>
+          <p>Create and manage posts, events and resources. Members moved to their own page.</p>
         </div>
       </header>
 
@@ -228,86 +219,6 @@ export default async function DashboardStaffPage() {
         </div>
       </section>
 
-      {/* Members table */}
-      <section className="staff-section">
-        <div className="staff-section__head">
-          <h2>
-            Members
-            {pending.length > 0 ? <span className="dash-pill">{pending.length} pending</span> : null}
-          </h2>
-        </div>
-        <div className="staff-table-wrap">
-          <table className="staff-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {members.length ? (
-                members.map((member) => {
-                  const role = member.isSuperuser
-                    ? "Admin"
-                    : member.isStaff
-                      ? "Staff"
-                      : "Member";
-                  const active = member.isActive && !member.profile?.isBanned;
-                  return (
-                    <tr key={member.id}>
-                      <td>
-                        <strong>
-                          {member.firstName} {member.lastName || member.username}
-                        </strong>
-                        <span className="staff-table__sub">@{member.username}</span>
-                      </td>
-                      <td>{member.email}</td>
-                      <td>{role}</td>
-                      <td>
-                        <span className={`staff-badge${active ? " is-live" : ""}`}>
-                          {member.profile?.isBanned
-                            ? "Banned"
-                            : member.isActive
-                              ? "Active"
-                              : "Pending"}
-                        </span>
-                      </td>
-                      <td className="staff-table__actions">
-                        {!member.isActive ? (
-                          <form action={approveMember}>
-                            <input type="hidden" name="userId" value={member.id} />
-                            <button type="submit" className="staff-ok">
-                              Approve
-                            </button>
-                          </form>
-                        ) : member.id !== user.id && !member.isSuperuser ? (
-                          <form action={deactivateMember}>
-                            <input type="hidden" name="userId" value={member.id} />
-                            <button type="submit" className="staff-danger">
-                              Deactivate
-                            </button>
-                          </form>
-                        ) : (
-                          <span className="staff-table__sub">—</span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={5} className="staff-table__empty">
-                    No members.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
     </>
   );
 }

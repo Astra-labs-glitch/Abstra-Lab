@@ -2,7 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { requireUser } from "../../lib/auth";
-import { DashNav } from "./dash-nav";
+import { prisma } from "../../lib/prisma";
+import { DashNav, type NavGroup } from "./dash-nav";
 
 export default async function DashboardLayout({
   children,
@@ -12,33 +13,70 @@ export default async function DashboardLayout({
 
   const isStaff = user.isStaff || user.isSuperuser;
   const role = user.isSuperuser ? "Admin" : isStaff ? "Staff" : "Member";
-  const name = user.firstName || user.username;
+  const name = [user.firstName, user.lastName].filter((n) => n && n !== "-").join(" ") || user.username;
 
-  const items = [
-    { href: "/dashboard", label: "Home" },
-    { href: "/dashboard/events", label: "Events" },
-    { href: "/dashboard/resources", label: "Resources" },
-    { href: "/dashboard/posts", label: "Posts" },
-    ...(isStaff ? [{ href: "/dashboard/staff", label: "Staff" }] : []),
+  let newApps = 0;
+  let pending = 0;
+  if (isStaff) {
+    [newApps, pending] = await Promise.all([
+      prisma.jobApplication.count({ where: { status: "new" } }).catch(() => 0),
+      prisma.user.count({ where: { isActive: false } }),
+    ]);
+  }
+
+  const groups: NavGroup[] = [
+    {
+      title: "Team",
+      items: [
+        { href: "/dashboard", label: "Overview" },
+        { href: "/dashboard/events", label: "Events" },
+        { href: "/dashboard/resources", label: "Resources" },
+        { href: "/dashboard/posts", label: "Posts" },
+      ],
+    },
+    ...(isStaff
+      ? [
+          {
+            title: "Recruiting",
+            items: [
+              { href: "/dashboard/jobs", label: "Job roles" },
+              { href: "/dashboard/applications", label: "Applications", badge: newApps },
+            ],
+          },
+          {
+            title: "Admin",
+            items: [
+              { href: "/dashboard/members", label: "Members", badge: pending },
+              { href: "/dashboard/site-text", label: "Site text" },
+              { href: "/dashboard/staff", label: "Posts & events" },
+            ],
+          },
+        ]
+      : []),
   ];
 
   return (
-    <div className="dash">
-      <div className="wrap">
-        <header className="dash-shell">
-          <div className="dash-shell__who">
-            <p className="dash-shell__role">{role}</p>
-            <p className="dash-shell__name">{name}</p>
+    <div className="adm">
+      <aside className="adm-side">
+        <Link href="/" className="adm-brand" aria-label="Back to alsp.ca">
+          <img src="/images/astra/astra-rocket.png" alt="" width={28} height={28} />
+          <span>
+            Astra Labs
+            <small>Member area</small>
+          </span>
+        </Link>
+        <DashNav groups={groups} />
+        <div className="adm-me">
+          <div>
+            <p className="adm-me__name">{name}</p>
+            <p className="adm-me__role">{role}</p>
           </div>
-          <Link className="dash-shell__out" href="/accounts/logout">
+          <Link className="adm-me__out" href="/accounts/logout">
             Log out
           </Link>
-        </header>
-
-        <DashNav items={items} />
-
-        <div className="dash-main">{children}</div>
-      </div>
+        </div>
+      </aside>
+      <main className="adm-main">{children}</main>
     </div>
   );
 }

@@ -1,5 +1,11 @@
+import { openRoles } from "../../lib/jobs";
+import { getSiteText } from "../../lib/site-text";
 import { discordHref } from "../content";
 import { pageMetadata } from "../seo";
+import { RoleList } from "./role-list";
+
+// Rebuilt whenever an admin changes a role or this page's text; hourly as a backstop.
+export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "Jobs",
@@ -23,31 +29,31 @@ const steps = [
   ["04", "First task, first week", "You'll be paired with a subteam lead right away."],
 ] as const;
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const [t, roles] = await Promise.all([getSiteText("jobs"), openRoles()]);
   return (
     <>
       <section className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 56 }}>
         <div className="ax-cols" style={{ alignItems: "center", gap: 48 }}>
           <div style={{ flex: "1 1 480px" }}>
-            <p className="ax-label ax-pink">Job board · Fall 2026</p>
+            <p className="ax-label ax-pink">{t("jobs.hero.label")}</p>
             <h1 className="ax-display ax-display--xl" style={{ marginBottom: 20, fontSize: "clamp(38px, 5vw, 64px)" }}>
-              We&apos;re recruiting.
+              {t("jobs.hero.title")}
             </h1>
             <p className="ax-lede" style={{ fontSize: 20, marginTop: 0 }}>
-              Pick a role, read what you&apos;d actually do, and apply with your resume. You don&apos;t need to have
-              built a rocket. Here&apos;s the deal:
+              {t("jobs.hero.body")}
             </p>
             <dl className="ax-deal">
               <dt>Who</dt>
-              <dd>Any Seneca student, any program</dd>
+              <dd>{t("jobs.deal.who")}</dd>
               <dt>Time</dt>
-              <dd>About five hours a week</dd>
+              <dd>{t("jobs.deal.time")}</dd>
               <dt>Commitment</dt>
-              <dd>At least six months, so you see a build through</dd>
+              <dd>{t("jobs.deal.commitment")}</dd>
               <dt>Where</dt>
-              <dd>SSF clubs room</dd>
+              <dd>{t("jobs.deal.where")}</dd>
               <dt>When</dt>
-              <dd>Every Friday, 5–7 pm (our weekly meeting)</dd>
+              <dd>{t("jobs.deal.when")}</dd>
             </dl>
           </div>
           <figure style={{ flex: "1 1 380px", margin: 0 }}>
@@ -62,22 +68,23 @@ export default function JobsPage() {
       </section>
 
       <section id="roles" className="ax-wrap" style={{ paddingTop: 24, paddingBottom: 96 }}>
-        <p className="ax-label">Open roles · Fall 2026</p>
+        <p className="ax-label">{t("jobs.roles.label")}</p>
         <h2 className="ax-display ax-display--lg" style={{ marginBottom: 32, fontSize: "clamp(38px, 5vw, 72px)" }}>
           Open roles
         </h2>
-        <div className="ax-tuned">
-          <div style={{ flex: "1 1 460px", minWidth: 0 }}>
-            <p className="ax-tuned__title">Stay tuned.</p>
-            <p style={{ margin: 0, fontSize: 19, color: "#d9d9d9", maxWidth: 560 }}>
-              New roles are on the way. The exec team posts them here, each with what you&apos;d do, the projects and
-              how to apply. Until then, come to a Friday meeting and say hi.
-            </p>
+        {roles.length ? (
+          <RoleList roles={roles} />
+        ) : (
+          <div className="ax-tuned">
+            <div style={{ flex: "1 1 460px", minWidth: 0 }}>
+              <p className="ax-tuned__title">{t("jobs.tuned.title")}</p>
+              <p style={{ margin: 0, fontSize: 19, color: "#d9d9d9", maxWidth: 560 }}>{t("jobs.tuned.body")}</p>
+            </div>
+            <a className="ax-btn ax-btn--red" href={discordHref} target="_blank" rel="noopener noreferrer">
+              Get notified on Discord
+            </a>
           </div>
-          <a className="ax-btn ax-btn--red" href={discordHref} target="_blank" rel="noopener noreferrer">
-            Get notified on Discord
-          </a>
-        </div>
+        )}
       </section>
 
       <section className="ax-wrap" style={{ paddingBottom: 96 }}>

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { getSiteText } from "../lib/site-text";
 import { SupporterLogos } from "./supporters";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   description:
@@ -27,20 +30,17 @@ const towerLabels = [
   [2, "2.8 km"],
 ] as const;
 
-export default function Home() {
+export default async function Home() {
+  const t = await getSiteText("home");
   return (
     <>
       <section className="ax-hero">
         <img src={`${IMG}/hero-pioneer-range.jpg`} alt="An Astra Labs member reaching up beside Pioneer, a red-and-white rocket, on the Launch Canada range" />
         <div className="ax-wrap ax-hero__body">
-          <p className="ax-label">Team 06 · Seneca Polytechnic</p>
-          <h1 className="ax-display ax-display--xl">We build rockets at Seneca.</h1>
+          <p className="ax-label">{t("home.hero.label")}</p>
+          <h1 className="ax-display ax-display--xl">{t("home.hero.title")}</h1>
           <div className="ax-hero__row">
-            <p>
-              20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this
-              August. The weather cancelled our launch, so we&apos;re refitting it and starting a second rocket for
-              2027.
-            </p>
+            <p>{t("home.hero.body")}</p>
             <div className="ax-actions">
               <Link className="ax-btn ax-btn--red" href="/jobs">
                 Come build with us
@@ -56,16 +56,16 @@ export default function Home() {
       <section className="ax-status" aria-label="Where things stand">
         <div className="ax-wrap ax-status__grid" style={{ padding: 0 }}>
           <div>
-            <h3>Pioneer</h3>
-            <p>New G10 bulkhead going in. Flight-ready target: Nov 30.</p>
+            <h3>{t("home.status.1.title")}</h3>
+            <p>{t("home.status.1.body")}</p>
           </div>
           <div>
-            <h3>2027 rocket</h3>
-            <p>First design review Nov 30. Preliminary review Jan 31.</p>
+            <h3>{t("home.status.2.title")}</h3>
+            <p>{t("home.status.2.body")}</p>
           </div>
           <div>
-            <h3>Recruiting</h3>
-            <p>Any program. No rocketry experience needed.</p>
+            <h3>{t("home.status.3.title")}</h3>
+            <p>{t("home.status.3.body")}</p>
           </div>
         </div>
       </section>

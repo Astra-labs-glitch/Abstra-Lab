@@ -1,6 +1,9 @@
+import { getSiteText } from "../../lib/site-text";
 import { contact, sponsorFunding, sponsorPackage, sponsorTiers } from "../content";
 import { pageMetadata } from "../seo";
 import { SupporterLogos } from "../supporters";
+
+export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "Sponsorship",
@@ -12,19 +15,17 @@ export const metadata = pageMetadata({
 
 const mailto = `mailto:${contact.email}?subject=${encodeURIComponent("Sponsoring Astra Labs")}`;
 
-export default function SponsorshipPage() {
+export default async function SponsorshipPage() {
+  const t = await getSiteText("sponsor");
   return (
     <>
       <section className="ax-hero" style={{ minHeight: "clamp(560px, 80vh, 820px)" }}>
         <img src="/images/astra/avionics-sled.jpg" alt="An avionics sled with wiring held next to Pioneer's red airframe on the sand" style={{ filter: "brightness(0.45)" }} />
         <div className="ax-wrap ax-hero__body">
-          <p className="ax-label">Sponsorship · 2026–27 season</p>
-          <h1 className="ax-display ax-display--xl">Put your name on the next rocket.</h1>
+          <p className="ax-label">{t("sponsor.hero.label")}</p>
+          <h1 className="ax-display ax-display--xl">{t("sponsor.hero.title")}</h1>
           <div className="ax-hero__row">
-            <p>
-              We&apos;re a student club building two rockets this year: Pioneer&apos;s refit and a new rocket for
-              Launch Canada 2027. Here&apos;s where support goes and what you get back.
-            </p>
+            <p>{t("sponsor.hero.body")}</p>
             <div className="ax-actions">
               <a className="ax-btn ax-btn--red" href={mailto}>
                 Talk to us
