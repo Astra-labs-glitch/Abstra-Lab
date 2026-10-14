@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel-build": "prisma generate && (test -z \"$DATABASE_URL\" || prisma db push --skip-generate) && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",
