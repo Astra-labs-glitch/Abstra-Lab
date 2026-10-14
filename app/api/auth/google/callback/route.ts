@@ -16,6 +16,8 @@ function back(request: NextRequest, path: string) {
   return response;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   if (!googleConfigured()) return back(request, "/accounts/login?error=google_off");
 
