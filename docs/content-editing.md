@@ -1,5 +1,7 @@
 # Content editing
 
+> **Oct 2026 redesign.** The public site is now five pages: home (`app/page.tsx`, includes Pioneer, the Timmins diary and supporters), `app/team/page.tsx` (under construction), `app/jobs/page.tsx`, `app/gallery/page.tsx` (photos listed in `app/gallery/gallery-grid.tsx`) and `app/sponsorship/page.tsx`. Styles live in `app/astra.css`; photos and logos in `public/images/astra/`. The menu is in `app/site-shell.tsx`, the supporter logo wall in `app/supporters.tsx`, and the footer launch rocket and crowd in `app/launch-pad.tsx`. Old pages (`/pioneer`, `/launch-canada`, `/about`, `/members`, `/join`, `/contact`) redirect in `next.config.ts`.
+
 Almost everything a non-developer would change lives in **`app/content.ts`**. Shared layout pieces are in `app/page-sections.tsx`; navigation is in `app/site-shell.tsx`.
 
 ## Primary content file (`app/content.ts`)

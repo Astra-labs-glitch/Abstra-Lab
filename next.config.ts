@@ -15,16 +15,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: "/work",
-        destination: "/pioneer",
-        permanent: true,
-      },
-      {
-        source: "/projects",
-        destination: "/pioneer",
-        permanent: true,
-      },
+      // Oct 2026 redesign: old pages folded into the new five-page site.
+      { source: "/pioneer", destination: "/#pioneer", permanent: true },
+      { source: "/launch-canada", destination: "/#timmins", permanent: true },
+      { source: "/about", destination: "/team", permanent: true },
+      { source: "/members", destination: "/team", permanent: true },
+      { source: "/join", destination: "/jobs", permanent: true },
+      { source: "/contact", destination: "/#thanks", permanent: true },
+      { source: "/work", destination: "/#pioneer", permanent: true },
+      { source: "/projects", destination: "/#pioneer", permanent: true },
       {
         source: "/sponsor",
         destination: "/sponsorship",

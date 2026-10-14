@@ -1,0 +1,119 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const ROCKET = "/images/astra/astra-rocket.png";
+
+const PAIRS: ReadonlyArray<readonly [string, string]> = [
+  ["#9B4DFF", "#C86FE3"],
+  ["#D62E2E", "#D62E2E"],
+  ["#C86FE3", "#9B4DFF"],
+  ["#D62E2E", "#C86FE3"],
+  ["#9B4DFF", "#9B4DFF"],
+];
+
+// Back rows are smaller and lighter, so the crowd reads as layered.
+const LAYERS = [
+  { count: 78, w: 11, h: 21, bottom: 16, light: 0.55, gap: -2 },
+  { count: 68, w: 13, h: 25, bottom: 8, light: 0.28, gap: -3 },
+  { count: 58, w: 16, h: 31, bottom: 0, light: 0, gap: -4 },
+] as const;
+
+function tint(hex: string, t: number) {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (v: number) => Math.round(v + (255 - v) * t);
+  return `rgb(${ch(n >> 16)},${ch((n >> 8) & 255)},${ch(n & 255)})`;
+}
+
+const ROWS = LAYERS.map((layer, r) => ({
+  ...layer,
+  people: Array.from({ length: layer.count }, (_, i) => {
+    const pair = PAIRS[(i * 3 + r * 2 + (i % 4)) % PAIRS.length];
+    return {
+      head: tint(pair[0], layer.light),
+      body: tint(pair[1], layer.light),
+      delay: ((i * 37 + r * 13) % 11) * 0.05,
+    };
+  }),
+}));
+
+export function LaunchPad() {
+  const [flight, setFlight] = useState<{ x: number; y: number; up: boolean } | null>(null);
+  const [cheering, setCheering] = useState(false);
+  const timers = useRef<number[]>([]);
+
+  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
+
+  function launch(event: React.MouseEvent<HTMLButtonElement>) {
+    if (flight) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    const rect = event.currentTarget.getBoundingClientRect();
+    setFlight({ x: rect.left + rect.width / 2 - 18, y: rect.bottom - 62, up: false });
+    setCheering(true);
+    timers.current.push(
+      window.setTimeout(() => {
+        setFlight((f) => (f ? { ...f, up: true } : f));
+        timers.current.push(window.setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 700));
+      }, 60),
+      window.setTimeout(() => setFlight(null), 2700),
+      window.setTimeout(() => setCheering(false), 3200),
+    );
+  }
+
+  const arms = cheering ? "M8 26 L3 4 M22 26 L27 4" : "M8 26 L8 26";
+
+  return (
+    <div className="ax-wrap ax-launch">
+      {cheering && (
+        <p className="ax-launch__liftoff" aria-hidden="true">
+          Liftoff!
+        </p>
+      )}
+      <div className="ax-launch__ground">
+        <div className={`ax-crowd${cheering ? " is-cheering" : ""}`} aria-hidden="true">
+          {ROWS.map((row, r) => (
+            <div key={r} className="ax-crowd__row" style={{ bottom: row.bottom, paddingRight: r * 6 }}>
+              {row.people.map((p, i) => (
+                <svg
+                  key={i}
+                  className="ax-crowd__person"
+                  width={row.w}
+                  height={row.h}
+                  viewBox="0 0 30 58"
+                  style={{ marginLeft: row.gap, animationDelay: `${p.delay}s` }}
+                >
+                  <path d={arms} stroke={p.body} strokeWidth="5" strokeLinecap="round" fill="none" />
+                  <rect x="4" y="20" width="22" height="38" rx="10" fill={p.body} />
+                  <circle cx="15" cy="11" r="10" fill={p.head} />
+                </svg>
+              ))}
+            </div>
+          ))}
+        </div>
+        <button type="button" className="ax-pad-btn" onClick={launch} aria-label="Launch the rocket back to the top of the page">
+          <span className="ax-pad-btn__label">Launch to top</span>
+          <span className="ax-pad-btn__stage">
+            <svg width="84" height="106" viewBox="0 0 84 106" aria-hidden="true">
+              <rect x="60" y="4" width="3" height="96" fill="#3A3A3A" />
+              <rect x="56" y="22" width="11" height="2" fill="#3A3A3A" />
+              <rect x="56" y="58" width="11" height="2" fill="#3A3A3A" />
+              <rect x="4" y="100" width="76" height="6" rx="1" fill="#3A3A3A" />
+              <rect x="30" y="94" width="24" height="6" fill="#262626" />
+            </svg>
+            {!flight && <img className="ax-pad-btn__rocket" src={ROCKET} alt="" />}
+          </span>
+        </button>
+      </div>
+      {flight && (
+        <div className="ax-flying" aria-hidden="true" style={{ left: flight.x, top: flight.up ? -160 : flight.y }}>
+          <img src={ROCKET} alt="" />
+          <div className="ax-flame" />
+        </div>
+      )}
+    </div>
+  );
+}
