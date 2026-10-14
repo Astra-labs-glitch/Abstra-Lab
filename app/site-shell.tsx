@@ -17,11 +17,6 @@ const navItems = [
 export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname();
 
-  // The member area is a work tool: no marketing nav or launchpad footer.
-  if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
-    return <div className="ax">{children}</div>;
-  }
-
   return (
     <div className="ax">
       <a className="skip-link" href="#main">

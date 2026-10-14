@@ -12,7 +12,7 @@ export default async function DashboardLayout({
   if (!user) redirect("/accounts/login");
 
   const isStaff = user.isStaff || user.isSuperuser;
-  const role = user.isSuperuser ? "Admin" : isStaff ? "Staff" : "Member";
+  const role = user.isSuperuser ? "Admin" : isStaff ? "Exec" : "Member";
   const name = [user.firstName, user.lastName].filter((n) => n && n !== "-").join(" ") || user.username;
 
   let newApps = 0;
@@ -56,27 +56,18 @@ export default async function DashboardLayout({
   ];
 
   return (
-    <div className="adm">
-      <aside className="adm-side">
-        <Link href="/" className="adm-brand" aria-label="Back to alsp.ca">
-          <img src="/images/astra/astra-rocket.png" alt="" width={28} height={28} />
-          <span>
-            Astra Labs
-            <small>Member area</small>
-          </span>
-        </Link>
-        <DashNav groups={groups} />
-        <div className="adm-me">
-          <div>
-            <p className="adm-me__name">{name}</p>
-            <p className="adm-me__role">{role}</p>
-          </div>
-          <Link className="adm-me__out" href="/accounts/logout">
-            Log out
-          </Link>
-        </div>
-      </aside>
-      <main className="adm-main">{children}</main>
+    <div className="adm ax-wrap">
+      <div className="adm-top">
+        <p className="ax-label" style={{ margin: 0 }}>
+          Member area · {role}
+        </p>
+        <p className="adm-top__me">
+          <span>{name}</span>
+          <Link href="/accounts/logout">Log out</Link>
+        </p>
+      </div>
+      <DashNav groups={groups} />
+      <div className="adm-main">{children}</div>
     </div>
   );
 }
