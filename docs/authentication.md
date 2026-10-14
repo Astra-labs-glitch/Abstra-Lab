@@ -58,6 +58,23 @@ Comma-separated emails (default includes `saipdhodi@gmail.com` when unset).
 
 Hand-run SQL equivalent: `prisma/sql/2026-09-09-master-admin.sql`.
 
+## Sign in with Google
+
+Login and sign-up show **Continue with Google** once `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set (the button stays hidden otherwise).
+
+- An existing account whose email matches the Google email is signed straight in, so people who forgot their password can use Google instead.
+- A new email creates an account that waits for admin approval, like a normal sign-up. Emails on the master-admin list are active and admin immediately.
+- Google must report the email as verified.
+
+Setup (Google Cloud Console → APIs & Services):
+
+1. **OAuth consent screen:** External, app name "Astra Labs", support email `astralabsengineering@gmail.com`, scopes `openid`, `email`, `profile`. Publish the app so anyone can sign in.
+2. **Credentials → Create credentials → OAuth client ID → Web application.**
+   - Authorized redirect URIs: `https://www.alsp.ca/api/auth/google/callback` (add `http://localhost:3001/api/auth/google/callback` for local testing).
+3. In Vercel → Settings → Environment Variables, add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` (Production), then redeploy.
+
+The redirect URI is built from `NEXT_PUBLIC_SITE_URL`, so it must match that domain exactly.
+
 ## Rate limiting
 
 `lib/rate-limit.ts` provides an in-memory token bucket used by auth API routes. Limits reset per process — fine for single-instance / Vercel functions but not a global distributed limiter.
