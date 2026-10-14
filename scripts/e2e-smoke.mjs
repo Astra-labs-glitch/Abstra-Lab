@@ -19,15 +19,13 @@ async function get(path, init = {}) {
 }
 
 const PUBLIC_ROUTES = [
-  "/", "/pioneer", "/launch-canada", "/events", "/posts", "/about",
-  "/sponsorship", "/join", "/contact", "/members", "/discord",
+  "/", "/team", "/jobs", "/gallery", "/sponsorship", "/events", "/posts", "/discord",
   "/accounts/login", "/accounts/signup", "/accounts/pending",
   "/sitemap.xml", "/robots.txt",
 ];
 
 const REQUIRED_NAV = [
-  ["Pioneer", "/pioneer"], ["Launch Canada", "/launch-canada"], ["Sponsorship", "/sponsorship"],
-  ["Contact us", "/contact"], ["Login", "/accounts/login"], ["Discord", null],
+  ["Pioneer", "/"], ["Team", "/team"], ["Jobs", "/jobs"], ["Gallery", "/gallery"], ["Sponsor", "/sponsorship"], ["Join us", "/jobs"],
 ];
 
 const pages = new Map();
@@ -39,46 +37,44 @@ for (const route of PUBLIC_ROUTES) {
   pages.set(route, r.text);
 }
 
-// 2. Redirects.
-for (const [from, to] of [["/sponsor", "/sponsorship"], ["/projects", "/pioneer"], ["/work", "/pioneer"]]) {
+// 2. Redirects (old pages folded into the Oct 2026 redesign).
+for (const [from, to] of [
+  ["/sponsor", "/sponsorship"], ["/projects", "/#pioneer"], ["/work", "/#pioneer"],
+  ["/pioneer", "/#pioneer"], ["/launch-canada", "/#timmins"], ["/about", "/team"],
+  ["/members", "/team"], ["/join", "/jobs"], ["/contact", "/#thanks"],
+]) {
   const r = await get(from);
   const loc = r.headers.get("location") ?? "";
   ok([301, 308].includes(r.status) && loc.endsWith(to), `redirect ${from} -> ${r.status} ${loc || "(none)"}`);
 }
 
-// 3. Content requirements from the owner's change list.
+// 3. Content requirements.
 const html = (p) => pages.get(p) ?? "";
-const noHelix = [...pages.entries()].filter(([, t]) => /helix/i.test(t)).map(([p]) => p);
-ok(noHelix.length === 0, `no "Seneca HELIX" text on any public page ${noHelix.length ? `(found on ${noHelix.join(", ")})` : ""}`);
-ok(!html("/pioneer").includes("team-range-alt.jpg"), "pioneer gallery no longer uses the old crew photo (team-range-alt.jpg)");
-ok(html("/pioneer").includes("lc-team-portrait.jpg"), "pioneer gallery uses the new crew photo (lc-team-portrait.jpg)");
-ok(!html("/pioneer").includes("rocket-airframe-tent.jpg"), "pioneer no longer uses the old tent photo (rocket-airframe-tent.jpg)");
-ok(html("/pioneer").includes("lc-judging-pioneer.jpg"), "pioneer judging section uses the new judging Pioneer photo (lc-judging-pioneer.jpg)");
-ok(html("/pioneer").includes("tech-avionics-bay.jpg"), "pioneer technical gallery present");
-ok(html("/pioneer").includes('id="projects"'), "pioneer page has a Projects section (#projects)");
-ok(/Judging phases/.test(html("/pioneer")), "pioneer Projects lists 'Judging phases' instead of 'Ground station'");
-ok(!/>Ground station</.test(html("/pioneer")), "pioneer page has no 'Ground station' project row");
-ok(/Launch Canada judging/.test(html("/pioneer")), "pioneer judging split section present");
-ok(/Build-quality interview/.test(html("/launch-canada")), "launch-canada page lists judging phases");
-ok(/lc-launch-site-prep\.jpg/.test(html("/launch-canada")), "launch-canada gallery includes new Launch Canada photos");
-ok(html("/launch-canada").includes("lc-judging-pioneer.jpg"), "launch-canada page uses the judging Pioneer photo (lc-judging-pioneer.jpg)");
-ok(/mailto:astralabsengineering@gmail\.com/.test(html("/contact")), "contact page has mailto link");
-ok(/Open Discord|Request Discord invite/.test(html("/contact")), "contact page has a Discord action");
-ok(/href="https:\/\/discord\.gg\/[A-Za-z0-9]+"[^>]*target="_blank"/.test(html("/")), "home nav Discord link opens the invite directly in a new tab");
-ok(/href="https:\/\/discord\.gg\//.test(html("/contact")) && /href="https:\/\/discord\.gg\//.test(html("/discord")), "contact and discord pages link to the invite");
+ok(!/hero-launch\.jpg/.test(html("/")), "home no longer uses the SpaceX hero photo (hero-launch.jpg)");
+ok(html("/").includes("/images/astra/hero-pioneer-range.jpg"), "home hero is our own Pioneer photo");
+ok(/Launch canceled|Launch cancelled|called off for weather/i.test(html("/")), "home is honest that the 2026 launch was cancelled for weather");
+ok(!/Picosatellite slots|>50</.test(html("/")), "home no longer claims 50 picosatellite slots");
+ok(/Under construction/i.test(html("/team")), "team page shows the under-construction notice");
+ok(/Stay tuned/i.test(html("/jobs")) && /SSF clubs room/.test(html("/jobs")) && /Friday, 5–7 pm/.test(html("/jobs")), "jobs page has Stay tuned and the Friday meeting details");
+ok(/sponsorship-package-astra-labs\.pdf/.test(html("/sponsorship")), "sponsorship page links the package PDF");
+ok((html("/sponsorship").match(/class="ax-logo-tile"/g) ?? []).length >= 6, "sponsorship page shows the supporter logo wall");
+ok(/mailto:astralabsengineering@gmail\.com/.test(html("/")), "footer has the club email");
+ok(/href="https:\/\/discord\.gg\/[A-Za-z0-9]+"[^>]*target="_blank"/.test(html("/")), "footer Discord link opens the invite in a new tab");
+ok(/href="https:\/\/discord\.gg\//.test(html("/discord")), "discord page links to the invite");
+ok(/Launch the rocket back to the top/.test(html("/gallery")), "launch-to-top rocket is in the footer on every page");
 
-// 4. Burger menu items.
+// 4. Main menu items.
 const nav = html("/").match(/<nav[^>]*id="site-nav"[\s\S]*?<\/nav>/)?.[0] ?? "";
 for (const [label, href] of REQUIRED_NAV) {
-  const re = href ? new RegExp(`href="${href}"[^>]*>\\s*${label}`) : new RegExp(`>\\s*${label}\\s*<`);
-  ok(re.test(nav), `menu has "${label}"${href ? ` -> ${href}` : ""}`);
+  const re = new RegExp(`href="${href.replace(/[#/]/g, (c) => "\\" + c)}"[^>]*>\\s*${label}`);
+  ok(re.test(nav), `menu has "${label}" -> ${href}`);
 }
 ok(!/href="\/sponsor"/.test(html("/")) && !/href="\/sponsor"/.test(nav), "no stale /sponsor links on home or menu");
 
 // 5. Sitemap.
 const sitemap = html("/sitemap.xml");
-for (const path of ["/launch-canada", "/contact", "/sponsorship"]) ok(sitemap.includes(`${path}<`), `sitemap includes ${path}`);
-ok(!sitemap.includes("/sponsor<"), "sitemap excludes old /sponsor");
+for (const path of ["/team", "/jobs", "/gallery", "/sponsorship"]) ok(sitemap.includes(`${path}<`), `sitemap includes ${path}`);
+for (const path of ["/sponsor", "/pioneer", "/contact"]) ok(!sitemap.includes(`${path}<`), `sitemap excludes old ${path}`);
 
 // 6. Every internal link and image on the public pages resolves.
 const seen = new Set();

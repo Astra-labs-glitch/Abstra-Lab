@@ -1,175 +1,143 @@
-import Link from "next/link";
-import {
-  sponsorFunding,
-  sponsorGallery,
-  sponsorGoals,
-  sponsorPackage,
-  sponsorPartnerValue,
-  sponsorTiers,
-} from "../content";
-import { bg, Gallery, PageHero, Rows } from "../page-sections";
+import { contact, sponsorFunding, sponsorPackage, sponsorTiers } from "../content";
 import { pageMetadata } from "../seo";
+import { SupporterLogos } from "../supporters";
 
 export const metadata = pageMetadata({
   title: "Sponsorship",
   description:
-    "Sponsor Astra Labs (Team 06, Seneca Polytechnic). Partners fund fabrication, student workshops, and competition readiness for Pioneer at Launch Canada 2026.",
+    "Sponsor Astra Labs, Seneca's student rocketry team. See where support goes, the sponsor tiers, and how to get your name on the 2027 rocket.",
   path: "/sponsorship",
-  image: "/images/pick/range-sky.jpg",
+  image: "/images/astra/avionics-sled.jpg",
 });
 
-export default function SponsorPage() {
+const mailto = `mailto:${contact.email}?subject=${encodeURIComponent("Sponsoring Astra Labs")}`;
+
+export default function SponsorshipPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Sponsorship"
-        title="Help Seneca students fly real hardware."
-        lede="Astra Labs is Team 06 at Seneca Polytechnic. Partners fund fabrication, student workshops, and competition readiness — with progress reported through build logs and photos."
-        image="/images/pick/range-sky.jpg"
-        meta={["Team 06", "Seneca Polytechnic", "Launch Canada 2026"]}
-      />
-
-      <section className="sx-page-body sx-page-body--tight sponsor-example-lab" aria-labelledby="sponsor-example-title">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Sponsor examples</p>
-            <h2 id="sponsor-example-title">Example sponsor surfaces we can build around.</h2>
-            <p className="sx-page-hero__lede" style={{ marginTop: 12 }}>Fin graphics and electronics artwork can carry partner marks, acknowledgments, or campaign visuals.</p>
-          </div>
-          <div className="sponsor-example-grid">
-            <figure className="sponsor-example-card sponsor-example-card--dark">
-              <img src="/media/images/image1.png" alt="Astra Labs circular PCB artwork with sponsor marks" />
-              <figcaption>
-                <span>Payload PCB artwork</span>
-                <small>Partner logos and acknowledgments placed directly into board artwork.</small>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      </section>
-
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Supporters</p>
-            <h2>Backed by organizations helping students build.</h2>
-          </div>
-          <div className="supporter-strip" aria-label="Astra Labs supporters">
-            <img src="/images/partners/robotshop-logo.jpg" alt="RobotShop" />
-            <img src="/images/partners/ssf-logo.png" alt="SSF" />
-            <img src="/images/partners/seneca-alumni-logo.png" alt="Seneca Alumni" />
-            <img src="/images/partners/star-logo.png" alt="Space Technology and Aeronautical Rocketry" />
-          </div>
-        </div>
-      </section>
-
-      <section className="sx-page-body" id="sponsor-package">
-        <div className="wrap">
-          <div className="sx-package-head">
-            <div className="sx-page-intro range-ticks range-ticks--section">
-              <p className="section-eyebrow">{sponsorPackage.title}</p>
-              <h2>Complete sponsorship package — goals, vehicle, tiers, and next steps.</h2>
-              <p className="sx-page-hero__lede" style={{ marginTop: 12 }}>{sponsorPackage.summary}</p>
-            </div>
-            <div className="sx-package-actions sx-package-actions--side">
-              <a className="sx-btn sx-btn--fill" href={sponsorPackage.filename} download>Download PDF</a>
-              <a className="sx-btn" href={sponsorPackage.filename} target="_blank" rel="noopener noreferrer">Open in new tab</a>
+      <section className="ax-hero" style={{ minHeight: "clamp(560px, 80vh, 820px)" }}>
+        <img src="/images/astra/avionics-sled.jpg" alt="An avionics sled with wiring held next to Pioneer's red airframe on the sand" style={{ filter: "brightness(0.45)" }} />
+        <div className="ax-wrap ax-hero__body">
+          <p className="ax-label">Sponsorship · 2026–27 season</p>
+          <h1 className="ax-display ax-display--xl">Put your name on the next rocket.</h1>
+          <div className="ax-hero__row">
+            <p>
+              We&apos;re a student club building two rockets this year: Pioneer&apos;s refit and a new rocket for
+              Launch Canada 2027. Here&apos;s where support goes and what you get back.
+            </p>
+            <div className="ax-actions">
+              <a className="ax-btn ax-btn--red" href={mailto}>
+                Talk to us
+              </a>
+              <a className="ax-btn ax-btn--ghost" href={sponsorPackage.filename} target="_blank" rel="noopener noreferrer">
+                Get the package (PDF)
+              </a>
             </div>
           </div>
-          <Rows items={sponsorPackage.contents.map((item, index) => [String(index + 1).padStart(2, "0"), item, ""])} label="Sponsorship package contents" />
         </div>
       </section>
 
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Goals</p>
-            <h2>What sponsorship helps us deliver.</h2>
-          </div>
-          <Rows items={sponsorGoals.map(([title, text]) => ["→", title, text])} />
-        </div>
-      </section>
-
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro">
-            <p className="section-eyebrow">Sponsorship tiers</p>
-            <h2>Flexible levels for your organization.</h2>
-            <p className="sx-page-hero__lede" style={{ marginTop: 12 }}>All tiers include regular project updates and a personalized certificate of appreciation. Contributions can be monetary, in-kind, or services.</p>
-          </div>
-          <div className="table-wrap" style={{ marginTop: 24 }}>
-            <table className="site-table">
-              <thead>
-                <tr><th>Tier</th><th>Investment (CAD)</th><th>Benefits</th></tr>
-              </thead>
-              <tbody>
-                {sponsorTiers.map(([name, amount, benefits]) => (
-                  <tr key={name}>
-                    <td>{name}</td>
-                    <td>{amount}</td>
-                    <td>
-                      <ul className="sx-tier-list">
-                        {benefits.map((benefit) => <li key={benefit}>{benefit}</li>)}
-                      </ul>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <section className="ax-wrap ax-split">
+        <p className="ax-label">Where it goes</p>
+        <div className="ax-split__main">
+          <h2 className="ax-display ax-display--lg" style={{ marginBottom: 18 }}>
+            Into hardware
+          </h2>
+          <p className="ax-soft" style={{ marginTop: 0, marginBottom: 32, maxWidth: 620 }}>
+            Most of our school funding already goes to the rockets themselves. Sponsors close the gap.
+          </p>
+          <div style={{ borderTop: "1px solid var(--a-line)" }}>
+            {sponsorFunding.map(([title, text]) => (
+              <div key={title} className="ax-money-row">
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="sx-split">
-        <div className="sx-split__copy range-ticks range-ticks--section">
-          <p className="section-eyebrow">Why partner</p>
-          <h2>Your support moves hardware, not just marketing.</h2>
-          <p>Sponsorship buys flight materials, shop tooling, workshop kits, and the trip that proves the vehicle on the range.</p>
-          <p className="sx-page-hero__lede" style={{ marginTop: 16 }}><Link href="/about">About the club</Link> covers mission, leadership, and faculty advisors. The PDF above has Pioneer specs and competition details.</p>
-        </div>
-        <div className="sx-split__media" style={bg("/images/pick/lc-range-trio.jpg")} role="img" aria-label="Astra Labs members with Pioneer hardware on the Launch Canada range" />
-      </section>
-
-      <section className="sx-page-body">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Where support goes</p>
-            <h2>Four areas that move Pioneer from bench to range.</h2>
+      <section className="ax-band">
+        <div className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 96 }}>
+          <p className="ax-label">What you get</p>
+          <h2 className="ax-display ax-display--lg" style={{ marginBottom: 40 }}>
+            Sponsor tiers
+          </h2>
+          <div className="ax-tiers">
+            {sponsorTiers.map(([name, amount, perks]) => (
+              <div key={name}>
+                <h3>{name}</h3>
+                <p className="ax-pink" style={{ margin: "0 0 20px", fontWeight: 700 }}>
+                  {amount}
+                </p>
+                <ul>
+                  {perks.map((perk) => (
+                    <li key={perk}>{perk}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
-          <Rows items={sponsorFunding.map(([title, text], index) => [String(index + 1).padStart(2, "0"), title, text])} />
+          <p className="ax-dim" style={{ marginTop: 28, marginBottom: 0, fontSize: 16, maxWidth: 720 }}>
+            Not cash? We also welcome parts, machining time, software licences and mentorship. Tell us what you can
+            offer and we&apos;ll find the right fit.
+          </p>
         </div>
       </section>
 
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro">
-            <p className="section-eyebrow">Partner value</p>
-            <h2>What sponsors get back.</h2>
+      <section className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 96 }}>
+        <div className="ax-cols" style={{ alignItems: "center", gap: 48 }}>
+          <figure style={{ margin: 0 }}>
+            <img
+              src="/images/astra/payload-nodes.jpg"
+              alt="Six green payload node boards on a round carrier board, with supporter and builder names on the silkscreen"
+              loading="lazy"
+              style={{ width: "100%", height: 480, objectFit: "cover" }}
+            />
+            <figcaption className="ax-caption">Our payload boards carry our supporters&apos; names on the silkscreen.</figcaption>
+          </figure>
+          <div>
+            <p className="ax-label">Why us</p>
+            <h2 className="ax-display ax-display--md" style={{ marginBottom: 24 }}>
+              Early, and honest about it
+            </h2>
+            <p style={{ marginTop: 0, color: "var(--a-text)" }}>
+              We&apos;re a young team. That means your support shows up directly in hardware you can see, and
+              you&apos;re with us from our first flight on.
+            </p>
+            <p className="ax-soft" style={{ marginBottom: 0 }}>
+              You&apos;ll also meet 20+ students from seven Seneca programs who are
+              learning to ship real hardware.
+            </p>
           </div>
-          <Rows items={sponsorPartnerValue.map(([title, text]) => ["→", title, text])} />
         </div>
       </section>
 
-      <section className="sx-gallery-band">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Program gallery</p>
-            <h2>The crew, the workshops, and the vehicle in the field.</h2>
-            <p className="sx-page-hero__lede" style={{ marginTop: 12 }}>Recent photos from outreach events, payload workshops, and integration work behind Pioneer.</p>
-          </div>
+      <section style={{ borderTop: "1px solid var(--a-line)" }}>
+        <div className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 72 }}>
+          <p className="ax-label" style={{ marginBottom: 14 }}>
+            Already on board
+          </p>
+          <p style={{ margin: "0 0 32px", fontSize: 20, color: "var(--a-text)" }}>
+            Thank you to the people who made Pioneer possible.
+          </p>
+          <SupporterLogos />
         </div>
-        <Gallery items={sponsorGallery} />
       </section>
 
-      <section className="sx-cta-band">
-        <div className="wrap">
-          <p className="section-eyebrow">Next step</p>
-          <h2 style={{ margin: "12px 0 0", fontSize: "clamp(28px,4vw,40px)", fontWeight: 600 }}>Let's talk about a partnership.</h2>
-          <p className="sx-page-hero__lede" style={{ margin: "16px auto 0", maxWidth: "48ch" }}>Questions, custom proposals, or pledges — reach out to the team leads listed in the sponsorship package.</p>
-          <div className="sx-package-actions sx-package-actions--center" style={{ marginTop: 28 }}>
-            <a className="sx-btn sx-btn--fill" href={`mailto:${sponsorPackage.contactEmail}`}>Email Astra Labs</a>
-            <a className="sx-btn" href={sponsorPackage.linkedinUrl} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a className="sx-btn" href={sponsorPackage.filename} download>Download package</a>
+      <section id="package" className="ax-cta">
+        <div className="ax-wrap ax-cta__inner">
+          <h2 className="ax-display ax-display--lg">Let&apos;s talk.</h2>
+          <div>
+            <p>Email us and we&apos;ll send the full package with our budget and timeline.</p>
+            <div className="ax-actions">
+              <a className="ax-btn ax-btn--black" href={mailto}>
+                Email us
+              </a>
+              <a className="ax-btn ax-btn--outline" href={sponsorPackage.filename} target="_blank" rel="noopener noreferrer">
+                Download PDF
+              </a>
+            </div>
           </div>
         </div>
       </section>

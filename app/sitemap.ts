@@ -2,15 +2,12 @@ import type { MetadataRoute } from "next";
 
 const routes = [
   ["", 1],
-  ["/pioneer", 0.9],
-  ["/events", 0.8],
-  ["/posts", 0.8],
-  ["/about", 0.7],
-  ["/join", 0.7],
+  ["/team", 0.6],
+  ["/jobs", 0.8],
+  ["/gallery", 0.7],
   ["/sponsorship", 0.8],
-  ["/launch-canada", 0.8],
-  ["/contact", 0.6],
-  ["/members", 0.5],
+  ["/events", 0.5],
+  ["/posts", 0.5],
   ["/discord", 0.4],
 ] as const;
 

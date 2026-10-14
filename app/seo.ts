@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const siteName = "Astra Labs";
 
-const DEFAULT_OG_IMAGE = "/images/hero-launch.jpg";
+const DEFAULT_OG_IMAGE = "/images/astra/hero-pioneer-range.jpg";
 
 export function pageMetadata({
   title,
