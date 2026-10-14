@@ -1,105 +1,103 @@
-import { clubSignupUrl, eventFaqs, workshop } from "../content";
-import { getPublicEvents } from "../../lib/public-content";
-import { bg, PageHero, Rows } from "../page-sections";
+import { hasDatabase, prisma } from "../../lib/prisma";
+import { getSiteText, isPageLive } from "../../lib/site-text";
+import { Editable } from "../editable";
 import { pageMetadata } from "../seo";
+import { UnderConstruction } from "../under-construction";
 
-export const dynamic = "force-dynamic";
+// Rebuilt when an admin posts or edits an event; hourly as a backstop.
+export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "Events",
-  description:
-    "Work sessions, payload workshops, and launches at Astra Labs. New members are welcome year-round — no prior rocketry experience required.",
+  description: "Launches, workshops, outreach and conferences: what Astra Labs, Seneca's student rocketry team, has been up to.",
   path: "/events",
-  image: "/images/pick/outreach-raise-rocket.jpg",
+  image: "/images/astra/team-flag.jpg",
 });
 
+async function publishedEvents() {
+  if (!hasDatabase()) return [];
+  try {
+    return await prisma.clubEvent.findMany({
+      where: { published: true },
+      orderBy: [{ startsAt: "desc" }, { createdAt: "desc" }],
+      include: { photos: { orderBy: { sortOrder: "asc" }, select: { id: true, createdAt: true } } },
+      take: 60,
+    });
+  } catch (error) {
+    console.error("events unavailable", error);
+    return [];
+  }
+}
+
+function fmt(d: Date | null, label: string) {
+  if (label) return label;
+  if (!d) return "";
+  return new Intl.DateTimeFormat("en-CA", { month: "short", day: "numeric", year: "numeric", timeZone: "America/Toronto" }).format(d);
+}
+
 export default async function EventsPage() {
-  const events = await getPublicEvents();
+  const t = await getSiteText();
+  if (!(await isPageLive("events"))) return <UnderConstruction t={t} page="events" name="Events" />;
+  const events = await publishedEvents();
 
   return (
-    <>
-      <PageHero
-        eyebrow="Events"
-        title="How to enter the program."
-        lede="New members are welcome year-round. No prior rocketry experience is required. We look for curiosity, consistency, and clear documentation."
-        image="/images/pick/outreach-raise-rocket.jpg"
-        meta={["Open intake", "5 hr / week expected", "Seneca students only"]}
+    <section className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 96 }}>
+      <Editable t={t} k="events.label" d="Events & outreach" as="p" className="ax-label" />
+      <Editable t={t} k="events.title" d="Where we've been." as="h1" className="ax-display ax-display--xl" style={{ marginBottom: 20 }} />
+      <Editable
+        t={t}
+        k="events.lede"
+        d="Launches, workshops, school visits and conferences. Here's what we did and who we met."
+        as="p"
+        className="ax-lede"
+        style={{ marginTop: 0, marginBottom: 56 }}
       />
-
-      <section className="sx-page-body">
-        <div className="wrap">
-          <div className="sx-page-intro range-ticks range-ticks--section">
-            <p className="section-eyebrow">Entry points</p>
-            <h2>Work sessions, outreach events, and launches with real hardware behind them.</h2>
-          </div>
-          <div className="sx-rows">
-            {events.length ? (
-              events.map((event) => (
-                <article className="event-row" key={event.slug}>
-                  <span>{event.date_label}</span>
-                  <div>
-                    {event.media_url && event.is_video ? (
-                      <video className="event-row__media" src={event.media_url} controls muted playsInline />
-                    ) : event.media_url ? (
-                      <img className="event-row__media" src={event.media_url} alt={event.title} />
-                    ) : null}
-                    <h3>{event.title}</h3>
-                    {event.summary && <p className="event-row__summary">{event.summary}</p>}
-                    <p>{event.description}</p>
-                    {event.location && <p className="event-row__meta">{event.location}</p>}
-                  </div>
-                </article>
-              ))
-            ) : (
-              <article>
-                <span>—</span>
-                <div><p>No published events loaded yet.</p></div>
-              </article>
-            )}
+      {events.length ? (
+        <div className="ax-ev-list">
+          {events.map((event) => (
+            <article key={event.id.toString()} className="ax-ev">
+              <div style={{ minWidth: 0 }}>
+                <div className="ax-ev__meta">
+                  <span className="ax-ev__type">{event.eventType}</span>
+                  <span>{fmt(event.startsAt, event.dateLabel)}</span>
+                  {event.location ? <span>{event.location}</span> : null}
+                </div>
+                <h2>{event.title}</h2>
+                <p className="ax-ev__body">{event.description || event.summary}</p>
+              </div>
+              {event.photos.length ? (
+                <div className="ax-ev__photos">
+                  {event.photos.slice(0, 5).map((p) => (
+                    <img
+                      key={p.id}
+                      src={`/api/photos/event/${p.id}?v=${p.createdAt.getTime()}`}
+                      alt={`Photo from ${event.title}`}
+                      loading="lazy"
+                    />
+                  ))}
+                </div>
+              ) : event.image && !/\.(mp4|webm|mov)$/i.test(event.image) ? (
+                <div className="ax-ev__photos">
+                  <img src={event.image.startsWith("/") || event.image.startsWith("http") ? event.image : `/media/${event.image}`} alt={`Photo from ${event.title}`} loading="lazy" />
+                </div>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="ax-tuned">
+          <div style={{ flex: "1 1 460px", minWidth: 0 }}>
+            <Editable t={t} k="events.empty.title" d="First post soon." as="p" className="ax-tuned__title" />
+            <Editable
+              t={t}
+              k="events.empty.body"
+              d="We're writing up our week in Timmins. Photos and stories from launches and outreach land here."
+              as="p"
+              style={{ margin: 0, fontSize: 19, color: "#d9d9d9", maxWidth: 560 }}
+            />
           </div>
         </div>
-      </section>
-
-      <section className="sx-split">
-        <div className="sx-split__media" style={bg("/images/pick/workshop-floor.jpg")} role="img" aria-label="Students assembling airframe and composite hardware" />
-        <div className="sx-split__copy range-ticks range-ticks--section">
-          <p className="section-eyebrow">{workshop.title}</p>
-          <h2>Hands-on payload builds for fifty students.</h2>
-          <p>{workshop.summary}</p>
-          <div className="sx-rows" style={{ marginTop: 28, borderTop: "none" }}>
-            {workshop.highlights.map(([label, text]) => (
-              <article style={{ padding: "16px 0" }} key={label}>
-                <span>{label}</span>
-                <div><p style={{ margin: 0 }}>{text}</p></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro">
-            <p className="section-eyebrow">FAQ</p>
-            <h2>Common questions before your first session.</h2>
-          </div>
-          <Rows items={eventFaqs.map(([question, answer]) => ["Q", question, answer])} />
-        </div>
-      </section>
-
-      <section className="sx-page-body sx-page-body--tight">
-        <div className="wrap">
-          <div className="sx-page-intro">
-            <p className="section-eyebrow">Links</p>
-            <h2>Sign up and follow the crew.</h2>
-          </div>
-          <div aria-label="Astra Labs external links">
-            <a className="sx-link-row" href={clubSignupUrl}><span>01</span>Join the club</a>
-            <a className="sx-link-row" href="https://www.instagram.com/astra.labs.engineers/"><span>02</span>Instagram</a>
-            <a className="sx-link-row" href="https://www.linkedin.com/company/astra-labs-engineers/"><span>03</span>LinkedIn</a>
-          </div>
-        </div>
-      </section>
-    </>
+      )}
+    </section>
   );
 }

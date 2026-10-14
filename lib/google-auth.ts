@@ -72,7 +72,7 @@ export async function fetchGoogleProfile(code: string, redirectUri: string): Pro
   };
 }
 
-async function uniqueUsername(email: string) {
+export async function uniqueUsername(email: string) {
   const base = email.split("@")[0].replace(/[^a-zA-Z0-9_.-]/g, "").slice(0, 24) || "member";
   for (let i = 0; i < 50; i++) {
     const candidate = i === 0 ? base : `${base}${i + 1}`;

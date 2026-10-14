@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { requireUser } from "../../lib/auth";
-import { DashNav } from "./dash-nav";
+import { prisma } from "../../lib/prisma";
+import { DashNav, type NavGroup } from "./dash-nav";
 
 export default async function DashboardLayout({
   children,
@@ -11,34 +11,48 @@ export default async function DashboardLayout({
   if (!user) redirect("/accounts/login");
 
   const isStaff = user.isStaff || user.isSuperuser;
-  const role = user.isSuperuser ? "Admin" : isStaff ? "Staff" : "Member";
-  const name = user.firstName || user.username;
 
-  const items = [
-    { href: "/dashboard", label: "Home" },
-    { href: "/dashboard/events", label: "Events" },
-    { href: "/dashboard/resources", label: "Resources" },
-    { href: "/dashboard/posts", label: "Posts" },
-    ...(isStaff ? [{ href: "/dashboard/staff", label: "Staff" }] : []),
-  ];
+  let newApps = 0;
+  let pending = 0;
+  if (isStaff) {
+    [newApps, pending] = await Promise.all([
+      prisma.jobApplication.count({ where: { status: "new" } }).catch(() => 0),
+      prisma.user.count({ where: { isActive: false } }),
+    ]);
+  }
+
+  const groups: NavGroup[] = isStaff
+    ? [
+        {
+          title: "You",
+          items: [
+            { href: "/dashboard", label: "Overview" },
+            { href: "/dashboard/account", label: "My account" },
+          ],
+        },
+        {
+          title: "Site",
+          items: [
+            { href: "/dashboard/events", label: "Events" },
+            { href: "/dashboard/jobs", label: "Jobs" },
+            { href: "/dashboard/applications", label: "Applications", badge: newApps },
+          ],
+        },
+        {
+          title: "Team",
+          items: [
+            { href: "/dashboard/team", label: "Team" },
+            { href: "/dashboard/members", label: "Members", badge: pending },
+            { href: "/dashboard/pages", label: "Pages" },
+          ],
+        },
+      ]
+    : [{ title: "You", items: [{ href: "/dashboard/account", label: "My account" }] }];
 
   return (
-    <div className="dash">
-      <div className="wrap">
-        <header className="dash-shell">
-          <div className="dash-shell__who">
-            <p className="dash-shell__role">{role}</p>
-            <p className="dash-shell__name">{name}</p>
-          </div>
-          <Link className="dash-shell__out" href="/accounts/logout">
-            Log out
-          </Link>
-        </header>
-
-        <DashNav items={items} />
-
-        <div className="dash-main">{children}</div>
-      </div>
+    <div className="adm ax-wrap">
+      <DashNav groups={groups} />
+      <div className="adm-main">{children}</div>
     </div>
   );
 }
