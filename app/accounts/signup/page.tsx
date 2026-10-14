@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { registerUser } from "../../../lib/accounts";
 import { hasDatabase } from "../../../lib/prisma";
 import { clientIp, rateLimit } from "../../../lib/rate-limit";
+import { GoogleButton } from "../google-button";
 
 export const metadata: Metadata = {
   title: "Request access",
@@ -27,7 +28,8 @@ async function signupAction(formData: FormData) {
     password: String(formData.get("password") || ""),
   });
   if (!result.ok) {
-    redirect(result.error === "invalid" ? "/accounts/signup?error=invalid" : "/accounts/signup?error=taken");
+    const code = result.error === "invalid" ? "invalid" : result.error === "signup_failed" ? "failed" : "taken";
+    redirect(`/accounts/signup?error=${code}`);
   }
 
   if (result.active) redirect("/accounts/login?registered=1");
@@ -46,9 +48,16 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
           <p className="form-error">
             {error === "throttled"
               ? "Too many attempts. Please wait a few minutes and try again."
-              : "Sign up failed. Use unique username/email and an 8+ character password."}
+              : error === "db"
+                ? "Sign-up is unavailable right now because the site can't reach its database. Please try again later."
+                : error === "invalid"
+                  ? "Fill in every field and use a password of at least 8 characters."
+                  : error === "taken"
+                    ? "That email or username already has an account. Log in instead, or use Continue with Google."
+                    : "Something went wrong creating your account. Please try again."}
           </p>
         )}
+        <GoogleButton />
         <form className="auth-form" action={signupAction}>
           <label>First name<input name="firstName" required /></label>
           <label>Last name<input name="lastName" required /></label>

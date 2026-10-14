@@ -7,6 +7,7 @@ import { authenticate } from "../../../lib/accounts";
 import { setSession } from "../../../lib/auth";
 import { hasDatabase } from "../../../lib/prisma";
 import { clientIp, rateLimit } from "../../../lib/rate-limit";
+import { GoogleButton } from "../google-button";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -43,9 +44,16 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <p className="form-error">
             {error === "throttled"
               ? "Too many attempts. Please wait a few minutes and try again."
-              : "Login failed. Check your account status and password."}
+              : error === "db"
+                ? "Logins are unavailable right now because the site can't reach its database. Please try again later."
+                : error === "google_off"
+                  ? "Google sign-in isn't set up yet. Use your username and password for now."
+                  : error === "google"
+                    ? "Google sign-in didn't go through. Please try again."
+                    : "Login failed. Check your username or email and password, or that your account has been approved."}
           </p>
         )}
+        <GoogleButton />
         <form className="auth-form" action={loginAction}>
           <label>
             Username or email
