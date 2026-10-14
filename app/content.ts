@@ -164,18 +164,18 @@ export const eventFaqs = [
 
 export const sponsorPackage = {
   filename: "/docs/sponsorship-package-astra-labs.pdf",
-  title: "Sponsorship Package",
+  title: "Sponsorship Package 2026–27",
   summary:
-    "The full sponsor deck — goals, Pioneer vehicle overview, tier benefits, investment levels, and next steps. Download or view inline below.",
+    "Twelve pages: who we are, how Timmins went, Pioneer and the payload, the 2026–27 season, where support goes, the four tiers, sponsoring a student's picosat, and who to talk to.",
   contactEmail: contact.email,
   linkedinUrl: contact.linkedinUrl,
   contents: [
-    "Goals and objectives",
-    "Project and competition details",
-    "Pioneer vehicle overview",
-    "Benefits for sponsors",
-    "Sponsorship tiers and investment",
-    "Next steps and contacts",
+    "Who we are and Launch Canada 2026",
+    "Pioneer and the payload",
+    "The 2026–27 season: two rockets",
+    "Where your support goes",
+    "Tiers: Bronze $500 to Honour $5,000",
+    "Sponsor a picosat: $200 per student",
   ],
 } as const;
 

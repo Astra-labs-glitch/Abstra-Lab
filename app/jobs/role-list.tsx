@@ -129,9 +129,9 @@ function ApplyForm({ role, onClose }: { role: PublicRole; onClose: () => void })
       </label>
       <label>
         Résumé (PDF or Word, under 4 MB)
-        <input name="resume" type="file" required accept=".pdf,.doc,.docx" />
+        <input name="resume" type="file" accept=".pdf,.doc,.docx" />
       </label>
-      <p className="ax-dim ax-apply__note">Only the Astra Labs exec team can see your résumé. We never share it.</p>
+      <p className="ax-dim ax-apply__note">Only the Astra Labs exec team can see your résumé. Already a member? Leave it empty and we use the one in My account.</p>
       {state.message ? (
         <p className="ax-apply__err" role="alert">
           {state.message}

@@ -24,6 +24,7 @@ model User {
   profile   MemberProfile?
   materials BuildMaterial[]
   assets    LibraryAsset[]
+  astra     AstraProfile?
 
   @@map("auth_user")
 }
@@ -115,10 +116,12 @@ model ClubEvent {
   startsAt    DateTime? @map("starts_at")
   image       String?
   published   Boolean
+  eventType   String    @default("Outreach") @map("event_type")
   authorId    Int?      @map("author_id")
   author      User?     @relation(fields: [authorId], references: [id])
   createdAt   DateTime  @map("created_at")
   updatedAt   DateTime  @map("updated_at")
+  photos      EventPhoto[]
 
   @@map("core_clubevent")
 }
@@ -194,4 +197,51 @@ model SiteText {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("astra_site_text")
+}
+
+// Oct 2026 round 2: member profiles, event photos, page switches.
+
+model AstraProfile {
+  userId      Int      @id @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program     String   @default("")
+  bio         String   @default("")
+  linkedin    String   @default("")
+  portfolio   String   @default("")
+  wantSubteam String   @default("") @map("want_subteam")
+  teamGroup   String   @default("") @map("team_group")
+  teamTitle   String   @default("") @map("team_title")
+  showOnTeam  Boolean  @default(true) @map("show_on_team")
+  sortOrder   Int      @default(0) @map("sort_order")
+  photo       Bytes?
+  photoType   String   @default("") @map("photo_type")
+  photoAt     DateTime? @map("photo_at")
+  resume      Bytes? // private: only staff, and the member themself
+  resumeName  String   @default("") @map("resume_name")
+  resumeType  String   @default("") @map("resume_type")
+  resumeSize  Int      @default(0) @map("resume_size")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("astra_profile")
+}
+
+model EventPhoto {
+  id        Int       @id @default(autoincrement())
+  eventId   BigInt    @map("event_id")
+  event     ClubEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  data      Bytes
+  type      String
+  sortOrder Int       @default(0) @map("sort_order")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([eventId])
+  @@map("astra_event_photo")
+}
+
+model SitePage {
+  key       String   @id
+  live      Boolean  @default(true)
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("astra_site_page")
 }

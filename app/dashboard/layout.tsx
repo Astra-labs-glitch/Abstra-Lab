@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { requireUser } from "../../lib/auth";
@@ -12,8 +11,6 @@ export default async function DashboardLayout({
   if (!user) redirect("/accounts/login");
 
   const isStaff = user.isStaff || user.isSuperuser;
-  const role = user.isSuperuser ? "Admin" : isStaff ? "Exec" : "Member";
-  const name = [user.firstName, user.lastName].filter((n) => n && n !== "-").join(" ") || user.username;
 
   let newApps = 0;
   let pending = 0;
@@ -24,48 +21,36 @@ export default async function DashboardLayout({
     ]);
   }
 
-  const groups: NavGroup[] = [
-    {
-      title: "Team",
-      items: [
-        { href: "/dashboard", label: "Overview" },
-        { href: "/dashboard/events", label: "Events" },
-        { href: "/dashboard/resources", label: "Resources" },
-        { href: "/dashboard/posts", label: "Posts" },
-      ],
-    },
-    ...(isStaff
-      ? [
-          {
-            title: "Recruiting",
-            items: [
-              { href: "/dashboard/jobs", label: "Job roles" },
-              { href: "/dashboard/applications", label: "Applications", badge: newApps },
-            ],
-          },
-          {
-            title: "Admin",
-            items: [
-              { href: "/dashboard/members", label: "Members", badge: pending },
-              { href: "/dashboard/site-text", label: "Site text" },
-              { href: "/dashboard/staff", label: "Posts & events" },
-            ],
-          },
-        ]
-      : []),
-  ];
+  const groups: NavGroup[] = isStaff
+    ? [
+        {
+          title: "You",
+          items: [
+            { href: "/dashboard", label: "Overview" },
+            { href: "/dashboard/account", label: "My account" },
+          ],
+        },
+        {
+          title: "Site",
+          items: [
+            { href: "/dashboard/events", label: "Events" },
+            { href: "/dashboard/jobs", label: "Jobs" },
+            { href: "/dashboard/applications", label: "Applications", badge: newApps },
+          ],
+        },
+        {
+          title: "Team",
+          items: [
+            { href: "/dashboard/team", label: "Team" },
+            { href: "/dashboard/members", label: "Members", badge: pending },
+            { href: "/dashboard/pages", label: "Pages" },
+          ],
+        },
+      ]
+    : [{ title: "You", items: [{ href: "/dashboard/account", label: "My account" }] }];
 
   return (
     <div className="adm ax-wrap">
-      <div className="adm-top">
-        <p className="ax-label" style={{ margin: 0 }}>
-          Member area · {role}
-        </p>
-        <p className="adm-top__me">
-          <span>{name}</span>
-          <Link href="/accounts/logout">Log out</Link>
-        </p>
-      </div>
       <DashNav groups={groups} />
       <div className="adm-main">{children}</div>
     </div>

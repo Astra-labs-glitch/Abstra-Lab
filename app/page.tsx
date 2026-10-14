@@ -31,16 +31,16 @@ const towerLabels = [
 ] as const;
 
 export default async function Home() {
-  const t = await getSiteText("home");
+  const t = await getSiteText();
   return (
     <>
       <section className="ax-hero">
         <img src={`${IMG}/hero-pioneer-range.jpg`} alt="An Astra Labs member reaching up beside Pioneer, a red-and-white rocket, on the Launch Canada range" />
         <div className="ax-wrap ax-hero__body">
-          <p className="ax-label">{t("home.hero.label")}</p>
-          <h1 className="ax-display ax-display--xl">{t("home.hero.title")}</h1>
+          <p className="ax-label" data-edit-key="home.hero.label">{t("home.hero.label", "Team 06 · Seneca Polytechnic")}</p>
+          <h1 className="ax-display ax-display--xl" data-edit-key="home.hero.title">{t("home.hero.title", "We build rockets at Seneca.")}</h1>
           <div className="ax-hero__row">
-            <p>{t("home.hero.body")}</p>
+            <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this August. The weather cancelled our launch, so we're refitting it and starting a second rocket for 2027.")}</p>
             <div className="ax-actions">
               <Link className="ax-btn ax-btn--red" href="/jobs">
                 Come build with us
@@ -56,49 +56,40 @@ export default async function Home() {
       <section className="ax-status" aria-label="Where things stand">
         <div className="ax-wrap ax-status__grid" style={{ padding: 0 }}>
           <div>
-            <h3>{t("home.status.1.title")}</h3>
-            <p>{t("home.status.1.body")}</p>
+            <h3 data-edit-key="home.status.1.title">{t("home.status.1.title", "Pioneer")}</h3>
+            <p data-edit-key="home.status.1.body">{t("home.status.1.body", "New G10 bulkhead going in. Flight-ready target: Nov 30.")}</p>
           </div>
           <div>
-            <h3>{t("home.status.2.title")}</h3>
-            <p>{t("home.status.2.body")}</p>
+            <h3 data-edit-key="home.status.2.title">{t("home.status.2.title", "2027 rocket")}</h3>
+            <p data-edit-key="home.status.2.body">{t("home.status.2.body", "First design review Nov 30. Preliminary review Jan 31.")}</p>
           </div>
           <div>
-            <h3>{t("home.status.3.title")}</h3>
-            <p>{t("home.status.3.body")}</p>
+            <h3 data-edit-key="home.status.3.title">{t("home.status.3.title", "Recruiting")}</h3>
+            <p data-edit-key="home.status.3.body">{t("home.status.3.body", "Any program. No rocketry experience needed.")}</p>
           </div>
         </div>
       </section>
 
       <section id="pioneer" className="ax-wrap ax-split">
-        <p className="ax-label">The vehicle</p>
+        <p className="ax-label" data-edit-key="home.the-vehicle">{t("home.the-vehicle", "The vehicle")}</p>
         <div className="ax-split__main">
-          <h2 className="ax-display ax-display--lg" style={{ marginBottom: 32 }}>
-            Meet Pioneer
-          </h2>
+          <h2 className="ax-display ax-display--lg" style={{ marginBottom: 32 }} data-edit-key="home.meet-pioneer">{t("home.meet-pioneer", "Meet Pioneer")}</h2>
           <div className="ax-cols">
             <div>
-              <p style={{ marginTop: 0, fontSize: 20, color: "var(--a-text)" }}>
-                Our first high-power rocket. 2.5 m tall, 12.6 kg loaded, and built to reach about 2.8 km on a
-                Cesaroni L1355-P.
-              </p>
-              <p className="ax-soft" style={{ marginBottom: 0 }}>
-                We&apos;ll be upfront about what&apos;s ours. The airframe is a Wildman Extreme fibreglass kit, and
-                recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and
-                integrated all of it. The payload is the part we designed from scratch.
-              </p>
+              <p style={{ marginTop: 0, fontSize: 20, color: "var(--a-text)" }} data-edit-key="home.our-first-highpower-rocket">{t("home.our-first-highpower-rocket", "Our first high-power rocket. 2.5 m tall, 12.6 kg loaded, and built to reach about 2.8 km on a Cesaroni L1355-P.")}</p>
+              <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.well-be-upfront-about">{t("home.well-be-upfront-about", "We'll be upfront about what's ours. The airframe is a Wildman Extreme fibreglass kit, and recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and integrated all of it. The payload is the part we designed from scratch.")}</p>
             </div>
             <dl className="ax-specs">
-              <dt>Airframe</dt>
-              <dd>4&quot; G12 fibreglass, G10 fins</dd>
-              <dt>Motor</dt>
-              <dd>Cesaroni L1355-P</dd>
-              <dt>Recovery</dt>
-              <dd>Dual deploy, two EasyMini stacks</dd>
-              <dt>Tracking</dt>
-              <dd>Two Featherweight GPS units</dd>
-              <dt>Flights so far</dt>
-              <dd className="ax-pink">Zero. Working on it.</dd>
+              <dt data-edit-key="home.airframe">{t("home.airframe", "Airframe")}</dt>
+              <dd data-edit-key="home.4-g12-fibreglass-g10">{t("home.4-g12-fibreglass-g10", "4\" G12 fibreglass, G10 fins")}</dd>
+              <dt data-edit-key="home.motor">{t("home.motor", "Motor")}</dt>
+              <dd data-edit-key="home.cesaroni-l1355p">{t("home.cesaroni-l1355p", "Cesaroni L1355-P")}</dd>
+              <dt data-edit-key="home.recovery">{t("home.recovery", "Recovery")}</dt>
+              <dd data-edit-key="home.dual-deploy-two-easymini">{t("home.dual-deploy-two-easymini", "Dual deploy, two EasyMini stacks")}</dd>
+              <dt data-edit-key="home.tracking">{t("home.tracking", "Tracking")}</dt>
+              <dd data-edit-key="home.two-featherweight-gps-units">{t("home.two-featherweight-gps-units", "Two Featherweight GPS units")}</dd>
+              <dt data-edit-key="home.flights-so-far">{t("home.flights-so-far", "Flights so far")}</dt>
+              <dd className="ax-pink" data-edit-key="home.zero-working-on-it">{t("home.zero-working-on-it", "Zero. Working on it.")}</dd>
             </dl>
           </div>
         </div>
@@ -107,10 +98,8 @@ export default async function Home() {
       <section className="ax-wrap" aria-label="Target altitude" style={{ paddingTop: 24, paddingBottom: 96 }}>
         <div className="ax-altitude">
           <div style={{ flex: "1 1 520px", minWidth: 0 }}>
-            <p className="ax-altitude__num">2.8 km</p>
-            <p className="ax-soft" style={{ margin: 0, maxWidth: 360 }}>
-              How high Pioneer is built to go. That&apos;s roughly five CN Towers stacked on top of each other.
-            </p>
+            <p className="ax-altitude__num" data-edit-key="home.28-km">{t("home.28-km", "2.8 km")}</p>
+            <p className="ax-soft" style={{ margin: 0, maxWidth: 360 }} data-edit-key="home.how-high-pioneer-is">{t("home.how-high-pioneer-is", "How high Pioneer is built to go. That's roughly five CN Towers stacked on top of each other.")}</p>
           </div>
           <div className="ax-towers">
             <svg
@@ -143,54 +132,39 @@ export default async function Home() {
       <section className="ax-band" aria-labelledby="payload-h">
         <div className="ax-payload" style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div className="ax-payload__text">
-            <p className="ax-label">The payload</p>
-            <h2 id="payload-h" className="ax-display ax-display--md" style={{ marginBottom: 24 }}>
-              24 sensors, one question
-            </h2>
-            <p style={{ marginTop: 0, color: "var(--a-text)" }}>
-              If you fly 24 identical motion sensors on the same rocket, how much do they disagree? That&apos;s what
-              our payload is built to find out.
-            </p>
-            <p className="ax-soft">
-              Each node is an ESP32-C6 with an MPU-6050 IMU. They talk over a CAN bus to a hub that radios data down
-              on 433 MHz. Think of it as a tiny rideshare mission: lots of small passengers sharing one ride up.
-            </p>
-            <p className="ax-soft" style={{ marginBottom: 0 }}>
-              We designed the boards in KiCad and had them fabbed with help from Seneca HELIX, the SSF and Seneca
-              Alumni.
-            </p>
+            <p className="ax-label" data-edit-key="home.the-payload">{t("home.the-payload", "The payload")}</p>
+            <h2 id="payload-h" className="ax-display ax-display--md" style={{ marginBottom: 24 }} data-edit-key="home.24-sensors-one-question">{t("home.24-sensors-one-question", "24 sensors, one question")}</h2>
+            <p style={{ marginTop: 0, color: "var(--a-text)" }} data-edit-key="home.if-you-fly-24">{t("home.if-you-fly-24", "If you fly 24 identical motion sensors on the same rocket, how much do they disagree? That's what our payload is built to find out.")}</p>
+            <p className="ax-soft" data-edit-key="home.each-node-is-an">{t("home.each-node-is-an", "Each node is an ESP32-C6 with an MPU-6050 IMU. They talk over a CAN bus to a hub that radios data down on 433 MHz. Think of it as a tiny rideshare mission: lots of small passengers sharing one ride up.")}</p>
+            <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.we-designed-the-boards">{t("home.we-designed-the-boards", "We designed the boards in KiCad and had them fabbed with help from Seneca HELIX, the SSF and Seneca Alumni.")}</p>
           </div>
           <figure className="ax-payload__img">
             <img src={`${IMG}/payload-nodes.jpg`} alt="Six green payload node boards standing on a round carrier board, with builders' names printed on the silkscreen" />
-            <figcaption>Look closely: the people who built these boards put their names on the silkscreen.</figcaption>
+            <figcaption data-edit-key="home.look-closely-the-people">{t("home.look-closely-the-people", "Look closely: the people who built these boards put their names on the silkscreen.")}</figcaption>
           </figure>
         </div>
       </section>
 
       <section id="rockets" className="ax-wrap ax-split" style={{ paddingBottom: 40 }}>
-        <p className="ax-label">Our rockets</p>
+        <p className="ax-label" data-edit-key="home.our-rockets">{t("home.our-rockets", "Our rockets")}</p>
         <div className="ax-split__main">
-          <p className="ax-soft" style={{ marginTop: 0, marginBottom: 28 }}>
-            Short list so far. Give us time.
-          </p>
+          <p className="ax-soft" style={{ marginTop: 0, marginBottom: 28 }} data-edit-key="home.short-list-so-far">{t("home.short-list-so-far", "Short list so far. Give us time.")}</p>
           <div className="ax-rocket-row">
-            <p className="ax-rocket-row__year">2026</p>
-            <p className="ax-rocket-row__name">Pioneer</p>
-            <p className="ax-rocket-row__note">Went to Launch Canada 2026. Launch cancelled for weather. Refit underway.</p>
+            <p className="ax-rocket-row__year" data-edit-key="home.2026">{t("home.2026", "2026")}</p>
+            <p className="ax-rocket-row__name" data-edit-key="home.pioneer">{t("home.pioneer", "Pioneer")}</p>
+            <p className="ax-rocket-row__note" data-edit-key="home.went-to-launch-canada">{t("home.went-to-launch-canada", "Went to Launch Canada 2026. Launch cancelled for weather. Refit underway.")}</p>
           </div>
           <div className="ax-rocket-row">
-            <p className="ax-rocket-row__year">2027</p>
-            <p className="ax-rocket-row__name ax-dim">Name coming soon</p>
-            <p className="ax-rocket-row__note">4-inch airframe on 75 mm Cesaroni hardware with the next payload. In design.</p>
+            <p className="ax-rocket-row__year" data-edit-key="home.2027">{t("home.2027", "2027")}</p>
+            <p className="ax-rocket-row__name ax-dim" data-edit-key="home.name-coming-soon">{t("home.name-coming-soon", "Name coming soon")}</p>
+            <p className="ax-rocket-row__note" data-edit-key="home.4inch-airframe-on-75">{t("home.4inch-airframe-on-75", "4-inch airframe on 75 mm Cesaroni hardware with the next payload. In design.")}</p>
           </div>
         </div>
       </section>
 
       <section id="timmins" className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 56 }}>
-        <p className="ax-label">Launch Canada · Aug 15–22, 2026</p>
-        <h2 className="ax-display ax-display--lg" style={{ marginBottom: 56 }}>
-          A week in Timmins
-        </h2>
+        <p className="ax-label" data-edit-key="home.launch-canada-aug-1522">{t("home.launch-canada-aug-1522", "Launch Canada · Aug 15–22, 2026")}</p>
+        <h2 className="ax-display ax-display--lg" style={{ marginBottom: 56 }} data-edit-key="home.a-week-in-timmins">{t("home.a-week-in-timmins", "A week in Timmins")}</h2>
         <div className="ax-diary">
           {diary.map(([date, file, alt, text]) => (
             <article key={date}>
@@ -210,28 +184,17 @@ export default async function Home() {
           style={{ width: "100%", height: "clamp(320px, 50vw, 680px)", objectFit: "cover", objectPosition: "center 38%" }}
         />
         <div className="ax-wrap ax-split" style={{ paddingTop: 48, paddingBottom: 0 }}>
-          <p className="ax-label">The crew</p>
+          <p className="ax-label" data-edit-key="home.the-crew">{t("home.the-crew", "The crew")}</p>
           <div className="ax-split__main">
-            <h2 className="ax-display ax-display--md" style={{ marginBottom: 24 }}>
-              Small team. Real rockets.
-            </h2>
-            <p style={{ marginTop: 0, color: "var(--a-text)" }}>
-              We&apos;re a Seneca Student Federation club. Members come from seven programs, including Electronics
-              Engineering Technology and Computer Programming and Analysis.
-            </p>
-            <p className="ax-soft">
-              Subteams own the airframe, avionics and recovery, payload, ground software and operations. We lean on
-              mentors from the rocketry community when we get stuck.
-            </p>
+            <h2 className="ax-display ax-display--md" style={{ marginBottom: 24 }} data-edit-key="home.small-team-real-rockets">{t("home.small-team-real-rockets", "Small team. Real rockets.")}</h2>
+            <p style={{ marginTop: 0, color: "var(--a-text)" }} data-edit-key="home.were-a-seneca-student">{t("home.were-a-seneca-student", "We're a Seneca Student Federation club. Members come from seven programs, including Electronics Engineering Technology and Computer Programming and Analysis.")}</p>
+            <p className="ax-soft" data-edit-key="home.subteams-own-the-airframe">{t("home.subteams-own-the-airframe", "Subteams own the airframe, avionics and recovery, payload, ground software and operations. We lean on mentors from the rocketry community when we get stuck.")}</p>
             <p>
               <Link href="/jobs" className="ax-pink" style={{ fontWeight: 700 }}>
                 See how to join →
               </Link>
             </p>
-            <p className="ax-dim" style={{ fontSize: 14, marginBottom: 0 }}>
-              The crew at the Launch Canada hall, August 2026. Faculty advisor: Prof. Houman Hakima. Photos by Wendy
-              Liu.
-            </p>
+            <p className="ax-dim" style={{ fontSize: 14, marginBottom: 0 }} data-edit-key="home.the-crew-at-the">{t("home.the-crew-at-the", "The crew at the Launch Canada hall, August 2026. Faculty advisor: Prof. Houman Hakima. Photos by Wendy Liu.")}</p>
           </div>
         </div>
       </section>
@@ -240,12 +203,8 @@ export default async function Home() {
         <div className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 72 }}>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16, marginBottom: 32 }}>
             <div>
-              <p className="ax-label" style={{ marginBottom: 14 }}>
-                Thank you
-              </p>
-              <p style={{ margin: 0, fontSize: 20, color: "var(--a-text)" }}>
-                Pioneer wouldn&apos;t exist without the people who helped pay for it.
-              </p>
+              <p className="ax-label" style={{ marginBottom: 14 }} data-edit-key="home.thank-you">{t("home.thank-you", "Thank you")}</p>
+              <p style={{ margin: 0, fontSize: 20, color: "var(--a-text)" }} data-edit-key="home.pioneer-wouldnt-exist-without">{t("home.pioneer-wouldnt-exist-without", "Pioneer wouldn't exist without the people who helped pay for it.")}</p>
             </div>
             <Link href="/sponsorship" className="ax-pink" style={{ fontWeight: 700 }}>
               Sponsor the 2027 rocket →
@@ -257,9 +216,9 @@ export default async function Home() {
 
       <section className="ax-cta">
         <div className="ax-wrap ax-cta__inner">
-          <h2 className="ax-display ax-display--lg">Help us build the 2027 rocket.</h2>
+          <h2 className="ax-display ax-display--lg" data-edit-key="home.help-us-build-the">{t("home.help-us-build-the", "Help us build the 2027 rocket.")}</h2>
           <div>
-            <p>Any Seneca program. About five hours a week for at least six months. We&apos;ll teach you the rest.</p>
+            <p data-edit-key="home.any-seneca-program-about">{t("home.any-seneca-program-about", "Any Seneca program. About five hours a week for at least six months. We'll teach you the rest.")}</p>
             <div className="ax-actions">
               <Link className="ax-btn ax-btn--black" href="/jobs">
                 How to join

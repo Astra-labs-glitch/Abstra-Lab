@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { requireStaff } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
+import { TEAM_GROUPS } from "../../../lib/site-text";
 import { approveUser, declineUser, setUserActive, setUserRole } from "../admin-actions";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +38,7 @@ export default async function MembersPage({
           ],
         }
       : undefined,
-    include: { profile: true },
+    include: { profile: true, astra: { select: { wantSubteam: true, program: true, teamGroup: true, teamTitle: true, photoAt: true } } },
     orderBy: { dateJoined: "desc" },
     take: 500,
   });
@@ -68,7 +69,7 @@ export default async function MembersPage({
           <p className="adm-kicker">Admin</p>
           <h1>Members</h1>
           <p className="adm-sub">
-            Approve new sign-ups and decide who&apos;s on the exec team.
+            Approve sign-ups and give each person their spot on the team. Approving with a group puts them on the Team page.
             {me.isSuperuser ? "" : " Only admins can change roles."}
           </p>
         </div>
@@ -99,7 +100,7 @@ export default async function MembersPage({
             return (
               <div key={u.id} className="adm-item adm-item--member">
                 <div className="adm-avatar" aria-hidden="true">
-                  {(fullName[0] || "?").toUpperCase()}
+                  {u.astra?.photoAt ? <img src={`/api/photos/member/${u.id}?v=${u.astra.photoAt.getTime()}`} alt="" /> : (fullName[0] || "?").toUpperCase()}
                 </div>
                 <div className="adm-item__main">
                   <div className="adm-item__top">
@@ -107,18 +108,36 @@ export default async function MembersPage({
                     {u.profile?.isBanned ? <span className="adm-pill adm-pill--declined">banned</span> : null}
                     {role !== "member" ? <span className={`adm-pill adm-pill--${role}`}>{role === "admin" ? "admin" : "exec"}</span> : null}
                     {self ? <span className="adm-dim">you</span> : null}
+                    {!u.isActive && u.astra?.wantSubteam ? <span className="adm-dim">wants {u.astra.wantSubteam}</span> : null}
+                    {u.isActive && u.astra?.teamGroup ? (
+                      <span className="adm-dim">
+                        {u.astra.teamTitle || "Member"} · {u.astra.teamGroup}
+                      </span>
+                    ) : null}
                   </div>
                   <p className="adm-item__title">{fullName}</p>
                   <p className="adm-dim">
-                    {u.email} · joined{" "}
+                    {u.email}
+                    {u.astra?.program ? ` · ${u.astra.program}` : ""} · joined{" "}
                     {new Intl.DateTimeFormat("en-CA", { month: "short", day: "numeric", year: "numeric" }).format(u.dateJoined)}
                   </p>
                 </div>
                 <div className="adm-item__actions">
                   {!u.isActive ? (
                     <>
-                      <form action={approveUser}>
+                      <form action={approveUser} className="adm-spot">
                         <input type="hidden" name="userId" value={u.id} />
+                        <select
+                          name="group"
+                          defaultValue={TEAM_GROUPS.includes(u.astra?.wantSubteam ?? "") ? u.astra!.wantSubteam : ""}
+                          aria-label={`Team group for ${fullName}`}
+                        >
+                          <option value="">No team spot yet</option>
+                          {TEAM_GROUPS.map((g) => (
+                            <option key={g}>{g}</option>
+                          ))}
+                        </select>
+                        <input name="title" defaultValue="Member" maxLength={80} aria-label={`Title for ${fullName}`} />
                         <button className="adm-btn adm-btn--sm adm-btn--ok" type="submit">
                           Approve
                         </button>

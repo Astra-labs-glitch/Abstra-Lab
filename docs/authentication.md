@@ -28,7 +28,7 @@ Dashboard layout uses `requireUser()`. Staff CMS and `POST /api/upload` use `req
 1. Anyone can register at `/accounts/signup` (also aliased via `/signup`).
 2. New accounts are **inactive** (`isActive: false`) unless the email is a master admin.
 3. Inactive users land on `/accounts/pending` after signup.
-4. Staff approve members at `/dashboard/staff` (`approveMember` server action).
+4. Staff approve members at `/dashboard/members` (`approveUser` server action), choosing their team group and title.
 5. Login accepts **username or email** + password (`authenticate` in `lib/accounts.ts`).
 6. Banned profiles (`MemberProfile.isBanned`) cannot authenticate.
 
