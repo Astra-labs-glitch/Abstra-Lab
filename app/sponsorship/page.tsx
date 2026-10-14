@@ -85,6 +85,32 @@ export default function SponsorshipPage() {
         </div>
       </section>
 
+      <section id="sponsorship-package" className="ax-wrap ax-split" style={{ paddingTop: 96 }}>
+        <p className="ax-label">{sponsorPackage.title}</p>
+        <div className="ax-split__main">
+          <h2 className="ax-display ax-display--md" style={{ marginBottom: 18 }}>
+            The full package
+          </h2>
+          <p className="ax-soft" style={{ marginTop: 0, maxWidth: 640 }}>
+            Our sponsor deck has the goals, the Pioneer vehicle overview, tier benefits, investment levels and next
+            steps. It&apos;s a 13 MB PDF.
+          </p>
+          <ol className="ax-soft" style={{ margin: "0 0 28px", paddingLeft: 22, display: "grid", gap: 4 }}>
+            {sponsorPackage.contents.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ol>
+          <div className="ax-actions">
+            <a className="ax-btn ax-btn--red" href={sponsorPackage.filename} download>
+              Download PDF
+            </a>
+            <a className="ax-btn ax-btn--ghost" href={sponsorPackage.filename} target="_blank" rel="noopener noreferrer">
+              Open in new tab
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 96 }}>
         <div className="ax-cols" style={{ alignItems: "center", gap: 48 }}>
           <figure style={{ margin: 0 }}>
