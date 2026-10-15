@@ -51,7 +51,7 @@ UPDATE auth_user SET is_staff = TRUE WHERE email = 'person@example.com';
 
 ## Master admin (`ADMIN_EMAILS`)
 
-Comma-separated emails (default includes `saipdhodi@gmail.com` when unset).
+Comma-separated emails (defaults to `astralabsengineering@gmail.com`, the club account, when unset).
 
 - Signup with a listed email → created **active + staff + superuser**
 - Existing account with a listed email → **promoted on next successful login**

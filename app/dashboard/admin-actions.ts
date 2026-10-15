@@ -409,3 +409,21 @@ export async function removeResume() {
   revalidatePath("/dashboard/account");
   redirect("/dashboard/account");
 }
+
+/** Exec and admins can set their own group and title (nobody approves them). */
+export async function setMyTeamSpot(formData: FormData) {
+  const me = await guardStaff();
+  const group = str(formData, "group", 60);
+  const title = str(formData, "title", 80);
+  const current = await prisma.astraProfile.findUnique({ where: { userId: me.id } });
+  let sortOrder = current?.sortOrder ?? 0;
+  if (!current || current.teamGroup !== group) {
+    const last = await prisma.astraProfile.aggregate({ where: { teamGroup: group }, _max: { sortOrder: true } });
+    sortOrder = (last._max.sortOrder ?? 0) + 1;
+  }
+  const data = { teamGroup: TEAM_GROUPS.includes(group) ? group : "", teamTitle: title, sortOrder };
+  await prisma.astraProfile.upsert({ where: { userId: me.id }, create: { userId: me.id, ...data }, update: data });
+  refreshTeam();
+  revalidatePath("/dashboard/account");
+  redirect("/dashboard/account?saved=1");
+}
