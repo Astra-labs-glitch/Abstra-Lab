@@ -83,7 +83,7 @@ export default async function SponsorshipPage() {
         <p className="ax-label">{sponsorPackage.title}</p>
         <div className="ax-split__main">
           <h2 className="ax-display ax-display--md" style={{ marginBottom: 18 }} data-edit-key="sponsor.the-full-package">{t("sponsor.the-full-package", "The full package")}</h2>
-          <p className="ax-soft" style={{ marginTop: 0, maxWidth: 640 }} data-edit-key="sponsor.our-sponsor-deck-has">{t("sponsor.our-sponsor-deck-has", "Our sponsor deck has the goals, the Pioneer vehicle overview, tier benefits, investment levels and next steps. It's a 13 MB PDF.")}</p>
+          <p className="ax-soft" style={{ marginTop: 0, maxWidth: 640 }} data-edit-key="sponsor.our-sponsor-deck-has">{t("sponsor.our-sponsor-deck-has", "Twelve pages: who we are, Pioneer and the payload, the 2026–27 season, where support goes, the tiers and sponsoring a picosat. It's a 5.4 MB PDF.")}</p>
           <ol className="ax-soft" style={{ margin: "0 0 28px", paddingLeft: 22, display: "grid", gap: 4 }}>
             {sponsorPackage.contents.map((item) => (
               <li key={item}>{item}</li>
