@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+
+import { runLaunch } from "./launch-sky";
 
 const ROCKET = "/images/astra/astra-rocket.png";
 
@@ -38,41 +40,30 @@ const ROWS = LAYERS.map((layer, r) => ({
 }));
 
 export function LaunchPad() {
-  const [flight, setFlight] = useState<{ x: number; y: number; up: boolean } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [onPad, setOnPad] = useState(true);
   const [cheering, setCheering] = useState(false);
-  const timers = useRef<number[]>([]);
-
-  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
 
   function launch(event: React.MouseEvent<HTMLButtonElement>) {
-    if (flight) return;
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      window.scrollTo({ top: 0 });
-      return;
-    }
-    const rect = event.currentTarget.getBoundingClientRect();
-    setFlight({ x: rect.left + rect.width / 2 - 18, y: rect.bottom - 62, up: false });
+    if (busy) return;
+    setBusy(true);
     setCheering(true);
-    timers.current.push(
-      window.setTimeout(() => {
-        setFlight((f) => (f ? { ...f, up: true } : f));
-        timers.current.push(window.setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 700));
-      }, 60),
-      window.setTimeout(() => setFlight(null), 2700),
-      window.setTimeout(() => setCheering(false), 3200),
-    );
+    runLaunch({
+      from: event.currentTarget.getBoundingClientRect(),
+      rocketSrc: ROCKET,
+      onLiftoff: () => setOnPad(false),
+      onDone: () => {
+        setOnPad(true);
+        setCheering(false);
+        setBusy(false);
+      },
+    });
   }
 
   const arms = cheering ? "M8 26 L3 4 M22 26 L27 4" : "M8 26 L8 26";
 
   return (
     <div className="ax-wrap ax-launch">
-      {cheering && (
-        <p className="ax-launch__liftoff" aria-hidden="true">
-          Liftoff!
-        </p>
-      )}
       <div className="ax-launch__ground">
         <div className={`ax-crowd${cheering ? " is-cheering" : ""}`} aria-hidden="true">
           {ROWS.map((row, r) => (
@@ -104,16 +95,10 @@ export function LaunchPad() {
               <rect x="4" y="100" width="76" height="6" rx="1" fill="#3A3A3A" />
               <rect x="30" y="94" width="24" height="6" fill="#262626" />
             </svg>
-            {!flight && <img className="ax-pad-btn__rocket" src={ROCKET} alt="" />}
+            {onPad && <img className="ax-pad-btn__rocket" src={ROCKET} alt="" />}
           </span>
         </button>
       </div>
-      {flight && (
-        <div className="ax-flying" aria-hidden="true" style={{ left: flight.x, top: flight.up ? -160 : flight.y }}>
-          <img src={ROCKET} alt="" />
-          <div className="ax-flame" />
-        </div>
-      )}
     </div>
   );
 }
