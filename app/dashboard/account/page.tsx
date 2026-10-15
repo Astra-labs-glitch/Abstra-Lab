@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 
 import { requireUser } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
-import { removeResume, saveAccount, uploadResume } from "../admin-actions";
+import { TEAM_GROUPS, isPageLive } from "../../../lib/site-text";
+import { removeResume, saveAccount, setMyTeamSpot, uploadResume } from "../admin-actions";
 import { AccountPhoto } from "../uploads";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,8 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
       resumeSize: true,
     },
   });
+  const isStaff = me.isStaff || me.isSuperuser;
+  const teamLive = await isPageLive("team");
   const last = me.lastName === "-" ? "" : me.lastName;
   const fullName = [me.firstName, last].filter(Boolean).join(" ") || me.username;
   const spot = p?.teamGroup ? [p.teamTitle || "Member", p.teamGroup].join(" · ") : "";
@@ -42,7 +45,9 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
           <p className="adm-sub">
             {spot
               ? `${spot}. This is what shows on your Team page card.`
-              : `No team spot yet${p?.wantSubteam ? ` (you asked for ${p.wantSubteam})` : ""}. An admin sets it on the Members page.`}
+              : isStaff
+                ? "You don't have a team spot yet, so you're not on the Team page. Pick your group and title below."
+                : `No team spot yet${p?.wantSubteam ? ` (you asked for ${p.wantSubteam})` : ""}. An admin sets it on the Members page.`}
           </p>
         </div>
         {spot ? (
@@ -81,11 +86,19 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
                 <span>Program</span>
                 <input name="program" maxLength={120} defaultValue={p?.program} placeholder="e.g. Electronics Engineering Technology" />
               </label>
-              <label className="adm-field">
-                <span>Team role</span>
-                <input value={spot || "Not set yet"} disabled readOnly />
-                <small>Set by an admin.</small>
-              </label>
+              {isStaff ? (
+                <div className="adm-field">
+                  <span>Team role</span>
+                  <input value={spot || "Not set yet"} disabled readOnly />
+                  <small>Change it in the box below.</small>
+                </div>
+              ) : (
+                <label className="adm-field">
+                  <span>Team role</span>
+                  <input value={spot || "Not set yet"} disabled readOnly />
+                  <small>Set by an admin.</small>
+                </label>
+              )}
             </div>
             <label className="adm-field">
               <span>Short bio</span>
@@ -111,6 +124,29 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
               </button>
             </div>
           </form>
+
+          {isStaff ? (
+            <section className="adm-card">
+              <h2 className="adm-card__h">Your spot on the Team page</h2>
+              {!teamLive ? (
+                <p className="adm-dim" style={{ marginBottom: 16 }}>
+                  The Team page is under construction right now. Turn it on in <a href="/dashboard/pages">Pages</a> when you&apos;re ready.
+                </p>
+              ) : null}
+              <form action={setMyTeamSpot} className="adm-spot" style={{ justifyContent: "flex-start" }}>
+                <select name="group" defaultValue={p?.teamGroup ?? ""} aria-label="Your group">
+                  <option value="">Not on the Team page</option>
+                  {TEAM_GROUPS.map((g) => (
+                    <option key={g}>{g}</option>
+                  ))}
+                </select>
+                <input name="title" defaultValue={p?.teamTitle ?? ""} placeholder="e.g. President" maxLength={80} aria-label="Your title" />
+                <button className="adm-btn adm-btn--sm adm-btn--red" type="submit">
+                  Save spot
+                </button>
+              </form>
+            </section>
+          ) : null}
 
           <section className="adm-card">
             <h2 className="adm-card__h">Résumé</h2>

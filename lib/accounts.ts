@@ -4,7 +4,7 @@ import { prisma } from "./prisma";
 // Master accounts: any account registered with one of these emails is
 // created active + staff + superuser, and an existing account is promoted on
 // login. Override with a comma-separated ADMIN_EMAILS env var.
-const DEFAULT_ADMIN_EMAILS = ["saipdhodi@gmail.com"];
+const DEFAULT_ADMIN_EMAILS = ["astralabsengineering@gmail.com"];
 
 export function adminEmails() {
   const raw = process.env.ADMIN_EMAILS;
