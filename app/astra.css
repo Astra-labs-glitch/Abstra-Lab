@@ -684,3 +684,5 @@ body.ax-editing .ax-launch, body.ax-editing .ax-pad-btn { pointer-events: none; 
   .adm-item--page { grid-template-columns: 1fr; }
   .adm-thumb { display: none; }
 }
+.ax .ax-chip--quiet { border-color: transparent; color: var(--a-dim); font-weight: 600; }
+.ax .ax-chip--quiet:hover { border-color: transparent; color: var(--a-pink); }
