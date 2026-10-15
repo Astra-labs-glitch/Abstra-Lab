@@ -219,7 +219,7 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
           </p>
         </div>
         <p className="ax-footer__word" aria-hidden="true">
-          Astra Labs
+          Astra
         </p>
       </footer>
 

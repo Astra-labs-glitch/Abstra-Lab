@@ -290,7 +290,8 @@ body {
 .ax-footer__word {
   margin: 24px 0 -0.12em;
   text-align: center;
-  font-size: clamp(64px, 15vw, 230px);
+  font-size: clamp(64px, 20.5vw, 340px);
+  overflow: hidden;
   line-height: 1;
   font-weight: 800;
   font-stretch: 125%;
