@@ -85,11 +85,11 @@ export default async function JobsPage() {
 
       <section className="ax-wrap" style={{ paddingBottom: 96 }}>
         <div className="ax-steps">
-          {steps.map(([n, title, text]) => (
+          {steps.map(([n, title, text], i) => (
             <div key={n}>
               <p className="ax-steps__num">{n}</p>
-              <p className="ax-steps__title">{title}</p>
-              <p className="ax-steps__text">{text}</p>
+              <p className="ax-steps__title" data-edit-key={`jobs.step.${i}.title`}>{t(`jobs.step.${i}.title`, title)}</p>
+              <p className="ax-steps__text" data-edit-key={`jobs.step.${i}.text`}>{t(`jobs.step.${i}.text`, text)}</p>
             </div>
           ))}
         </div>
@@ -100,12 +100,14 @@ export default async function JobsPage() {
           <h2 className="ax-display ax-display--md" style={{ marginBottom: 10 }} data-edit-key="jobs.what-the-subteams-do">{t("jobs.what-the-subteams-do", "What the subteams do")}</h2>
           <p className="ax-soft" style={{ marginTop: 0, marginBottom: 40, maxWidth: 700 }} data-edit-key="jobs.heres-what-youd-actually">{t("jobs.heres-what-youd-actually", "Here's what you'd actually be doing this year. You can switch later, and plenty of people help on two.")}</p>
           <div>
-            {subteams.map(([name, tasks]) => (
+            {subteams.map(([name, tasks], i) => (
               <div key={name} className="ax-subteam">
-                <h3>{name}</h3>
+                <h3 data-edit-key={`jobs.subteam.${i}.name`}>{t(`jobs.subteam.${i}.name`, name)}</h3>
                 <ul>
-                  {tasks.map((t) => (
-                    <li key={t}>{t}</li>
+                  {tasks.map((task, j) => (
+                    <li key={task} data-edit-key={`jobs.subteam.${i}.task.${j}`}>
+                      {t(`jobs.subteam.${i}.task.${j}`, task)}
+                    </li>
                   ))}
                 </ul>
               </div>

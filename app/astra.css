@@ -318,7 +318,7 @@ body {
 .ax-crowd { flex: 1 1 auto; min-width: 0; height: 58px; position: relative; overflow: hidden; }
 .ax-crowd__row { position: absolute; right: 0; display: flex; align-items: flex-end; }
 .ax-crowd__row svg { display: block; flex: 0 0 auto; }
-.ax-crowd.is-cheering .ax-crowd__person { animation: ax-hop 0.32s ease-in-out 8 alternate; }
+.ax-crowd.is-cheering .ax-crowd__person { animation: ax-hop 0.32s ease-in-out infinite alternate; }
 .ax-pad-btn {
   flex: 0 0 auto;
   font: inherit;
@@ -686,3 +686,25 @@ body.ax-editing .ax-launch, body.ax-editing .ax-pad-btn { pointer-events: none; 
 }
 .ax .ax-chip--quiet { border-color: transparent; color: var(--a-dim); font-weight: 600; }
 .ax .ax-chip--quiet:hover { border-color: transparent; color: var(--a-pink); }
+
+/* Installed as an app on a phone: keep the header and footer clear of the notch and home bar. */
+.ax-header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+.ax-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* ── Footer launch: countdown, clouds, birds, planes ── */
+.ax-sky { position: fixed; inset: 0; z-index: 80; pointer-events: none; overflow: hidden; }
+.ax-count { position: absolute; left: 50%; top: 34%; margin: 0; font-size: clamp(90px, 22vw, 240px); line-height: 1; font-weight: 800; font-stretch: 125%; color: #fff; text-shadow: 0 0 40px rgba(214, 46, 46, 0.6); animation: ax-tick 0.7s ease-out forwards; }
+@keyframes ax-tick { 0% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); } 25% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } }
+.ax-liftoff { position: absolute; left: 50%; top: 38%; margin: 0; font-size: clamp(40px, 9vw, 96px); font-weight: 800; font-stretch: 125%; text-transform: uppercase; color: var(--a-pink); white-space: nowrap; animation: ax-liftoff 1.6s ease forwards; }
+@keyframes ax-liftoff { 0% { opacity: 0; transform: translate(-50%, 20px) scale(0.9); } 20% { opacity: 1; transform: translate(-50%, 0) scale(1); } 80% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, 0); } }
+.ax-cloud { position: absolute; opacity: 0; transform: scale(0.4); transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.6s ease; will-change: transform, opacity; }
+.ax-cloud svg, .ax-bird svg, .ax-plane svg { display: block; }
+.ax-cloud svg { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)); }
+.ax-bird, .ax-plane { position: absolute; will-change: transform; }
+.ax-bird svg { animation: ax-flap 0.28s ease-in-out infinite alternate; transform-origin: center; }
+@keyframes ax-flap { to { transform: scaleY(0.35); } }
+.ax-blink { animation: ax-blink 0.9s steps(1) infinite; }
+@keyframes ax-blink { 50% { opacity: 0; } }
+.ax-rocketfly { position: absolute; left: 0; top: 0; width: 32px; will-change: transform; }
+.ax-rocketfly img { width: 32px; height: auto; display: block; }
+.ax-smoke { position: absolute; border-radius: 50%; background: rgba(230, 230, 230, 0.5); filter: blur(2px); transition: transform 1.6s ease-out, opacity 1.6s ease-out; }

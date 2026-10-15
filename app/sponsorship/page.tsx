@@ -46,10 +46,10 @@ export default async function SponsorshipPage() {
           <h2 className="ax-display ax-display--lg" style={{ marginBottom: 18 }} data-edit-key="sponsor.into-hardware">{t("sponsor.into-hardware", "Into hardware")}</h2>
           <p className="ax-soft" style={{ marginTop: 0, marginBottom: 32, maxWidth: 620 }} data-edit-key="sponsor.most-of-our-school">{t("sponsor.most-of-our-school", "Most of our school funding already goes to the rockets themselves. Sponsors close the gap.")}</p>
           <div style={{ borderTop: "1px solid var(--a-line)" }}>
-            {sponsorFunding.map(([title, text]) => (
+            {sponsorFunding.map(([title, text], i) => (
               <div key={title} className="ax-money-row">
-                <h3>{title}</h3>
-                <p>{text}</p>
+                <h3 data-edit-key={`sponsor.funding.${i}.title`}>{t(`sponsor.funding.${i}.title`, title)}</h3>
+                <p data-edit-key={`sponsor.funding.${i}.text`}>{t(`sponsor.funding.${i}.text`, text)}</p>
               </div>
             ))}
           </div>
@@ -61,15 +61,17 @@ export default async function SponsorshipPage() {
           <p className="ax-label" data-edit-key="sponsor.what-you-get">{t("sponsor.what-you-get", "What you get")}</p>
           <h2 className="ax-display ax-display--lg" style={{ marginBottom: 40 }} data-edit-key="sponsor.sponsor-tiers">{t("sponsor.sponsor-tiers", "Sponsor tiers")}</h2>
           <div className="ax-tiers">
-            {sponsorTiers.map(([name, amount, perks]) => (
+            {sponsorTiers.map(([name, amount, perks], i) => (
               <div key={name}>
-                <h3>{name}</h3>
-                <p className="ax-pink" style={{ margin: "0 0 20px", fontWeight: 700 }}>
-                  {amount}
+                <h3 data-edit-key={`sponsor.tier.${i}.name`}>{t(`sponsor.tier.${i}.name`, name)}</h3>
+                <p className="ax-pink" style={{ margin: "0 0 20px", fontWeight: 700 }} data-edit-key={`sponsor.tier.${i}.amount`}>
+                  {t(`sponsor.tier.${i}.amount`, amount)}
                 </p>
                 <ul>
-                  {perks.map((perk) => (
-                    <li key={perk}>{perk}</li>
+                  {perks.map((perk, j) => (
+                    <li key={perk} data-edit-key={`sponsor.tier.${i}.perk.${j}`}>
+                      {t(`sponsor.tier.${i}.perk.${j}`, perk)}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -80,13 +82,15 @@ export default async function SponsorshipPage() {
       </section>
 
       <section id="sponsorship-package" className="ax-wrap ax-split" style={{ paddingTop: 96 }}>
-        <p className="ax-label">{sponsorPackage.title}</p>
+        <p className="ax-label" data-edit-key="sponsor.package.label">{t("sponsor.package.label", sponsorPackage.title)}</p>
         <div className="ax-split__main">
           <h2 className="ax-display ax-display--md" style={{ marginBottom: 18 }} data-edit-key="sponsor.the-full-package">{t("sponsor.the-full-package", "The full package")}</h2>
           <p className="ax-soft" style={{ marginTop: 0, maxWidth: 640 }} data-edit-key="sponsor.our-sponsor-deck-has">{t("sponsor.our-sponsor-deck-has", "Twelve pages: who we are, Pioneer and the payload, the 2026–27 season, where support goes, the tiers and sponsoring a picosat. It's a 5.4 MB PDF.")}</p>
           <ol className="ax-soft" style={{ margin: "0 0 28px", paddingLeft: 22, display: "grid", gap: 4 }}>
-            {sponsorPackage.contents.map((item) => (
-              <li key={item}>{item}</li>
+            {sponsorPackage.contents.map((item, i) => (
+              <li key={item} data-edit-key={`sponsor.package.item.${i}`}>
+                {t(`sponsor.package.item.${i}`, item)}
+              </li>
             ))}
           </ol>
           <div className="ax-actions">

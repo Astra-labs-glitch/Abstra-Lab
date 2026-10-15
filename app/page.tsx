@@ -166,11 +166,11 @@ export default async function Home() {
         <p className="ax-label" data-edit-key="home.launch-canada-aug-1522">{t("home.launch-canada-aug-1522", "Launch Canada · Aug 15–22, 2026")}</p>
         <h2 className="ax-display ax-display--lg" style={{ marginBottom: 56 }} data-edit-key="home.a-week-in-timmins">{t("home.a-week-in-timmins", "A week in Timmins")}</h2>
         <div className="ax-diary">
-          {diary.map(([date, file, alt, text]) => (
+          {diary.map(([date, file, alt, text], i) => (
             <article key={date}>
-              <p>{date}</p>
+              <p data-edit-key={`home.diary.${i}.date`}>{t(`home.diary.${i}.date`, date)}</p>
               <img src={`${IMG}/${file}`} alt={alt} loading="lazy" />
-              <p>{text}</p>
+              <p data-edit-key={`home.diary.${i}.text`}>{t(`home.diary.${i}.text`, text)}</p>
             </article>
           ))}
         </div>
