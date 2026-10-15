@@ -686,3 +686,7 @@ body.ax-editing .ax-launch, body.ax-editing .ax-pad-btn { pointer-events: none; 
 }
 .ax .ax-chip--quiet { border-color: transparent; color: var(--a-dim); font-weight: 600; }
 .ax .ax-chip--quiet:hover { border-color: transparent; color: var(--a-pink); }
+
+/* Installed as an app on a phone: keep the header and footer clear of the notch and home bar. */
+.ax-header { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+.ax-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }

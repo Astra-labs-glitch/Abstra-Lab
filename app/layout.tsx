@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./astra.css";
 import { SiteShell } from "./site-shell";
@@ -26,6 +26,15 @@ export const metadata: Metadata = {
       "Student rocketry at Seneca Polytechnic. Pioneer went to Launch Canada 2026; now we're refitting it and building our 2027 rocket.",
     images: ["/images/astra/hero-pioneer-range.jpg"],
   },
+  appleWebApp: { capable: true, title: "Astra Labs", statusBarStyle: "black-translucent" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#000000",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
