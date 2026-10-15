@@ -180,6 +180,10 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
                     My account
                   </Link>
                 )}
+                {/* Plain link, not <Link>: logging out must hit the server, never a prefetch. */}
+                <a className="ax-chip ax-chip--quiet" href="/accounts/logout">
+                  Log out
+                </a>
               </div>
             ) : null}
           </div>
