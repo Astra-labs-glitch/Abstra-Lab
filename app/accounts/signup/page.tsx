@@ -20,8 +20,9 @@ async function signupAction(formData: FormData) {
   if (!hasDatabase()) redirect("/accounts/signup?error=db");
 
   const ip = clientIp((await headers()).get("x-forwarded-for"));
-  if (!rateLimit(`signup:${ip}`, 5, 15 * 60_000).ok) redirect("/accounts/signup?error=throttled");
+  if (!(await rateLimit(`signup:${ip}`, 5, 15 * 60_000)).ok) redirect("/accounts/signup?error=throttled");
 
+  if (formData.get("consent") !== "on") redirect("/accounts/signup?error=consent");
   const email = String(formData.get("email") || "").trim().toLowerCase();
   const want = String(formData.get("subteam") || "");
   const result = await registerUser({
@@ -51,6 +52,7 @@ async function signupAction(formData: FormData) {
 }
 
 const ERRORS: Record<string, string> = {
+  consent: "Tick the box to agree to the terms and privacy policy.",
   throttled: "Too many attempts. Please wait a few minutes and try again.",
   db: "Sign-up is unavailable right now because the site can't reach its database. Please try again later.",
   invalid: "Fill in every field and use a password of at least 8 characters.",
@@ -109,6 +111,14 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
           <span>Password</span>
           <input name="password" type="password" required minLength={8} autoComplete="new-password" />
           <small>At least 8 characters.</small>
+        </label>
+        <label className="ax-consent">
+          <input type="checkbox" name="consent" required />
+          <span>
+            I agree to the <Link href="/terms">terms</Link> and the <Link href="/privacy">privacy policy</Link>. Your name,
+            program and photo can appear on the public Team page once an exec approves you; you can hide your profile
+            any time in My account.
+          </span>
         </label>
         <div className="adm-form__bar">
           <button className="adm-btn adm-btn--red" type="submit">

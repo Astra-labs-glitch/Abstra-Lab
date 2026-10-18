@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
+import { audit } from "../../../lib/audit";
 import { requireStaff } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
 import { TEXT_KEY } from "../../../lib/site-text";
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
       });
     }
   }
+  if (entries.length) await audit(staff.username, "Edited site text", entries.map(([k]) => k).join(", ").slice(0, 300));
   revalidatePath("/", "layout");
   return NextResponse.json({ saved: entries.length });
 }

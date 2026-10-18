@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   if (!googleConfigured()) return back(request, "/accounts/login?error=google_off");
 
   const ip = clientIp(request.headers.get("x-forwarded-for"));
-  if (!rateLimit(`google:${ip}`, 10, 5 * 60_000).ok) return back(request, "/accounts/login?error=throttled");
+  if (!(await rateLimit(`google:${ip}`, 10, 5 * 60_000)).ok) return back(request, "/accounts/login?error=throttled");
 
   const code = request.nextUrl.searchParams.get("code");
   const state = request.nextUrl.searchParams.get("state");

@@ -5,7 +5,7 @@ import { clientIp, rateLimit } from "../../../../lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   const ip = clientIp(request.headers.get("x-forwarded-for"));
-  const limit = rateLimit(`signup:${ip}`, 5, 15 * 60_000);
+  const limit = await rateLimit(`signup:${ip}`, 5, 15 * 60_000);
   if (!limit.ok) {
     return NextResponse.json(
       { ok: false, error: "rate_limited" },

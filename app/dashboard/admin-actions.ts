@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireStaff, requireUser } from "../../lib/auth";
+import { audit } from "../../lib/audit";
 import { APPLICATION_STATUSES, ROLE_STATUSES } from "../../lib/jobs";
 import { prisma } from "../../lib/prisma";
 import { EVENT_TYPES, SITE_PAGES, TEAM_GROUPS } from "../../lib/site-text";
@@ -51,31 +52,34 @@ function roleData(formData: FormData) {
 }
 
 export async function saveRole(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = Number(formData.get("id")) || 0;
   const data = roleData(formData);
   if (!data.title) redirect(id ? `/dashboard/jobs/${id}?error=title` : "/dashboard/jobs/new?error=title");
   if (id) await prisma.jobRole.update({ where: { id }, data });
   else await prisma.jobRole.create({ data });
+  await audit(me.username, id ? "Edited job role" : "Posted job role", data.title);
   refreshJobs();
   redirect("/dashboard/jobs?saved=1");
 }
 
 export async function setRoleStatus(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = Number(formData.get("id"));
   const status = str(formData, "status");
   if (!id || !roleStatuses.has(status)) return;
-  await prisma.jobRole.update({ where: { id }, data: { status } });
+  const role = await prisma.jobRole.update({ where: { id }, data: { status } });
+  await audit(me.username, `Set job role to ${status}`, role.title);
   refreshJobs();
 }
 
 export async function deleteRole(formData: FormData) {
-  await guardAdmin();
+  const me = await guardAdmin();
   const id = Number(formData.get("id"));
   if (!id) return;
   // Applications (and their résumés) are deleted with the role.
-  await prisma.jobRole.delete({ where: { id } });
+  const role = await prisma.jobRole.delete({ where: { id } });
+  await audit(me.username, "Deleted job role and its applications", role.title);
   refreshJobs();
   redirect("/dashboard/jobs?deleted=1");
 }
@@ -83,26 +87,28 @@ export async function deleteRole(formData: FormData) {
 /* ── Applications ── */
 
 export async function updateApplication(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = Number(formData.get("id"));
   const status = str(formData, "status");
   if (!id) return;
-  await prisma.jobApplication.update({
+  const app = await prisma.jobApplication.update({
     where: { id },
     data: {
       ...(appStatuses.has(status) ? { status } : {}),
       notes: str(formData, "notes", 5000),
     },
   });
+  await audit(me.username, `Updated application (${app.status})`, app.name);
   refreshJobs();
   revalidatePath(`/dashboard/applications/${id}`);
 }
 
 export async function deleteApplication(formData: FormData) {
-  await guardAdmin();
+  const me = await guardAdmin();
   const id = Number(formData.get("id"));
   if (!id) return;
-  await prisma.jobApplication.delete({ where: { id } });
+  const app = await prisma.jobApplication.delete({ where: { id }, select: { name: true } });
+  await audit(me.username, "Deleted application", app.name);
   refreshJobs();
   redirect("/dashboard/applications?deleted=1");
 }
@@ -120,12 +126,13 @@ function refreshTeam() {
 }
 
 export async function approveUser(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = Number(formData.get("userId"));
   if (!id) return;
   const group = str(formData, "group", 60);
   const title = str(formData, "title", 80) || "Member";
-  await prisma.user.update({ where: { id }, data: { isActive: true } });
+  const user = await prisma.user.update({ where: { id }, data: { isActive: true } });
+  await audit(me.username, "Approved member", `${user.email}${group ? ` → ${group}` : ""}`);
   if (group) {
     const last = await prisma.astraProfile.aggregate({ where: { teamGroup: group }, _max: { sortOrder: true } });
     const spot = { teamGroup: group, teamTitle: title, sortOrder: (last._max.sortOrder ?? 0) + 1 };
@@ -138,10 +145,11 @@ export async function approveUser(formData: FormData) {
 // Turns down a pending sign-up by removing the account. Only works on accounts
 // that were never approved, so it can't wipe out a real member.
 export async function declineUser(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = Number(formData.get("userId"));
   const user = id ? await prisma.user.findUnique({ where: { id } }) : null;
   if (!user || user.isActive || user.isStaff || user.isSuperuser) return;
+  await audit(me.username, "Declined sign-up", user.email);
   try {
     await prisma.$transaction([
       prisma.memberProfile.deleteMany({ where: { userId: id } }),
@@ -161,6 +169,7 @@ export async function setUserActive(formData: FormData) {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user || (user.isSuperuser && !me.isSuperuser)) return;
   await prisma.user.update({ where: { id }, data: { isActive: active } });
+  await audit(me.username, active ? "Reactivated account" : "Deactivated account", user.email);
   refreshMembers();
 }
 
@@ -169,7 +178,7 @@ export async function setUserRole(formData: FormData) {
   const id = Number(formData.get("userId"));
   const role = str(formData, "role");
   if (!id || id === me.id || !["member", "staff", "admin"].includes(role)) return;
-  await prisma.user.update({
+  const user = await prisma.user.update({
     where: { id },
     data: {
       isStaff: role !== "member",
@@ -177,6 +186,7 @@ export async function setUserRole(formData: FormData) {
       ...(role !== "member" ? { isActive: true } : {}),
     },
   });
+  await audit(me.username, `Changed role to ${role}`, user.email);
   refreshMembers();
 }
 
@@ -222,6 +232,7 @@ export async function saveEvent(formData: FormData): Promise<{ ok: boolean; id?:
   if (rawId) {
     const id = BigInt(rawId);
     await prisma.clubEvent.update({ where: { id }, data: { ...data, updatedAt: new Date() } });
+    await audit(me.username, "Edited event", data.title);
     refreshEvents(id);
     return { ok: true, id: id.toString() };
   }
@@ -230,6 +241,7 @@ export async function saveEvent(formData: FormData): Promise<{ ok: boolean; id?:
   const created = await prisma.clubEvent.create({
     data: { ...data, slug, authorId: me.id, createdAt: new Date(), updatedAt: new Date() },
   });
+  await audit(me.username, "Posted event", data.title);
   refreshEvents(created.id);
   return { ok: true, id: created.id.toString() };
 }
@@ -268,18 +280,20 @@ export async function makeCoverPhoto(formData: FormData) {
 }
 
 export async function setEventPublished(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const id = BigInt(str(formData, "id", 30) || "0");
   if (!id) return;
-  await prisma.clubEvent.update({ where: { id }, data: { published: formData.get("published") === "1", updatedAt: new Date() } });
+  const ev = await prisma.clubEvent.update({ where: { id }, data: { published: formData.get("published") === "1", updatedAt: new Date() } });
+  await audit(me.username, ev.published ? "Published event" : "Unpublished event", ev.title);
   refreshEvents(id);
 }
 
 export async function deleteEvent(formData: FormData) {
-  await guardAdmin();
+  const me = await guardAdmin();
   const id = BigInt(str(formData, "id", 30) || "0");
   if (!id) return;
-  await prisma.clubEvent.delete({ where: { id } });
+  const ev = await prisma.clubEvent.delete({ where: { id } });
+  await audit(me.username, "Deleted event", ev.title);
   refreshEvents();
   redirect("/dashboard/events?deleted=1");
 }
@@ -307,7 +321,7 @@ export async function moveTeamMember(formData: FormData) {
 }
 
 export async function updateTeamSpot(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const userId = Number(formData.get("userId"));
   if (!userId) return;
   const group = str(formData, "group", 60);
@@ -321,18 +335,20 @@ export async function updateTeamSpot(formData: FormData) {
   }
   const data = { teamGroup: TEAM_GROUPS.includes(group) || group === "" ? group : current?.teamGroup ?? "", teamTitle: title, showOnTeam: show, sortOrder };
   await prisma.astraProfile.upsert({ where: { userId }, create: { userId, ...data }, update: data });
+  await audit(me.username, "Changed Team page spot", `user #${userId}: ${data.teamGroup || "hidden"} ${title}`.trim());
   refreshTeam();
 }
 
 /* ── Page switches ── */
 
 export async function setPageLive(formData: FormData) {
-  await guardStaff();
+  const me = await guardStaff();
   const key = str(formData, "key", 20);
   const page = SITE_PAGES.find((p) => p.key === key);
   if (!page) return;
   const live = formData.get("live") === "1";
   await prisma.sitePage.upsert({ where: { key }, create: { key, live }, update: { live } });
+  await audit(me.username, live ? "Made page live" : "Put page under construction", page.path);
   revalidatePath(page.path);
   revalidatePath("/dashboard/pages");
   revalidatePath("/dashboard");

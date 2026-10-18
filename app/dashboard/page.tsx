@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { purgeOldApplications, recentAudit } from "../../lib/audit";
 import { requireUser } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { pageStatus } from "../../lib/site-text";
@@ -20,7 +21,8 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
   const { error } = await searchParams;
   const first = user.firstName && user.firstName !== "-" ? user.firstName : user.username;
 
-  const [newApps, pendingCount, eventsLive, status, latestApps, pendingUsers] = await Promise.all([
+  await purgeOldApplications();
+  const [newApps, pendingCount, eventsLive, status, latestApps, pendingUsers, log] = await Promise.all([
     prisma.jobApplication.count({ where: { status: "new" } }),
     prisma.user.count({ where: { isActive: false } }),
     prisma.clubEvent.count({ where: { published: true } }),
@@ -36,6 +38,7 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
       take: 5,
       select: { id: true, firstName: true, lastName: true, email: true, astra: { select: { wantSubteam: true } } },
     }),
+    recentAudit(12),
   ]);
   const offPages = Object.values(status).filter((live) => !live).length;
 
@@ -121,6 +124,32 @@ export default async function DashboardHomePage({ searchParams }: { searchParams
           )}
         </section>
       </div>
+
+      <section className="adm-card" style={{ marginTop: 24 }}>
+        <div className="adm-card__head">
+          <h2>Recent admin activity</h2>
+        </div>
+        {log.length ? (
+          <ul className="adm-rows">
+            {log.map((l) => (
+              <li key={l.id}>
+                <span>
+                  <strong>{l.action}</strong>
+                  <span>
+                    {l.target ? `${l.target} · ` : ""}
+                    {l.actor}
+                  </span>
+                </span>
+                <time className="adm-dim" dateTime={l.at.toISOString()}>
+                  {l.at.toLocaleString("en-CA", { timeZone: "America/Toronto", dateStyle: "medium", timeStyle: "short" })}
+                </time>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="adm-empty">Changes made in the admin show up here: who did what, and when.</p>
+        )}
+      </section>
     </>
   );
 }

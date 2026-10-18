@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { purgeOldApplications } from "../../../lib/audit";
 import { requireStaff } from "../../../lib/auth";
 import { APPLICATION_STATUSES } from "../../../lib/jobs";
 import { prisma } from "../../../lib/prisma";
@@ -16,6 +17,7 @@ export default async function ApplicationsPage({
 }) {
   if (!(await requireStaff())) redirect("/dashboard");
   const { role, status, deleted } = await searchParams;
+  await purgeOldApplications();
   const roleId = Number(role) || undefined;
   const statusOk = APPLICATION_STATUSES.some(([v]) => v === status) ? status : undefined;
 
@@ -54,7 +56,7 @@ export default async function ApplicationsPage({
         <div>
           <p className="adm-kicker">Recruiting</p>
           <h1>Applications</h1>
-          <p className="adm-sub">Résumés are private. Only signed-in staff can open them.</p>
+          <p className="adm-sub">Résumés are private. Only signed-in staff can open them. Applications are deleted automatically after 12 months.</p>
         </div>
       </header>
 

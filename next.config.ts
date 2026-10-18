@@ -1,6 +1,27 @@
 import type { NextConfig } from "next";
 
+// Content Security Policy: the browser only loads scripts, styles, fonts and images
+// from this site. Next.js needs inline scripts/styles. Preview deploys also allow
+// Vercel's comment toolbar (vercel.live); production doesn't.
+const preview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production";
+const vercelLive = preview ? " https://vercel.live https://*.pusher.com wss://*.pusher.com" : "";
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${preview ? " https://vercel.live" : ""}`,
+  `style-src 'self' 'unsafe-inline'${preview ? " https://vercel.live" : ""}`,
+  `img-src 'self' data: blob:${preview ? " https://vercel.live https://vercel.com" : ""}`,
+  `font-src 'self'${preview ? " https://vercel.live https://assets.vercel.com" : ""}`,
+  `connect-src 'self'${vercelLive}`,
+  `frame-src 'self'${preview ? " https://vercel.live" : ""}`,
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const securityHeaders = [
+  { key: "Content-Security-Policy", value: csp },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
