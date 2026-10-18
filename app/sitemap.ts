@@ -9,6 +9,8 @@ const routes = [
   ["/events", 0.5],
   ["/posts", 0.5],
   ["/discord", 0.4],
+  ["/privacy", 0.2],
+  ["/terms", 0.2],
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

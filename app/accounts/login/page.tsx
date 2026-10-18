@@ -19,7 +19,7 @@ async function loginAction(formData: FormData) {
   if (!hasDatabase()) redirect("/accounts/login?error=db");
 
   const ip = clientIp((await headers()).get("x-forwarded-for"));
-  if (!rateLimit(`login:${ip}`, 10, 5 * 60_000).ok) redirect("/accounts/login?error=throttled");
+  if (!(await rateLimit(`login:${ip}`, 10, 5 * 60_000)).ok) redirect("/accounts/login?error=throttled");
 
   const user = await authenticate(
     String(formData.get("login") || "").trim(),

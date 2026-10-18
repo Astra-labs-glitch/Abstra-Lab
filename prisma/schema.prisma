@@ -245,3 +245,25 @@ model SitePage {
 
   @@map("astra_site_page")
 }
+
+// Oct 2026 security pass: shared rate limits (work across serverless instances) and an admin audit log.
+
+model RateLimit {
+  key     String   @id
+  count   Int      @default(0)
+  resetAt DateTime @map("reset_at")
+
+  @@index([resetAt])
+  @@map("astra_rate_limit")
+}
+
+model AuditLog {
+  id     Int      @id @default(autoincrement())
+  actor  String
+  action String
+  target String   @default("")
+  at     DateTime @default(now())
+
+  @@index([at])
+  @@map("astra_audit")
+}

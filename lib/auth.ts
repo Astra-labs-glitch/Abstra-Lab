@@ -55,7 +55,7 @@ export async function setSession(user: { id: number; isStaff: boolean; isSuperus
   const payload: SessionPayload = {
     userId: user.id,
     isStaff: user.isStaff || user.isSuperuser,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 14,
+    exp: Math.floor(Date.now() / 1000) + sessionSeconds(user.isStaff || user.isSuperuser),
   };
   const value = sign(payload);
   (await cookies()).set(cookieName, value, {
@@ -63,7 +63,7 @@ export async function setSession(user: { id: number; isStaff: boolean; isSuperus
     sameSite: "lax",
     secure: secureCookie(),
     path: "/",
-    maxAge: 60 * 60 * 24 * 14,
+    maxAge: sessionSeconds(user.isStaff || user.isSuperuser),
   });
 }
 
@@ -75,10 +75,26 @@ async function readSession() {
   const value = (await cookies()).get(cookieName)?.value;
   if (!value) return null;
   const [body, signature] = value.split(".");
-  if (!body || !signature || signature !== hmac(body)) return null;
-  const payload = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as SessionPayload;
-  if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-  return payload;
+  if (!body || !signature || !sameSignature(signature, hmac(body))) return null;
+  try {
+    const payload = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as SessionPayload;
+    if (typeof payload.userId !== "number" || payload.exp < Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+// Admins and execs get a 7-day login; members keep 14 days.
+function sessionSeconds(isStaff: boolean) {
+  return 60 * 60 * 24 * (isStaff ? 7 : 14);
+}
+
+// Constant-time comparison, so response timing can't leak how much of a forged signature was right.
+function sameSignature(a: string, b: string) {
+  const left = Buffer.from(a);
+  const right = Buffer.from(b);
+  return left.length === right.length && timingSafeEqual(left, right);
 }
 
 function sign(payload: SessionPayload) {

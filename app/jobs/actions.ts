@@ -30,7 +30,7 @@ export async function applyForRole(_prev: ApplyState, formData: FormData): Promi
   if (!hasDatabase()) return { ok: false, message: "Applications are offline right now. Please email us instead." };
 
   const ip = clientIp((await headers()).get("x-forwarded-for"));
-  if (!rateLimit(`apply:${ip}`, 5, 60 * 60_000).ok) {
+  if (!(await rateLimit(`apply:${ip}`, 5, 60 * 60_000)).ok) {
     return { ok: false, message: "Too many applications from this connection. Try again in an hour." };
   }
 
@@ -44,6 +44,7 @@ export async function applyForRole(_prev: ApplyState, formData: FormData): Promi
   const file = formData.get("resume");
 
   if (!name || !EMAIL.test(email)) return { ok: false, message: "Add your name and a valid email." };
+  if (formData.get("consent") !== "on") return { ok: false, message: "Tick the box to agree to how we use your application." };
   let resume: { bytes: Uint8Array<ArrayBuffer>; name: string; type: string; size: number } | null = null;
   if (file instanceof File && file.size > 0) {
     if (file.size > MAX_RESUME_BYTES) return { ok: false, message: "Résumé is too big. Keep it under 4 MB." };

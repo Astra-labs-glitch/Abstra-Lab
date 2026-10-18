@@ -28,6 +28,11 @@ export function GoogleButton() {
         </svg>
         Continue with Google
       </a>
+      <p style={{ textAlign: "center", color: "var(--a-dim, #8c8c8c)", margin: "12px 0 0", fontSize: 13 }}>
+        By continuing you agree to our{" "}
+        <a href="/terms" style={{ color: "var(--a-pink)", textDecoration: "underline" }}>terms</a> and{" "}
+        <a href="/privacy" style={{ color: "var(--a-pink)", textDecoration: "underline" }}>privacy policy</a>.
+      </p>
       <p style={{ textAlign: "center", color: "var(--a-dim, #8c8c8c)", margin: "18px 0 0", fontSize: 14 }}>or use a password</p>
     </div>
   );

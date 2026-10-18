@@ -216,6 +216,10 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
             </a>
             {" · "}
             {me.role ? <Link href="/dashboard">Member area</Link> : <Link href="/accounts/login">Member login</Link>}
+            {" · "}
+            <Link href="/privacy">Privacy</Link>
+            {" · "}
+            <Link href="/terms">Terms</Link>
           </p>
         </div>
         <p className="ax-footer__word" aria-hidden="true">

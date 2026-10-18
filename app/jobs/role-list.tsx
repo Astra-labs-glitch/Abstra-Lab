@@ -132,6 +132,13 @@ function ApplyForm({ role, onClose }: { role: PublicRole; onClose: () => void })
         <input name="resume" type="file" accept=".pdf,.doc,.docx" />
       </label>
       <p className="ax-dim ax-apply__note">Only the Astra Labs exec team can see your résumé. Already a member? Leave it empty and we use the one in My account.</p>
+      <label className="ax-consent">
+        <input type="checkbox" name="consent" required />
+        <span>
+          I agree that Astra Labs can use this application to consider me for the role. It&apos;s seen only by the exec
+          team and deleted after 12 months. <a href="/privacy" target="_blank" rel="noopener">Privacy policy</a>
+        </span>
+      </label>
       {state.message ? (
         <p className="ax-apply__err" role="alert">
           {state.message}
