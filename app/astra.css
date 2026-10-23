@@ -738,3 +738,26 @@ body.ax-editing .ax-launch, body.ax-editing .ax-pad-btn { pointer-events: none; 
 .ax-legal li { margin: 6px 0; }
 .ax-legal a { color: var(--a-pink) !important; text-decoration: underline !important; }
 .ax-legal__date { color: var(--a-dim); font-size: 15px; }
+
+/* ── "Our rockets" dropdown in the nav ── */
+.ax-menu { position: relative; }
+.ax-menu__btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; font: inherit; font-size: 15px; font-weight: 500; color: var(--a-white); background: none; border: 0; cursor: pointer; }
+.ax-menu__btn:hover, .ax-menu__btn[aria-expanded="true"], .ax-menu__btn[data-active] { color: var(--a-pink); }
+.ax-menu__caret { font-size: 11px; transition: transform 0.15s ease; }
+.ax-menu__btn[aria-expanded="true"] .ax-menu__caret { transform: rotate(180deg); }
+.ax-menu__list { position: absolute; z-index: 50; top: calc(100% + 12px); left: -14px; min-width: 220px; margin: 0; padding: 8px; list-style: none; background: #0e0e0e; border: 1px solid #2a2a2a; border-radius: 16px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6); }
+.ax-menu__list a { display: grid; gap: 2px; padding: 10px 14px; border-radius: 10px; }
+.ax-menu__list a:hover, .ax-menu__list a[aria-current="page"] { background: #1a1a1a; }
+.ax-menu__list strong { font-weight: 700; color: var(--a-white); }
+.ax-menu__list a[aria-current="page"] strong { color: var(--a-pink); }
+.ax-menu__list span { font-size: 13px; color: var(--a-dim); }
+.ax-menu__btn:focus-visible { outline: 2px solid var(--a-pink); outline-offset: 3px; border-radius: 2px; }
+@media (max-width: 640px) {
+  .ax-menu__list { left: 50%; transform: translateX(-50%); }
+}
+
+/* Rocket list rows on the home page are links to each rocket's page */
+.ax .ax-rocket-row--link { color: inherit; }
+.ax-rocket-row--link .ax-rocket-row__go { flex: 0 0 auto; margin-left: auto; font-size: 28px; color: var(--a-dim); transition: transform 0.15s ease, color 0.15s ease; }
+.ax .ax-rocket-row--link:hover .ax-rocket-row__name, .ax .ax-rocket-row--link:hover .ax-rocket-row__go { color: var(--a-pink); }
+.ax-rocket-row--link:hover .ax-rocket-row__go { transform: translateX(4px); }

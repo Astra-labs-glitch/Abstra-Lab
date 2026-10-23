@@ -39,7 +39,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Oct 2026 redesign: old pages folded into the new five-page site.
-      { source: "/pioneer", destination: "/#pioneer", permanent: true },
+      { source: "/pioneer", destination: "/rockets/pioneer", permanent: true },
+      { source: "/rockets", destination: "/rockets/pioneer", permanent: false },
       { source: "/launch-canada", destination: "/#timmins", permanent: true },
       { source: "/about", destination: "/team", permanent: true },
       { source: "/members", destination: "/team", permanent: true },
