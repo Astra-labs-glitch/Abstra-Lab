@@ -850,6 +850,7 @@ body.ax-editing .ax-launch, body.ax-editing .ax-pad-btn { pointer-events: none; 
 .ax-viewer__nav { display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: 14px; color: var(--a-soft); font-variant-numeric: tabular-nums; }
 .ax-viewer__nav button { font: inherit; width: 38px; height: 38px; border-radius: 50%; border: 1px solid #3a3a3a; background: transparent; color: var(--a-white); cursor: pointer; font-size: 16px; }
 .ax-viewer__nav button:disabled { opacity: 0.35; cursor: default; }
+.ax-viewer__nav span { white-space: nowrap; }
 .ax-viewer__nav select { font: inherit; font-size: 14px; color: var(--a-white); background: #141414; border: 1px solid #333; border-radius: 6px; padding: 6px 8px; }
 .ax-viewer__stage { display: grid; grid-template-columns: 150px minmax(0, 1fr); }
 .ax-viewer__stage:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
