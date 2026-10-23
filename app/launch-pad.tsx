@@ -6,12 +6,13 @@ import { runLaunch } from "./launch-sky";
 
 const ROCKET = "/images/astra/astra-rocket.png";
 
+// Brand colours only: reds, pink, white and grey.
 const PAIRS: ReadonlyArray<readonly [string, string]> = [
-  ["#9B4DFF", "#C86FE3"],
+  ["#D62E2E", "#F08A8A"],
+  ["#E6E6E6", "#BDBDBD"],
+  ["#F08A8A", "#D62E2E"],
+  ["#8C8C8C", "#E6E6E6"],
   ["#D62E2E", "#D62E2E"],
-  ["#C86FE3", "#9B4DFF"],
-  ["#D62E2E", "#C86FE3"],
-  ["#9B4DFF", "#9B4DFF"],
 ];
 
 // Back rows are smaller and lighter, so the crowd reads as layered.

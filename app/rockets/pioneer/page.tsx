@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 
 import { getSiteText, isPageLive } from "../../../lib/site-text";
@@ -30,14 +31,19 @@ export default async function PioneerPage() {
   if (!(await isPageLive("pioneer"))) return <UnderConstruction t={t} page="pioneer" name="Pioneer" />;
   return (
     <>
-      <section id="pioneer" className="ax-wrap ax-split" style={{ paddingTop: 96 }}>
-        <p className="ax-label" data-edit-key="home.the-vehicle">{t("home.the-vehicle", "The vehicle")}</p>
-        <div className="ax-split__main">
-          <h1 className="ax-display ax-display--lg" style={{ marginBottom: 32 }} data-edit-key="home.meet-pioneer">{t("home.meet-pioneer", "Meet Pioneer")}</h1>
+      <div className="ax-photo-top" style={{ ["--hero" as string]: `url(${IMG}/pioneer-tent.jpg)` } as CSSProperties}>
+        <section className="ax-wrap ax-page-top">
+          <p className="ax-label" data-edit-key="home.the-vehicle">{t("home.the-vehicle", "Launch Canada 2026, Timmins. Didn't pass inspection. Flight-ready target: Nov 30.")}</p>
+          <h1 className="ax-display ax-display--xl" data-edit-key="home.meet-pioneer">{t("home.meet-pioneer", "Pioneer.")}</h1>
+          <p className="ax-lede" style={{ marginTop: 0 }} data-edit-key="home.our-first-highpower-rocket">{t("home.our-first-highpower-rocket", "Our first high-power rocket. 2.5 m tall, 12.6 kg loaded, and built to reach about 2.8 km on a Cesaroni L1355-P.")}</p>
+        </section>
+      </div>
+
+      <section id="pioneer" className="ax-wrap" style={{ paddingTop: 48 }}>
+        <div>
           <div className="ax-cols">
             <div>
-              <p style={{ marginTop: 0, fontSize: 20, color: "var(--a-text)" }} data-edit-key="home.our-first-highpower-rocket">{t("home.our-first-highpower-rocket", "Our first high-power rocket. 2.5 m tall, 12.6 kg loaded, and built to reach about 2.8 km on a Cesaroni L1355-P.")}</p>
-              <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.well-be-upfront-about">{t("home.well-be-upfront-about", "We'll be upfront about what's ours. The airframe is a Wildman Extreme fibreglass kit, and recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and integrated all of it.")}</p>
+              <p className="ax-soft" style={{ marginTop: 0, marginBottom: 0 }} data-edit-key="home.well-be-upfront-about">{t("home.well-be-upfront-about", "We'll be upfront about what's ours. The airframe is a Wildman Extreme fibreglass kit, and recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and integrated all of it.")}</p>
             </div>
             <dl className="ax-specs">
               <dt data-edit-key="home.airframe">{t("home.airframe", "Airframe")}</dt>

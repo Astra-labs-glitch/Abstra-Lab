@@ -102,3 +102,7 @@ If you add a **new public route**, also add it to `PUBLIC_ROUTES` in `scripts/e2
 ## Hivemind documents
 
 The Hivemind page shows the proposal and the SEDS-Canada letter in an on-page viewer (`app/payloads/hivemind/doc-viewer.tsx`). The viewer uses page images in `public/docs/hivemind/pages/` and `public/docs/hivemind/letter/`, rendered from the **redacted** PDF (budget, funding, contact details, names and partner names removed for real, not just covered). If the proposal changes, redact the new PDF again, re-render the pages (120 dpi WebP), and check the text layer has nothing sensitive before uploading.
+
+## Design notes (Oct 2026 review)
+
+Small labels above titles (`.ax-label`) are now plain pink text with no red bar; write them to carry information (a date, place or status), not to repeat the heading. The red glow and the pulsing button were removed; project pages use a real photo behind the title instead (`.ax-photo-top` with `--hero`). Key figures go in a spec table with units and an "as of" date (`.ax-spec-table`). The footer crowd uses brand colours only.

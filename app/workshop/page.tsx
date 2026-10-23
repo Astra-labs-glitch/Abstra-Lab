@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { getSiteText, isPageLive } from "../../lib/site-text";
 import { pageMetadata } from "../seo";
 import { UnderConstruction } from "../under-construction";
@@ -24,15 +26,17 @@ export default async function WorkshopPage() {
   if (!(await isPageLive("workshop"))) return <UnderConstruction t={t} page="workshop" name="Hivemind workshop" />;
   return (
     <>
+      <div className="ax-photo-top" style={{ ["--hero" as string]: "url(/images/astra/payload-nodes.jpg)" } as CSSProperties}>
       <section className="ax-wrap ax-page-top">
-        <p className="ax-label ax-pink" data-edit-key="workshop.label">{t("workshop.label", "Hivemind workshop · planned for early 2027")}</p>
+        <p className="ax-label" data-edit-key="workshop.label">{t("workshop.label", "Hivemind workshop · planned for early 2027")}</p>
         <h1 className="ax-display ax-display--xl" data-edit-key="workshop.title">{t("workshop.title", "Build a node for Hivemind.")}</h1>
         <p className="ax-lede" data-edit-key="workshop.lede">{t("workshop.lede", "A hands-on workshop where students build and test the sensor nodes for Hivemind, our stratospheric balloon payload. You'll put a node board together, program it, and run it through the same checks a flight node has to pass.")}</p>
         <div className="ax-actions" style={{ marginTop: 24 }}>
           <JoinButton id="workshop-top-cta" />
         </div>
-        <p className="ax-dim" style={{ marginTop: 12, fontSize: 14 }} data-edit-key="workshop.quick">{t("workshop.quick", "Takes about a minute. Free.")}</p>
+        <p className="ax-soft" style={{ marginTop: 12, fontSize: 14 }} data-edit-key="workshop.quick">{t("workshop.quick", "Takes about a minute. Free.")}</p>
       </section>
+      </div>
 
       <section className="ax-wrap ax-block">
         <p className="ax-label" data-edit-key="workshop.learn.label">{t("workshop.learn.label", "What you'll learn")}</p>

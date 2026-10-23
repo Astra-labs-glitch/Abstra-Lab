@@ -18,16 +18,16 @@ export const metadata = pageMetadata({
 const subteams = [
   ["Airframe", ["Rebuilding Pioneer's bulkhead with a G10 fibreglass plate", "Fibreglass layup and epoxy work for the 2027 airframe", "Fins, fit checks and OpenRocket simulations"]],
   ["Avionics & recovery", ["Wiring and testing the EasyMini altimeter stacks and GPS trackers", "Designing power and flight boards in KiCad", "Ground ejection tests and packing parachutes"]],
-  ["Payload", ["Building and testing ESP32-C6 sensor nodes with MPU-6050 IMUs", "Writing the CAN bus firmware that ties the nodes together", "Getting data down to the ground over LoRa"]],
-  ["Ground software & data", ["Our ground station in Python, FastAPI and PostgreSQL", "Working out how much 24 identical sensors disagree in one flight"]],
+  ["Payload", ["Building and testing Hivemind's ESP32-S3 sensor nodes", "Writing the CAN bus firmware that ties the 30 nodes together", "The training code each node runs during the balloon flight"]],
+  ["Ground software & data", ["Our ground station in Python, FastAPI and PostgreSQL", "The Raspberry Pi side of Hivemind: merging what 30 nodes learn"]],
   ["Operations", ["Sponsorship outreach and funding requests", "Events, workshops and outreach", "Photos, socials and this website"]],
 ] as const;
 
 const steps = [
-  ["01", "Come to a Friday meeting", "5–7 pm in the SSF clubs room. Just show up and say hi."],
-  ["02", "Pick a subteam", "See what each one does below. You can switch later."],
-  ["03", "Apply when roles open", "Roles are posted above. We reply to your Seneca email within 5 days."],
-  ["04", "First task, first week", "You'll be paired with a subteam lead right away."],
+  ["1", "Come to a Friday meeting", "5–7 pm in the SSF clubs room. Just show up and say hi."],
+  ["2", "Pick a subteam", "See what each one does below. You can switch later."],
+  ["3", "Apply when roles open", "Roles are posted above. We reply to your Seneca email within 5 days."],
+  ["4", "First task, first week", "You'll be paired with a subteam lead right away."],
 ] as const;
 
 export default async function JobsPage() {
@@ -84,15 +84,14 @@ export default async function JobsPage() {
       </section>
 
       <section className="ax-wrap" style={{ paddingBottom: 96 }}>
-        <div className="ax-steps">
+        <ol className="ax-timeline">
           {steps.map(([n, title, text], i) => (
-            <div key={n}>
-              <p className="ax-steps__num">{n}</p>
-              <p className="ax-steps__title" data-edit-key={`jobs.step.${i}.title`}>{t(`jobs.step.${i}.title`, title)}</p>
-              <p className="ax-steps__text" data-edit-key={`jobs.step.${i}.text`}>{t(`jobs.step.${i}.text`, text)}</p>
-            </div>
+            <li key={n}>
+              <strong data-edit-key={`jobs.step.${i}.title`}>{t(`jobs.step.${i}.title`, title)}</strong>
+              <span data-edit-key={`jobs.step.${i}.text`}>{t(`jobs.step.${i}.text`, text)}</span>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section id="subteams" className="ax-band" style={{ background: "var(--a-panel)" }}>
