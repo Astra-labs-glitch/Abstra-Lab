@@ -59,3 +59,7 @@ npm run build
 ## Standalone / Docker
 
 `next.config.ts` sets `output: "standalone"`. The repo `Dockerfile` + `docker-compose.yml` can self-host the app with local Postgres; **production on Vercel does not use them**. See [Local Docker](./local-docker.md).
+
+## Dependency updates (Dependabot)
+
+`.github/dependabot.yml` opens one grouped PR a week for minor and patch updates. Major versions of Prisma, Next.js, React and TypeScript are ignored on purpose: they need code changes (Prisma 7, for example, moves the database URL into `prisma.config.ts` and must be upgraded together with `@prisma/client`). Do those by hand in their own PR and check the preview build.
