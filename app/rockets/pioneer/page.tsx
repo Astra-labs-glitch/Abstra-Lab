@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export const metadata = pageMetadata({
   title: "Pioneer",
-  description: "Pioneer, Astra Labs' first high-power rocket: the airframe, recovery, the 24-node sensor payload, and where the refit stands.",
+  description: "Pioneer, Astra Labs' first high-power rocket: the airframe, recovery, what happened at Launch Canada 2026, and where the refit stands.",
   path: "/rockets/pioneer",
   image: "/images/astra/pioneer-tent.jpg",
 });
@@ -37,7 +37,7 @@ export default async function PioneerPage() {
           <div className="ax-cols">
             <div>
               <p style={{ marginTop: 0, fontSize: 20, color: "var(--a-text)" }} data-edit-key="home.our-first-highpower-rocket">{t("home.our-first-highpower-rocket", "Our first high-power rocket. 2.5 m tall, 12.6 kg loaded, and built to reach about 2.8 km on a Cesaroni L1355-P.")}</p>
-              <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.well-be-upfront-about">{t("home.well-be-upfront-about", "We'll be upfront about what's ours. The airframe is a Wildman Extreme fibreglass kit, and recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and integrated all of it. The payload is the part we designed from scratch.")}</p>
+              <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.well-be-upfront-about">{t("home.well-be-upfront-about", "We'll be upfront about what's ours. The airframe is a Wildman Extreme fibreglass kit, and recovery runs on off-the-shelf EasyMini altimeters with Featherweight GPS. We assembled, wired and integrated all of it.")}</p>
             </div>
             <dl className="ax-specs">
               <dt data-edit-key="home.airframe">{t("home.airframe", "Airframe")}</dt>
@@ -48,8 +48,10 @@ export default async function PioneerPage() {
               <dd data-edit-key="home.dual-deploy-two-easymini">{t("home.dual-deploy-two-easymini", "Dual deploy, two EasyMini stacks")}</dd>
               <dt data-edit-key="home.tracking">{t("home.tracking", "Tracking")}</dt>
               <dd data-edit-key="home.two-featherweight-gps-units">{t("home.two-featherweight-gps-units", "Two Featherweight GPS units")}</dd>
+              <dt data-edit-key="pioneer.payload.k">{t("pioneer.payload.k", "Payload")}</dt>
+              <dd><Link className="ax-pink" href="/payloads/picosat"><span data-edit-key="pioneer.payload.v">{t("pioneer.payload.v", "Picosat concept test (24 nodes)")}</span> →</Link></dd>
               <dt data-edit-key="home.flights-so-far">{t("home.flights-so-far", "Flights so far")}</dt>
-              <dd className="ax-pink" data-edit-key="home.zero-working-on-it">{t("home.zero-working-on-it", "Zero. Working on it.")}</dd>
+              <dd className="ax-pink" data-edit-key="home.zero-working-on-it">{t("home.zero-working-on-it", "Zero. It didn't pass pre-launch inspection at Launch Canada 2026. Working on it.")}</dd>
             </dl>
           </div>
         </div>
@@ -89,21 +91,6 @@ export default async function PioneerPage() {
         </div>
       </section>
 
-      <section className="ax-band" aria-labelledby="payload-h">
-        <div className="ax-payload" style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div className="ax-payload__text">
-            <p className="ax-label" data-edit-key="home.the-payload">{t("home.the-payload", "The payload")}</p>
-            <h2 id="payload-h" className="ax-display ax-display--md" style={{ marginBottom: 24 }} data-edit-key="home.24-sensors-one-question">{t("home.24-sensors-one-question", "24 sensors, one question")}</h2>
-            <p style={{ marginTop: 0, color: "var(--a-text)" }} data-edit-key="home.if-you-fly-24">{t("home.if-you-fly-24", "If you fly 24 identical motion sensors on the same rocket, how much do they disagree? That's what our payload is built to find out.")}</p>
-            <p className="ax-soft" data-edit-key="home.each-node-is-an">{t("home.each-node-is-an", "Each node is an ESP32-C6 with an MPU-6050 IMU. They talk over a CAN bus to a hub that radios data down on 433 MHz. Think of it as a tiny rideshare mission: lots of small passengers sharing one ride up.")}</p>
-            <p className="ax-soft" style={{ marginBottom: 0 }} data-edit-key="home.we-designed-the-boards">{t("home.we-designed-the-boards", "We designed the boards in KiCad and had them fabbed with help from Seneca HELIX, the SSF and Seneca Alumni.")}</p>
-          </div>
-          <figure className="ax-payload__img">
-            <img src={`${IMG}/payload-nodes.jpg`} alt="Six green payload node boards standing on a round carrier board, with builders' names printed on the silkscreen" />
-            <figcaption data-edit-key="home.look-closely-the-people">{t("home.look-closely-the-people", "Look closely: the people who built these boards put their names on the silkscreen.")}</figcaption>
-          </figure>
-        </div>
-      </section>
 
       <section className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 96 }}>
         <p className="ax-label" data-edit-key="pioneer.status.label">{t("pioneer.status.label", "Where it stands")}</p>

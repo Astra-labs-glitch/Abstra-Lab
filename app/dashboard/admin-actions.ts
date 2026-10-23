@@ -443,3 +443,15 @@ export async function setMyTeamSpot(formData: FormData) {
   revalidatePath("/dashboard/account");
   redirect("/dashboard/account?saved=1");
 }
+
+/* ── Hivemind workshop waitlist ── */
+
+export async function deleteWorkshopSignup(formData: FormData) {
+  const me = await guardStaff();
+  const id = Number(formData.get("id"));
+  if (!id) return;
+  const row = await prisma.workshopSignup.delete({ where: { id }, select: { email: true } }).catch(() => null);
+  if (row) await audit(me.username, "Deleted workshop sign-up", row.email);
+  revalidatePath("/dashboard/workshop");
+  redirect("/dashboard/workshop?deleted=1");
+}

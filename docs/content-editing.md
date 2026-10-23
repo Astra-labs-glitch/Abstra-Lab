@@ -2,7 +2,7 @@
 
 > **Oct 2026.** Most words on the public site are changed with **✎ Edit website** (staff only, next to the logo): click outlined text, edit, save. Defaults live in the page files; saved changes live in the `astra_site_text` table. Each page can be switched to *Under construction* in **Admin → Pages**.
 >
-> Pages: home (`app/page.tsx`: hero, status, rocket list, Timmins diary, crew, supporters), **Our rockets** dropdown → `app/rockets/pioneer/page.tsx` and `app/rockets/2027/page.tsx`, `app/team`, `app/events`, `app/gallery` (`gallery-grid.tsx`), `app/sponsorship`, `app/jobs` (open volunteer roles, reached from the red **Join us** button and the footer, not the menu), `app/privacy`, `app/terms`. The menu is in `app/site-shell.tsx` (`rockets` and `navItems`). Styles: `app/astra.css`. Photos: `public/images/astra/`.
+> Pages: home (`app/page.tsx`: hero, status, rocket list, Timmins diary, crew, supporters), **Projects** dropdown → Rockets (`app/rockets/pioneer`, `app/rockets/2027`) and Payloads (`app/payloads/picosat`, `app/payloads/hivemind`), the Hivemind workshop sign-up `app/workshop` (QR codes point to `/workshop?from=qr`), `app/team`, `app/events`, `app/gallery` (`gallery-grid.tsx`), `app/sponsorship`, `app/jobs` (open volunteer roles, reached from the red **Join us** button and the footer, not the menu), `app/privacy`, `app/terms`. The menu is in `app/site-shell.tsx` (`rockets` and `navItems`). Styles: `app/astra.css`. Photos: `public/images/astra/`.
 >
 > The Pioneer page still uses `home.*` text keys because it used to sit on the home page; that keeps any saved wording.
 
@@ -98,3 +98,7 @@ Image fields on CMS forms take a URL path. Upload via `POST /api/upload` or plac
 ## After content changes
 
 If you add a **new public route**, also add it to `PUBLIC_ROUTES` in `scripts/e2e-smoke.mjs` (see [Testing](./testing.md)).
+
+## Hivemind documents
+
+The Hivemind page shows the proposal and the SEDS-Canada letter in an on-page viewer (`app/payloads/hivemind/doc-viewer.tsx`). The viewer uses page images in `public/docs/hivemind/pages/` and `public/docs/hivemind/letter/`, rendered from the **redacted** PDF (budget, funding, contact details, names and partner names removed for real, not just covered). If the proposal changes, redact the new PDF again, re-render the pages (120 dpi WebP), and check the text layer has nothing sensitive before uploading.

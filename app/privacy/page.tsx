@@ -25,6 +25,7 @@ export default function PrivacyPage() {
             "When you apply for a role: your name, email, program, year, your message, any links you add, and your résumé.",
             "When you make an account: your name, email, program, the subteam you're interested in, and a password (stored only as a one-way hash we can't read). If you use Continue with Google, we get your name and email from Google, nothing else.",
             "What you add to My account: a photo, bio, LinkedIn or portfolio link, and a résumé.",
+            "When you join the Hivemind workshop waitlist: your name, email, whether you're in high school, college or university, what you study, your answers about the workshop, and whether you came from one of our QR codes. If you're in high school, we also ask you to confirm a parent or guardian knows you're signing up.",
             "A single login cookie (astra_session) that keeps you signed in. It's needed for the site to work, so there's no cookie banner.",
             "Our hosting provider keeps short-term server logs (like IP addresses) to keep the site running and block abuse.",
           ],
@@ -42,14 +43,14 @@ export default function PrivacyPage() {
           id: "use",
           heading: "Why we use it",
           paras: [
-            "To review applications and contact applicants, to approve and manage team members, and to show approved members on the public Team page. Your name, title, subteam, photo and bio appear there only after an exec approves you, and you can hide your profile any time in My account.",
+            "To review applications and contact applicants, to tell workshop sign-ups about dates (and, without names or contact details, to show sponsors how many students want to take part), to approve and manage team members, and to show approved members on the public Team page. Your name, title, subteam, photo and bio appear there only after an exec approves you, and you can hide your profile any time in My account.",
           ],
         },
         {
           id: "who",
           heading: "Who can see it",
           paras: [
-            "Applications and résumés are visible only to the Astra Labs exec team, through a signed-in admin page. They are never public. Our website is hosted by Vercel and our database by Neon; both store data on servers in the United States and only process it to run the site for us.",
+            "Applications, résumés and workshop sign-ups are visible only to the Astra Labs exec team, through a signed-in admin page. They are never public. Our website is hosted by Vercel and our database by Neon; both store data on servers in the United States and only process it to run the site for us.",
           ],
         },
         {
@@ -57,6 +58,7 @@ export default function PrivacyPage() {
           heading: "How long we keep it",
           bullets: [
             "Job applications and their résumés are deleted automatically 12 months after you apply.",
+            "Workshop sign-ups are deleted automatically 12 months after you sign up. Ask us and we'll remove yours sooner.",
             "Account and profile information is kept while you're on the team. Ask us and we'll delete it.",
             "Photos on the Gallery and Events pages stay up unless someone pictured asks us to take one down.",
           ],

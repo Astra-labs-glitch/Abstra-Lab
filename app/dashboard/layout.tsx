@@ -36,6 +36,7 @@ export default async function DashboardLayout({
             { href: "/dashboard/events", label: "Events" },
             { href: "/dashboard/jobs", label: "Jobs" },
             { href: "/dashboard/applications", label: "Applications", badge: newApps },
+            { href: "/dashboard/workshop", label: "Workshop" },
           ],
         },
         {

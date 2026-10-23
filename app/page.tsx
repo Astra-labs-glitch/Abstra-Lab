@@ -19,7 +19,7 @@ const diary = [
   ["Sun, Aug 16", "fit-check.jpg", "Three team members holding two airframe sections together for a fit check", "Test-fitting airframe sections. Many hands, one drill."],
   ["Tue, Aug 18", "mentor-review.jpg", "Team members in Astra Labs shirts gathered around a table while two mentors look over a rocket", "Sitting down with mentors to walk them through our build."],
   ["Thu, Aug 20", "pioneer-tent.jpg", "A team member sitting beside Pioneer, pointing to the PIONEER lettering on the airframe", "Pioneer out at our tent on the range."],
-  ["Fri, Aug 21", "flight-line.jpg", "Two team members photographing another team's launch from the flight line", "Watching other teams fly. Ours got called off for weather. Not the ending we wanted, so we're going again."],
+  ["Fri, Aug 21", "flight-line.jpg", "Two team members photographing another team's launch from the flight line", "Watching other teams fly. Ours didn't pass pre-launch inspection. Not the ending we wanted, so we're going again."],
 ] as const;
 
 export default async function Home() {
@@ -32,7 +32,7 @@ export default async function Home() {
           <p className="ax-label" data-edit-key="home.hero.label">{t("home.hero.label", "Team 06 · Seneca Polytechnic")}</p>
           <h1 className="ax-display ax-display--xl" data-edit-key="home.hero.title">{t("home.hero.title", "We build rockets at Seneca.")}</h1>
           <div className="ax-hero__row">
-            <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this August. The weather cancelled our launch, so we're refitting it and starting a second rocket for 2027.")}</p>
+            <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this August. It didn't pass pre-launch inspection, so we're refitting it and starting a second rocket for 2027.")}</p>
             <div className="ax-actions">
               <Link className="ax-btn ax-btn--red" href="/jobs">
                 Come build with us
@@ -69,7 +69,7 @@ export default async function Home() {
           <Link className="ax-rocket-row ax-rocket-row--link" href="/rockets/pioneer">
             <p className="ax-rocket-row__year" data-edit-key="home.2026">{t("home.2026", "2026")}</p>
             <p className="ax-rocket-row__name" data-edit-key="home.pioneer">{t("home.pioneer", "Pioneer")}</p>
-            <p className="ax-rocket-row__note" data-edit-key="home.went-to-launch-canada">{t("home.went-to-launch-canada", "Went to Launch Canada 2026. Launch cancelled for weather. Refit underway.")}</p>
+            <p className="ax-rocket-row__note" data-edit-key="home.went-to-launch-canada">{t("home.went-to-launch-canada", "Went to Launch Canada 2026. Didn't pass pre-launch inspection. Refit underway.")}</p>
             <span className="ax-rocket-row__go" aria-hidden="true">→</span>
           </Link>
           <Link className="ax-rocket-row ax-rocket-row--link" href="/rockets/2027">
