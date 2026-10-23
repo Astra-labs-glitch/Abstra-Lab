@@ -7,10 +7,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { contact, discordHref } from "./content";
 import { LaunchPad } from "./launch-pad";
 
-// "Our rockets" is a dropdown so each rocket gets its own page as the list grows.
-const rockets = [
-  ["Pioneer", "/rockets/pioneer", "2026"],
-  ["2027 rocket", "/rockets/2027", "In design"],
+// "Projects" is a dropdown so each rocket and payload gets its own page as the list grows.
+const projects = [
+  {
+    group: "Rockets",
+    items: [
+      ["Pioneer", "/rockets/pioneer", "2026 · refit underway"],
+      ["2027 rocket", "/rockets/2027", "In design"],
+    ],
+  },
+  {
+    group: "Payloads",
+    items: [
+      ["Picosat concept test", "/payloads/picosat", "2026 · never flew"],
+      ["Hivemind", "/payloads/hivemind", "Stratospheric balloon · summer 2027"],
+    ],
+  },
 ] as const;
 
 // Open roles live behind the red "Join us" button, so there's no separate Jobs tab.
@@ -222,25 +234,32 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
                 className="ax-menu__btn"
                 aria-expanded={rocketsOpen}
                 aria-controls="rockets-menu"
-                data-active={pathname.startsWith("/rockets") ? "" : undefined}
+                data-active={pathname.startsWith("/rockets") || pathname.startsWith("/payloads") || pathname === "/workshop" ? "" : undefined}
                 onClick={() => setRocketsOpen((o) => !o)}
               >
-                Our rockets
+                Projects
                 <span className="ax-menu__caret" aria-hidden="true">
                   ▾
                 </span>
               </button>
               {rocketsOpen ? (
-                <ul className="ax-menu__list" id="rockets-menu">
-                  {rockets.map(([label, href, note]) => (
-                    <li key={href}>
-                      <Link href={href} aria-current={pathname === href ? "page" : undefined}>
-                        <strong>{label}</strong>
-                        <span>{note}</span>
-                      </Link>
-                    </li>
+                <div className="ax-menu__list" id="rockets-menu">
+                  {projects.map(({ group, items }) => (
+                    <div key={group} role="group" aria-label={group}>
+                      <p className="ax-menu__group">{group}</p>
+                      <ul>
+                        {items.map(([label, href, note]) => (
+                          <li key={href}>
+                            <Link href={href} aria-current={pathname === href ? "page" : undefined}>
+                              <strong>{label}</strong>
+                              <span>{note}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               ) : null}
             </div>
             {navItems.map(([label, href]) => (

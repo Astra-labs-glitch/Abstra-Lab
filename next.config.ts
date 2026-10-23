@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
       // Oct 2026 redesign: old pages folded into the new five-page site.
       { source: "/pioneer", destination: "/rockets/pioneer", permanent: true },
       { source: "/rockets", destination: "/rockets/pioneer", permanent: false },
+      { source: "/payloads", destination: "/payloads/hivemind", permanent: false },
+      { source: "/hivemind", destination: "/payloads/hivemind", permanent: false },
       { source: "/launch-canada", destination: "/#timmins", permanent: true },
       { source: "/about", destination: "/team", permanent: true },
       { source: "/members", destination: "/team", permanent: true },

@@ -31,3 +31,7 @@ use `<Editable t={t} k="…" d="…" as="p" />`).
 Photos and résumés are stored in Postgres (`astra_profile`, `astra_event_photo`,
 `astra_job_application`). Photos are resized in the browser before upload.
 Résumés are only served to the owner and staff.
+
+## Workshop (Hivemind waitlist)
+
+**Admin → Workshop** lists everyone who signed up on `/workshop`: counts by level, how many came from a QR code, each person's answers, a **Download CSV** button (for sponsor reports) and **Delete** for anyone who asks to be removed. High school sign-ups must tick that a parent or guardian knows. Sign-ups are deleted automatically after 12 months. Table: `astra_workshop_signup` (one row per email; signing up again updates it).

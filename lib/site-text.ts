@@ -25,6 +25,9 @@ export async function getSiteText() {
 export const SITE_PAGES = [
   { key: "pioneer", path: "/rockets/pioneer", name: "Pioneer (rocket)" },
   { key: "rocket2027", path: "/rockets/2027", name: "2027 rocket" },
+  { key: "picosat", path: "/payloads/picosat", name: "Picosat concept test (payload)" },
+  { key: "hivemind", path: "/payloads/hivemind", name: "Hivemind (payload)" },
+  { key: "workshop", path: "/workshop", name: "Hivemind workshop sign-up" },
   { key: "team", path: "/team", name: "Team" },
   { key: "events", path: "/events", name: "Events" },
   { key: "jobs", path: "/jobs", name: "Join us (open roles)" },
@@ -35,7 +38,7 @@ export const SITE_PAGES = [
 export type PageKey = (typeof SITE_PAGES)[number]["key"];
 
 /** Every page is live unless an admin switched it off. Team starts off until profiles are in. */
-const DEFAULT_LIVE: Record<PageKey, boolean> = { pioneer: true, rocket2027: true, team: false, events: true, jobs: true, gallery: true, sponsor: true };
+const DEFAULT_LIVE: Record<PageKey, boolean> = { pioneer: true, rocket2027: true, picosat: true, hivemind: true, workshop: true, team: false, events: true, jobs: true, gallery: true, sponsor: true };
 
 export async function pageStatus(): Promise<Record<PageKey, boolean>> {
   const status = { ...DEFAULT_LIVE };

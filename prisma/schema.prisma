@@ -267,3 +267,21 @@ model AuditLog {
   @@index([at])
   @@map("astra_audit")
 }
+
+// Oct 2026: Hivemind workshop waitlist (people tap "I'm interested", often from a QR code at an event).
+model WorkshopSignup {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  level       String // k12 | college | university | other
+  program     String   @default("")
+  why         String   @default("")
+  expect      String   @default("")
+  guardianOk  Boolean  @default(false) @map("guardian_ok")
+  source      String   @default("web") // web | qr
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("astra_workshop_signup")
+}
