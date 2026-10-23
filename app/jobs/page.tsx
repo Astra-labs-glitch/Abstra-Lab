@@ -9,7 +9,7 @@ import { RoleList } from "./role-list";
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "Jobs",
+  title: "Join us",
   description:
     "Join Astra Labs, Seneca's student rocketry team. Any program, about five hours a week, weekly meetings Fridays 5–7 pm in the SSF clubs room.",
   path: "/jobs",
@@ -32,15 +32,15 @@ const steps = [
 
 export default async function JobsPage() {
   const [t, roles] = await Promise.all([getSiteText(), openRoles()]);
-  if (!(await isPageLive("jobs"))) return <UnderConstruction t={t} page="jobs" name="Jobs" />;
+  if (!(await isPageLive("jobs"))) return <UnderConstruction t={t} page="jobs" name="Join us" />;
   return (
     <>
       <section className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 56 }}>
         <div className="ax-cols" style={{ alignItems: "center", gap: 48 }}>
           <div style={{ flex: "1 1 480px" }}>
-            <p className="ax-label ax-pink" data-edit-key="jobs.hero.label">{t("jobs.hero.label", "Job board · Fall 2026")}</p>
+            <p className="ax-label ax-pink" data-edit-key="jobs.hero.label">{t("jobs.hero.label", "Join the team · Fall 2026")}</p>
             <h1 className="ax-display ax-display--xl" style={{ marginBottom: 20, fontSize: "clamp(38px, 5vw, 64px)" }} data-edit-key="jobs.hero.title">{t("jobs.hero.title", "We're recruiting.")}</h1>
-            <p className="ax-lede" style={{ fontSize: 20, marginTop: 0 }} data-edit-key="jobs.hero.body">{t("jobs.hero.body", "Pick a role, read what you'd actually do, and apply with your resume. You don't need to have built a rocket. Here's the deal:")}</p>
+            <p className="ax-lede" style={{ fontSize: 20, marginTop: 0 }} data-edit-key="jobs.hero.body">{t("jobs.hero.body", "These are volunteer spots on a student team, not paid jobs. Pick a role, read what you'd actually do, and apply with your resume. You don't need to have built a rocket. Here's the deal:")}</p>
             <dl className="ax-deal">
               <dt data-edit-key="jobs.who">{t("jobs.who", "Who")}</dt>
               <dd data-edit-key="jobs.deal.who">{t("jobs.deal.who", "Any Seneca student, any program")}</dd>

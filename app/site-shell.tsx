@@ -7,11 +7,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { contact, discordHref } from "./content";
 import { LaunchPad } from "./launch-pad";
 
+// "Our rockets" is a dropdown so each rocket gets its own page as the list grows.
+const rockets = [
+  ["Pioneer", "/rockets/pioneer", "2026"],
+  ["2027 rocket", "/rockets/2027", "In design"],
+] as const;
+
+// Open roles live behind the red "Join us" button, so there's no separate Jobs tab.
 const navItems = [
-  ["Pioneer", "/"],
   ["Team", "/team"],
   ["Events", "/events"],
-  ["Jobs", "/jobs"],
   ["Gallery", "/gallery"],
   ["Sponsor", "/sponsorship"],
 ] as const;
@@ -25,6 +30,8 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState("");
+  const [rocketsOpen, setRocketsOpen] = useState(false);
+  const rocketsRef = useRef<HTMLDivElement>(null);
   const snapshot = useRef(new Map<HTMLElement, string>());
   const isStaff = me.role === "admin" || me.role === "staff";
   const inDashboard = pathname === "/dashboard" || pathname.startsWith("/dashboard/");
@@ -39,6 +46,27 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
       alive = false;
     };
   }, [pathname]);
+
+  // Close the rockets menu on navigation, outside clicks and Escape.
+  useEffect(() => setRocketsOpen(false), [pathname]);
+  useEffect(() => {
+    if (!rocketsOpen) return;
+    const onDown = (e: PointerEvent) => {
+      if (!rocketsRef.current?.contains(e.target as Node)) setRocketsOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setRocketsOpen(false);
+        rocketsRef.current?.querySelector("button")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [rocketsOpen]);
 
   const say = useCallback((msg: string) => {
     setToast(msg);
@@ -188,6 +216,33 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
             ) : null}
           </div>
           <div className="ax-nav__links">
+            <div className="ax-menu" ref={rocketsRef}>
+              <button
+                type="button"
+                className="ax-menu__btn"
+                aria-expanded={rocketsOpen}
+                aria-controls="rockets-menu"
+                data-active={pathname.startsWith("/rockets") ? "" : undefined}
+                onClick={() => setRocketsOpen((o) => !o)}
+              >
+                Our rockets
+                <span className="ax-menu__caret" aria-hidden="true">
+                  ▾
+                </span>
+              </button>
+              {rocketsOpen ? (
+                <ul className="ax-menu__list" id="rockets-menu">
+                  {rockets.map(([label, href, note]) => (
+                    <li key={href}>
+                      <Link href={href} aria-current={pathname === href ? "page" : undefined}>
+                        <strong>{label}</strong>
+                        <span>{note}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
             {navItems.map(([label, href]) => (
               <Link key={label} href={href} aria-current={pathname === href ? "page" : undefined}>
                 {label}
@@ -214,6 +269,8 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
             <a href={discordHref} target="_blank" rel="noopener noreferrer">
               Discord
             </a>
+            {" · "}
+            <Link href="/jobs">Open roles</Link>
             {" · "}
             {me.role ? <Link href="/dashboard">Member area</Link> : <Link href="/accounts/login">Member login</Link>}
             {" · "}

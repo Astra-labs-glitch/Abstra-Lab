@@ -23,9 +23,11 @@ export async function getSiteText() {
 /* ── Page switches: Live or Under construction ── */
 
 export const SITE_PAGES = [
+  { key: "pioneer", path: "/rockets/pioneer", name: "Pioneer (rocket)" },
+  { key: "rocket2027", path: "/rockets/2027", name: "2027 rocket" },
   { key: "team", path: "/team", name: "Team" },
   { key: "events", path: "/events", name: "Events" },
-  { key: "jobs", path: "/jobs", name: "Jobs" },
+  { key: "jobs", path: "/jobs", name: "Join us (open roles)" },
   { key: "gallery", path: "/gallery", name: "Gallery" },
   { key: "sponsor", path: "/sponsorship", name: "Sponsor" },
 ] as const;
@@ -33,7 +35,7 @@ export const SITE_PAGES = [
 export type PageKey = (typeof SITE_PAGES)[number]["key"];
 
 /** Every page is live unless an admin switched it off. Team starts off until profiles are in. */
-const DEFAULT_LIVE: Record<PageKey, boolean> = { team: false, events: true, jobs: true, gallery: true, sponsor: true };
+const DEFAULT_LIVE: Record<PageKey, boolean> = { pioneer: true, rocket2027: true, team: false, events: true, jobs: true, gallery: true, sponsor: true };
 
 export async function pageStatus(): Promise<Record<PageKey, boolean>> {
   const status = { ...DEFAULT_LIVE };

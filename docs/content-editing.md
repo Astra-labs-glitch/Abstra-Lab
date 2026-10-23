@@ -1,6 +1,10 @@
 # Content editing
 
-> **Oct 2026 redesign.** The public site is now five pages: home (`app/page.tsx`, includes Pioneer, the Timmins diary and supporters), `app/team/page.tsx` (under construction), `app/jobs/page.tsx`, `app/gallery/page.tsx` (photos listed in `app/gallery/gallery-grid.tsx`) and `app/sponsorship/page.tsx`. Styles live in `app/astra.css`; photos and logos in `public/images/astra/`. The menu is in `app/site-shell.tsx`, the supporter logo wall in `app/supporters.tsx`, and the footer launch rocket and crowd in `app/launch-pad.tsx`. Old pages (`/pioneer`, `/launch-canada`, `/about`, `/members`, `/join`, `/contact`) redirect in `next.config.ts`.
+> **Oct 2026.** Most words on the public site are changed with **✎ Edit website** (staff only, next to the logo): click outlined text, edit, save. Defaults live in the page files; saved changes live in the `astra_site_text` table. Each page can be switched to *Under construction* in **Admin → Pages**.
+>
+> Pages: home (`app/page.tsx`: hero, status, rocket list, Timmins diary, crew, supporters), **Our rockets** dropdown → `app/rockets/pioneer/page.tsx` and `app/rockets/2027/page.tsx`, `app/team`, `app/events`, `app/gallery` (`gallery-grid.tsx`), `app/sponsorship`, `app/jobs` (open volunteer roles, reached from the red **Join us** button and the footer, not the menu), `app/privacy`, `app/terms`. The menu is in `app/site-shell.tsx` (`rockets` and `navItems`). Styles: `app/astra.css`. Photos: `public/images/astra/`.
+>
+> The Pioneer page still uses `home.*` text keys because it used to sit on the home page; that keeps any saved wording.
 
 Almost everything a non-developer would change lives in **`app/content.ts`**. Shared layout pieces are in `app/page-sections.tsx`; navigation is in `app/site-shell.tsx`.
 
