@@ -32,7 +32,7 @@ export default async function Home() {
           <p className="ax-label" data-edit-key="home.hero.label">{t("home.hero.label", "Team 06 · Seneca Polytechnic")}</p>
           <h1 className="ax-display ax-display--xl" data-edit-key="home.hero.title">{t("home.hero.title", "We build rockets at Seneca.")}</h1>
           <div className="ax-hero__row">
-            <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this August. It didn't pass pre-launch inspection, so we're refitting it and starting a second rocket for 2027.")}</p>
+            <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins in August 2026. It didn't pass pre-launch inspection, so we're refitting it and starting a second rocket for 2027.")}</p>
             <div className="ax-actions">
               <Link className="ax-btn ax-btn--red" href="/jobs">
                 Come build with us
@@ -81,6 +81,25 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="ax-hm" aria-labelledby="home-hivemind">
+        <div className="ax-hm__text">
+          <p className="ax-label" data-edit-key="home.hm.label">{t("home.hm.label", "Selected for CAN-SBX 2026–27, flying summer 2027")}</p>
+          <h2 id="home-hivemind" className="ax-display ax-display--lg" style={{ marginBottom: 18 }} data-edit-key="home.hm.title">{t("home.hm.title", "Hivemind.")}</h2>
+          <p className="ax-lede" style={{ marginTop: 0 }} data-edit-key="home.hm.body">{t("home.hm.body", "Thirty small computers on a stratospheric balloon, learning together at 30 km. SEDS-Canada and the Canadian Space Agency picked our payload for this year's challenge, and students will build the nodes.")}</p>
+          <div className="ax-actions" style={{ marginTop: 24 }}>
+            <Link className="ax-btn ax-btn--red" href="/payloads/hivemind">
+              See Hivemind
+            </Link>
+            <Link className="ax-btn ax-btn--ghost" href="/workshop">
+              Join the workshop waitlist
+            </Link>
+          </div>
+        </div>
+        <figure className="ax-hm__img">
+          <img src={`${IMG}/hivemind-rack-cad.jpg`} alt="CAD render of the Hivemind rack: five stacked levels of round green node boards" loading="lazy" />
+        </figure>
+      </section>
+
       <section id="timmins" className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 56 }}>
         <p className="ax-label" data-edit-key="home.launch-canada-aug-1522">{t("home.launch-canada-aug-1522", "Launch Canada · Aug 15–22, 2026")}</p>
         <h2 className="ax-display ax-display--lg" style={{ marginBottom: 56 }} data-edit-key="home.a-week-in-timmins">{t("home.a-week-in-timmins", "A week in Timmins")}</h2>
@@ -103,7 +122,7 @@ export default async function Home() {
           style={{ width: "100%", height: "clamp(320px, 50vw, 680px)", objectFit: "cover", objectPosition: "center 38%" }}
         />
         <div className="ax-wrap ax-split" style={{ paddingTop: 48, paddingBottom: 0 }}>
-          <p className="ax-label" data-edit-key="home.the-crew">{t("home.the-crew", "The crew")}</p>
+          <p className="ax-label" data-edit-key="home.the-crew">{t("home.the-crew", "A Seneca Student Federation club")}</p>
           <div className="ax-split__main">
             <h2 className="ax-display ax-display--md" style={{ marginBottom: 24 }} data-edit-key="home.small-team-real-rockets">{t("home.small-team-real-rockets", "Small team. Real rockets.")}</h2>
             <p style={{ marginTop: 0, color: "var(--a-text)" }} data-edit-key="home.were-a-seneca-student">{t("home.were-a-seneca-student", "We're a Seneca Student Federation club. Members come from seven programs, including Electronics Engineering Technology and Computer Programming and Analysis.")}</p>

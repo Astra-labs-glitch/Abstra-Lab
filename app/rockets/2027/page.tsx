@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 
 import { getSiteText, isPageLive } from "../../../lib/site-text";
@@ -18,14 +19,19 @@ export default async function Rocket2027Page() {
   const t = await getSiteText();
   if (!(await isPageLive("rocket2027"))) return <UnderConstruction t={t} page="rocket2027" name="2027 rocket" />;
   return (
-    <section className="ax-wrap" style={{ paddingTop: 96, paddingBottom: 96 }}>
-      <p className="ax-label" data-edit-key="home.2027">{t("home.2027", "2027")}</p>
-      <h1 className="ax-display ax-display--xl" style={{ marginBottom: 24 }} data-edit-key="rocket2027.title">
-        {t("rocket2027.title", "Our next rocket.")}
-      </h1>
-      <p className="ax-lede" style={{ marginTop: 0 }} data-edit-key="rocket2027.lede">
-        {t("rocket2027.lede", "No name yet. It's our second rocket, built for Launch Canada 2027, and it's on the drawing board right now.")}
-      </p>
+    <>
+    <div className="ax-photo-top" style={{ ["--hero" as string]: "url(/images/astra/epoxy-tent.jpg)" } as CSSProperties}>
+      <section className="ax-wrap ax-page-top">
+        <p className="ax-label" data-edit-key="rocket2027.label">{t("rocket2027.label", "Launch Canada 2027. First design review Nov 30.")}</p>
+        <h1 className="ax-display ax-display--xl" data-edit-key="rocket2027.title">
+          {t("rocket2027.title", "Our next rocket.")}
+        </h1>
+        <p className="ax-lede" style={{ marginTop: 0 }} data-edit-key="rocket2027.lede">
+          {t("rocket2027.lede", "No name yet. It's our second rocket, built for Launch Canada 2027, and it's on the drawing board right now.")}
+        </p>
+      </section>
+    </div>
+    <section className="ax-wrap" style={{ paddingTop: 8, paddingBottom: 96 }}>
       <dl className="ax-specs" style={{ maxWidth: 640, marginTop: 40 }}>
         <dt data-edit-key="rocket2027.airframe.k">{t("rocket2027.airframe.k", "Airframe")}</dt>
         <dd data-edit-key="rocket2027.airframe.v">{t("rocket2027.airframe.v", "4-inch")}</dd>
@@ -45,5 +51,6 @@ export default async function Rocket2027Page() {
         </Link>
       </div>
     </section>
+    </>
   );
 }

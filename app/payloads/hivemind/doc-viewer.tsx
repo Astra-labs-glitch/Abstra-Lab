@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export type ViewerDoc = { key: string; label: string; title: string; note: string; pdf: string; pages: string[] };
+export type ViewerDoc = { key: string; label: string; title: string; note: string; pdf: string; pages: string[]; startPage?: number };
 
 // Read a document page by page on the site, no download needed. Pages are images
 // rendered from the redacted PDF, so hidden parts stay hidden.
 export function DocViewer({ docs }: { docs: ViewerDoc[] }) {
   const [docKey, setDocKey] = useState(docs[0].key);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(docs[0].startPage ?? 0);
   const thumbs = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
   const doc = docs.find((d) => d.key === docKey) ?? docs[0];
@@ -21,7 +21,7 @@ export function DocViewer({ docs }: { docs: ViewerDoc[] }) {
       const key = (e as CustomEvent<string>).detail;
       if (docs.some((d) => d.key === key)) {
         setDocKey(key);
-        setPage(0);
+        setPage(docs.find((d) => d.key === key)?.startPage ?? 0);
       }
     };
     window.addEventListener("astra:open-doc", open);
@@ -43,7 +43,7 @@ export function DocViewer({ docs }: { docs: ViewerDoc[] }) {
       <div className="ax-viewer__bar">
         <div className="ax-viewer__docs" role="group" aria-label="Choose a document">
           {docs.map((d) => (
-            <button key={d.key} type="button" aria-pressed={d.key === doc.key} onClick={() => { setDocKey(d.key); setPage(0); }}>
+            <button key={d.key} type="button" aria-pressed={d.key === doc.key} onClick={() => { setDocKey(d.key); setPage(d.startPage ?? 0); }}>
               {d.label}
             </button>
           ))}

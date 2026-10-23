@@ -26,6 +26,8 @@ const docs: ViewerDoc[] = [
     note: "Budget, funding, contact details, names and partner details are blacked out.",
     pdf: "/docs/hivemind/hivemind-proposal-public.pdf",
     pages: pages("pages", 37),
+    // Page 1 is mostly the redacted team table; lead with the Introduction instead.
+    startPage: 3,
   },
   {
     key: "letter",
@@ -51,13 +53,14 @@ const modes = [
   ["central", "Centralized", "The Pi learns from all 30 nodes' raw data."],
 ] as const;
 
+// Key figures as a plain spec table with units and a date (keys kept from the old number strip).
 const nums = [
-  ["nodes", "30", "sensor nodes"],
-  ["alt", "30 km", "target altitude"],
-  ["cold", "−56 °C", "coldest air on the way up"],
-  ["time", "~3 h", "flight, launch to landing"],
-  ["rounds", "~50", "training rounds on the way up"],
-  ["bench", "1.3 s", "per round on our bench test, out of a 120 s budget"],
+  ["nodes", "30 (ESP32-S3), 6 per level, 5 levels", "Sensor nodes"],
+  ["alt", "30 km (balloon burst)", "Target altitude"],
+  ["cold", "about −56 °C", "Coldest air on the way up"],
+  ["time", "about 3 h, launch to landing", "Flight time"],
+  ["rounds", "about 50 on the way up, one every 2 min", "Training rounds"],
+  ["bench", "1.31 s per round vs a 120 s budget (one board, simulated data, 8 Oct 2026)", "Bench result"],
 ] as const;
 
 const phases = [
@@ -87,7 +90,7 @@ export default async function HivemindPage() {
         <E t={t} as="p" className="ax-lede" k="hivemind.lede" d="Thirty small computers ride a balloon to 30 km. Each one learns from its own sensors during the flight, then shares what it learned instead of its raw data. We want to find out whether learning together beats learning alone at the edge of space." />
         <div className="ax-actions" style={{ marginTop: 28 }}>
           <Link className="ax-interest" href="/workshop">
-            I&apos;m interested in building a node <span aria-hidden="true">→</span>
+            Join the workshop waitlist <span aria-hidden="true">→</span>
           </Link>
           <OpenDocButton doc="proposal" className="ax-btn ax-btn--ghost">Read the proposal</OpenDocButton>
         </div>
@@ -153,13 +156,18 @@ export default async function HivemindPage() {
 
       <section className="ax-wrap ax-block">
         <E t={t} as="p" className="ax-label" k="hivemind.nums.label" d="Key numbers" />
-        <div className="ax-nums">
-          {nums.map(([k, n, label]) => (
-            <div key={k}>
-              <E t={t} as="strong" k={`hivemind.nums.${k}.n`} d={n} />
-              <E t={t} k={`hivemind.nums.${k}.l`} d={label} />
-            </div>
-          ))}
+        <div style={{ overflowX: "auto" }}>
+          <table className="ax-spec-table">
+            <E t={t} as="caption" k="hivemind.nums.caption" d="As of Oct 2026. From the CAN-SBX proposal (public copy), sections 2.3 and 2.5." />
+            <tbody>
+              {nums.map(([k, value, label]) => (
+                <tr key={k}>
+                  <E t={t} as="th" k={`hivemind.nums.${k}.l`} d={label} />
+                  <E t={t} as="td" k={`hivemind.nums.${k}.n`} d={value} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -227,7 +235,7 @@ export default async function HivemindPage() {
           <E t={t} as="h2" className="ax-display ax-display--md" style={{ marginBottom: 20 }} k="hivemind.help.title" d="Help us get it off the ground." />
           <E t={t} as="p" className="ax-soft" k="hivemind.help.body" d="Students will build the flight nodes in a hands-on workshop. Companies can help pay for parts, testing and getting the team to the launch." />
           <div className="ax-actions" style={{ marginTop: 22 }}>
-            <Link className="ax-interest" href="/workshop">I&apos;m interested <span aria-hidden="true">→</span></Link>
+            <Link className="ax-interest" href="/workshop">Join the workshop waitlist <span aria-hidden="true">→</span></Link>
             <Link className="ax-btn ax-btn--ghost" href="/sponsorship">Sponsor Hivemind</Link>
             <Link className="ax-btn ax-btn--ghost" href="/jobs">Join the team</Link>
           </div>
