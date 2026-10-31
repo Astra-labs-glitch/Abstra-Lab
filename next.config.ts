@@ -11,7 +11,7 @@ const csp = [
   `style-src 'self' 'unsafe-inline'${preview ? " https://vercel.live" : ""}`,
   `img-src 'self' data: blob:${preview ? " https://vercel.live https://vercel.com" : ""}`,
   `font-src 'self'${preview ? " https://vercel.live https://assets.vercel.com" : ""}`,
-  `connect-src 'self'${vercelLive}`,
+  `connect-src 'self' https://vitals.vercel-insights.com${vercelLive}`,
   `frame-src 'self'${preview ? " https://vercel.live" : ""}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
