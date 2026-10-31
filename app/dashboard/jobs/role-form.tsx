@@ -71,7 +71,7 @@ export function RoleForm({ role, error }: { role?: Role; error?: string }) {
 
       <label className="adm-field">
         <span>One-line summary</span>
-        <input name="summary" maxLength={600} defaultValue={role?.summary} placeholder="Shown under the title on /jobs" />
+        <input name="summary" maxLength={600} defaultValue={role?.summary} placeholder="Shown under the title on /volunteer" />
       </label>
 
       <div className="adm-form__grid">
@@ -95,7 +95,7 @@ export function RoleForm({ role, error }: { role?: Role; error?: string }) {
             <span>{label}</span>
           </label>
         ))}
-        <small>Open roles show on /jobs with an Apply button. Drafts and closed roles are hidden.</small>
+        <small>Open roles show on /volunteer with an Apply button. Drafts and closed roles are hidden.</small>
       </fieldset>
 
       <label className="adm-field adm-field--narrow">

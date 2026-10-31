@@ -37,7 +37,7 @@ export default async function Rocket2027Page() {
         <dd className="ax-pink" data-edit-key="home.status.2.body">{t("home.status.2.body", "First design review Nov 30. Preliminary review Jan 31.")}</dd>
       </dl>
       <div className="ax-actions" style={{ marginTop: 40 }}>
-        <Link className="ax-btn ax-btn--red" href="/jobs">
+        <Link className="ax-btn ax-btn--red" href="/volunteer">
           <span data-edit-key="rocket2027.cta">{t("rocket2027.cta", "Help design it")}</span>
         </Link>
         <Link className="ax-btn ax-btn--ghost" href="/rockets/pioneer">

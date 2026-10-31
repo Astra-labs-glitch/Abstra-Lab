@@ -37,7 +37,7 @@ export default async function JobsAdminPage({
           <p className="adm-sub">Open roles show on the public Jobs page with an Apply button.</p>
         </div>
         <div className="adm-head__actions">
-          <a className="adm-btn" href="/jobs#roles" target="_blank" rel="noopener noreferrer">
+          <a className="adm-btn" href="/volunteer#roles" target="_blank" rel="noopener noreferrer">
             View on site ↗
           </a>
           <form action={seedStarterRoles}>

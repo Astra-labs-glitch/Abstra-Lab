@@ -229,7 +229,7 @@ export default async function HivemindPage() {
           <div className="ax-actions" style={{ marginTop: 22 }}>
             <Link className="ax-interest" href="/workshop">I&apos;m interested <span aria-hidden="true">→</span></Link>
             <Link className="ax-btn ax-btn--ghost" href="/sponsorship">Sponsor Hivemind</Link>
-            <Link className="ax-btn ax-btn--ghost" href="/jobs">Join the team</Link>
+            <Link className="ax-btn ax-btn--ghost" href="/volunteer">Join the team</Link>
           </div>
         </div>
       </section>

@@ -30,7 +30,7 @@ const roleStatuses = new Set<string>(ROLE_STATUSES.map(([v]) => v));
 const appStatuses = new Set<string>(APPLICATION_STATUSES.map(([v]) => v));
 
 function refreshJobs() {
-  revalidatePath("/jobs");
+  revalidatePath("/volunteer");
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/jobs");
   revalidatePath("/dashboard/applications");

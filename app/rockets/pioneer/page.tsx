@@ -96,7 +96,7 @@ export default async function PioneerPage() {
         <p className="ax-label" data-edit-key="pioneer.status.label">{t("pioneer.status.label", "Where it stands")}</p>
         <p className="ax-lede" style={{ marginTop: 0 }} data-edit-key="home.status.1.body">{t("home.status.1.body", "New G10 bulkhead going in. Flight-ready target: Nov 30.")}</p>
         <div className="ax-actions" style={{ marginTop: 28 }}>
-          <Link className="ax-btn ax-btn--red" href="/jobs">
+          <Link className="ax-btn ax-btn--red" href="/volunteer">
             <span data-edit-key="pioneer.cta">{t("pioneer.cta", "Help us finish it")}</span>
           </Link>
           <Link className="ax-btn ax-btn--ghost" href="/#timmins">

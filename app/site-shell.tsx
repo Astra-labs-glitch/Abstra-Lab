@@ -25,7 +25,7 @@ const projects = [
   },
 ] as const;
 
-// Open roles live behind the red "Join us" button, so there's no separate Jobs tab.
+// Open roles live behind the red "Volunteer with us" button, so there's no separate Jobs tab.
 const navItems = [
   ["Team", "/team"],
   ["Events", "/events"],
@@ -268,8 +268,8 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
               </Link>
             ))}
             {me.role ? null : (
-              <Link className="ax-btn ax-btn--red" href="/jobs">
-                Join us
+              <Link className="ax-btn ax-btn--red" href="/volunteer">
+                Volunteer with us
               </Link>
             )}
           </div>
@@ -289,7 +289,7 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
               Discord
             </a>
             {" · "}
-            <Link href="/jobs">Volunteer with us</Link>
+            <Link href="/volunteer">Volunteer with us</Link>
             {" · "}
             {me.role ? <Link href="/dashboard">Member area</Link> : <Link href="/accounts/login">Member login</Link>}
             {" · "}

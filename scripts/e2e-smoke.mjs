@@ -19,13 +19,13 @@ async function get(path, init = {}) {
 }
 
 const PUBLIC_ROUTES = [
-  "/", "/team", "/jobs", "/gallery", "/sponsorship", "/events", "/posts", "/discord",
+  "/", "/team", "/volunteer", "/gallery", "/sponsorship", "/events", "/posts", "/discord",
   "/accounts/login", "/accounts/signup", "/accounts/pending",
   "/sitemap.xml", "/robots.txt",
 ];
 
 const REQUIRED_NAV = [
-  ["Pioneer", "/"], ["Team", "/team"], ["Jobs", "/jobs"], ["Gallery", "/gallery"], ["Sponsor", "/sponsorship"], ["Join us", "/jobs"],
+  ["Pioneer", "/"], ["Team", "/team"], ["Jobs", "/volunteer"], ["Gallery", "/gallery"], ["Sponsor", "/sponsorship"], ["Volunteer with us", "/volunteer"],
 ];
 
 const pages = new Map();
@@ -41,7 +41,7 @@ for (const route of PUBLIC_ROUTES) {
 for (const [from, to] of [
   ["/sponsor", "/sponsorship"], ["/projects", "/#pioneer"], ["/work", "/#pioneer"],
   ["/pioneer", "/#pioneer"], ["/launch-canada", "/#timmins"], ["/about", "/team"],
-  ["/members", "/team"], ["/join", "/jobs"], ["/contact", "/#thanks"],
+  ["/members", "/team"], ["/join", "/volunteer"], ["/contact", "/#thanks"],
 ]) {
   const r = await get(from);
   const loc = r.headers.get("location") ?? "";
@@ -55,7 +55,7 @@ ok(html("/").includes("/images/astra/hero-pioneer-range.jpg"), "home hero is our
 ok(/Launch canceled|Launch cancelled|called off for weather/i.test(html("/")), "home is honest that the 2026 launch was cancelled for weather");
 ok(!/Picosatellite slots|>50</.test(html("/")), "home no longer claims 50 picosatellite slots");
 ok(/Under construction/i.test(html("/team")), "team page shows the under-construction notice");
-ok(/Stay tuned/i.test(html("/jobs")) && /SSF clubs room/.test(html("/jobs")) && /Friday, 5–7 pm/.test(html("/jobs")), "jobs page has Stay tuned and the Friday meeting details");
+ok(/Stay tuned/i.test(html("/volunteer")) && /SSF clubs room/.test(html("/volunteer")) && /Friday, 5–7 pm/.test(html("/volunteer")), "jobs page has Stay tuned and the Friday meeting details");
 ok(/sponsorship-package-astra-labs\.pdf/.test(html("/sponsorship")), "sponsorship page links the package PDF");
 ok((html("/sponsorship").match(/class="ax-logo-tile"/g) ?? []).length >= 6, "sponsorship page shows the supporter logo wall");
 ok(/mailto:astralabsengineering@gmail\.com/.test(html("/")), "footer has the club email");
@@ -73,7 +73,7 @@ ok(!/href="\/sponsor"/.test(html("/")) && !/href="\/sponsor"/.test(nav), "no sta
 
 // 5. Sitemap.
 const sitemap = html("/sitemap.xml");
-for (const path of ["/team", "/jobs", "/gallery", "/sponsorship"]) ok(sitemap.includes(`${path}<`), `sitemap includes ${path}`);
+for (const path of ["/team", "/volunteer", "/gallery", "/sponsorship"]) ok(sitemap.includes(`${path}<`), `sitemap includes ${path}`);
 for (const path of ["/sponsor", "/pioneer", "/contact"]) ok(!sitemap.includes(`${path}<`), `sitemap excludes old ${path}`);
 
 // 6. Every internal link and image on the public pages resolves.
