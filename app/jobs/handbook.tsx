@@ -19,8 +19,8 @@ export function Handbook({ t }: { t: Lookup }) {
         <section id="h-what">
           <p className="ax-label ax-pink" data-edit-key="hb.label">{t("hb.label", "Handbook")}</p>
           <E as="h2" k="hb.what.title" d="What Astra Labs is" />
-          <E k="hb.what.1" d="Team 06, Seneca Polytechnic. We build and fly high-power rockets and the payloads inside them. Our current flight, Pioneer, carries a rideshare-style payload: about 30 small ESP32-C6 sensor nodes that each log data from onboard sensors and send it to a central STM32 hub. The hub forwards data to the ground station and stores it on two SD cards and two flash chips." />
-          <E k="hb.what.2" d="We compete at Launch Canada 2026 in August, with the rocket targeting 2.8 km." />
+          <E k="hb.what.1" d="Team 06, Seneca Polytechnic. We build and fly high-power rockets and the payloads inside them. Our first rocket, Pioneer, went to Launch Canada 2026 and did not pass pre-launch inspection, so it has not flown. We are repairing it and designing a second rocket for 2027." />
+          <E k="hb.what.2" d="Our payload work is a small-scale rideshare: many small ESP32 sensor nodes, each logging data from onboard sensors and sending it over a CAN bus to a central hub, which forwards it to the ground station and stores it on board." />
         </section>
         <section id="h-dates">
           <E as="h2" k="hb.dates.title" d="Key dates" />
@@ -28,9 +28,10 @@ export function Handbook({ t }: { t: Lookup }) {
             <thead><tr><th>When</th><th>What</th></tr></thead>
             <tbody>
               <tr><E as="td" k="hb.dates.0.when" d="This semester" /><E as="td" k="hb.dates.0.what" d="Interviews and onboarding" /></tr>
-              <tr><E as="td" k="hb.dates.1.when" d="Winter break" /><E as="td" k="hb.dates.1.what" d="Onboarding tasks, training, CAD and schematic reviews" /></tr>
-              <tr><E as="td" k="hb.dates.2.when" d="January–February" /><E as="td" k="hb.dates.2.what" d="Test flight of the rebuilt rocket" /></tr>
-              <tr><E as="td" k="hb.dates.3.when" d="August 2026" /><E as="td" k="hb.dates.3.what" d="Launch Canada" /></tr>
+              <tr><E as="td" k="hb.dates.1.when" d="November 30, 2026" /><E as="td" k="hb.dates.1.what" d="Launch Canada Initial Design Review (IDR) for the 2027 rocket" /></tr>
+              <tr><E as="td" k="hb.dates.2.when" d="January 31, 2027" /><E as="td" k="hb.dates.2.what" d="Preliminary Design Review (PDR)" /></tr>
+              <tr><E as="td" k="hb.dates.3.when" d="Winter 2027" /><E as="td" k="hb.dates.3.what" d="Pioneer repair and refly, once a launch site is confirmed" /></tr>
+              <tr><E as="td" k="hb.dates.4.when" d="Mid-August 2027" /><E as="td" k="hb.dates.4.what" d="Launch Canada 2027 (date estimated)" /></tr>
             </tbody>
           </table>
         </section>
