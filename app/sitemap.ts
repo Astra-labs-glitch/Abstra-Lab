@@ -8,7 +8,7 @@ const routes = [
   ["/payloads/picosat", 0.6],
   ["/workshop", 0.8],
   ["/team", 0.6],
-  ["/jobs", 0.8],
+  ["/volunteer", 0.8],
   ["/gallery", 0.7],
   ["/sponsorship", 0.8],
   ["/events", 0.5],

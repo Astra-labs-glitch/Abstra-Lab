@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
   title: "Volunteer with us",
   description:
     "Volunteer with Astra Labs, Seneca's student rocketry team. Unpaid student roles in electronics, mechanical, admin, marketing and business, 2–6 hours a week. Any program can apply.",
-  path: "/jobs",
+  path: "/volunteer",
 });
 
 const subteams = [

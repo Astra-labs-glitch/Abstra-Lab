@@ -9,7 +9,7 @@ admins get the full admin. In the site header, staff see an **Admin** chip and a
 | `/dashboard` | staff | Overview: new applications, pending sign-ups, events, pages switched off |
 | `/dashboard/account` | everyone | Own photo, name, program, bio, links, private résumé, show-on-Team switch |
 | `/dashboard/events` | staff | Post events with photos for the public `/events` page (publish / draft) |
-| `/dashboard/jobs` | staff | Job roles; open roles show on `/jobs` with an Apply pop-up |
+| `/dashboard/volunteer` | staff | Job roles; open roles show on `/volunteer` with an Apply pop-up |
 | `/dashboard/applications` | staff | Applications, status, notes, private résumé download |
 | `/dashboard/team` | staff | Group, title, order and visibility of people on `/team` |
 | `/dashboard/members` | staff | Approve sign-ups with a team group + title, set Member / Exec / Admin |

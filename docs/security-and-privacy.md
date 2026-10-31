@@ -5,7 +5,7 @@ What the site does to protect members and applicants, and where it lives in the 
 | Area | What it does | Where |
 | --- | --- | --- |
 | Privacy policy & terms | Plain-language pages, editable with **Edit website** (keys `privacy.*`, `terms.*`). Linked in the footer. | `app/privacy`, `app/terms`, `app/legal-page.tsx` |
-| Consent | Required checkbox on the Apply form and Sign up; checked again on the server. Google sign-in shows an "agree" line. | `app/jobs/role-list.tsx`, `app/jobs/actions.ts`, `app/accounts/signup/page.tsx` |
+| Consent | Required checkbox on the Apply form and Sign up; checked again on the server. Google sign-in shows an "agree" line. | `app/volunteer/role-list.tsx`, `app/volunteer/actions.ts`, `app/accounts/signup/page.tsx` |
 | Workshop waitlist | Consent and (for high school) guardian checkboxes enforced on the server, honeypot, shared rate limit, 12-month auto-delete, staff-only list and CSV (formula-safe). | `app/workshop/actions.ts`, `lib/workshop.ts`, `app/dashboard/workshop` |
 | Public documents | The Hivemind proposal is published only as a truly redacted copy; the viewer shows images of that copy. | `public/docs/hivemind/` |
 | Résumé retention | Applications older than 12 months are deleted whenever an exec opens Overview or Applications, and logged. | `lib/audit.ts` → `purgeOldApplications` |

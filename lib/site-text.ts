@@ -30,7 +30,7 @@ export const SITE_PAGES = [
   { key: "workshop", path: "/workshop", name: "Hivemind workshop sign-up" },
   { key: "team", path: "/team", name: "Team" },
   { key: "events", path: "/events", name: "Events" },
-  { key: "jobs", path: "/jobs", name: "Join us (open roles)" },
+  { key: "jobs", path: "/volunteer", name: "Volunteer with us (open roles)" },
   { key: "gallery", path: "/gallery", name: "Gallery" },
   { key: "sponsor", path: "/sponsorship", name: "Sponsor" },
 ] as const;

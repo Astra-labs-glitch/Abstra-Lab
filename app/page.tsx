@@ -34,7 +34,7 @@ export default async function Home() {
           <div className="ax-hero__row">
             <p data-edit-key="home.hero.body">{t("home.hero.body", "20-odd students, seven programs, one red rocket. Pioneer made it to Launch Canada in Timmins this August. It didn't pass pre-launch inspection, so we're refitting it and starting a second rocket for 2027.")}</p>
             <div className="ax-actions">
-              <Link className="ax-btn ax-btn--red" href="/jobs">
+              <Link className="ax-btn ax-btn--red" href="/volunteer">
                 Come build with us
               </Link>
               <a className="ax-btn ax-btn--ghost" href="#timmins">
@@ -109,7 +109,7 @@ export default async function Home() {
             <p style={{ marginTop: 0, color: "var(--a-text)" }} data-edit-key="home.were-a-seneca-student">{t("home.were-a-seneca-student", "We're a Seneca Student Federation club. Members come from seven programs, including Electronics Engineering Technology and Computer Programming and Analysis.")}</p>
             <p className="ax-soft" data-edit-key="home.subteams-own-the-airframe">{t("home.subteams-own-the-airframe", "Subteams own the airframe, avionics and recovery, payload, ground software and operations. We lean on mentors from the rocketry community when we get stuck.")}</p>
             <p>
-              <Link href="/jobs" className="ax-pink" style={{ fontWeight: 700 }}>
+              <Link href="/volunteer" className="ax-pink" style={{ fontWeight: 700 }}>
                 See how to join →
               </Link>
             </p>
@@ -139,7 +139,7 @@ export default async function Home() {
           <div>
             <p data-edit-key="home.any-seneca-program-about">{t("home.any-seneca-program-about", "Any Seneca program. About five hours a week for at least six months. We'll teach you the rest.")}</p>
             <div className="ax-actions">
-              <Link className="ax-btn ax-btn--black" href="/jobs">
+              <Link className="ax-btn ax-btn--black" href="/volunteer">
                 How to join
               </Link>
             </div>
