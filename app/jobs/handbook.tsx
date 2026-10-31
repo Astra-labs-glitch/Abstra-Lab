@@ -74,7 +74,8 @@ export function Handbook({ t }: { t: Lookup }) {
           <ul>
             <E as="li" k="hb.join.0" d="Pick a role from the Open volunteer roles tab and send an application with your résumé." />
             <E as="li" k="hb.join.1" d="A short interview with the team lead." />
-            <E as="li" k="hb.join.2" d="An onboarding task in your first week, paired with a current member." />
+            <E as="li" k="hb.join.2" d="A two-week trial task, paired with a current member. For example, model a simple bracket or run one test print." />
+            <E as="li" k="hb.join.3" d="After the trial you take ownership of a named part of the rocket, for example the vent bay coupler or the electronics sled, so your work has your name on it." />
           </ul>
         </section>
       </article>
