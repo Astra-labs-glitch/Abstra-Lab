@@ -159,6 +159,9 @@ model JobRole {
   duties       String           @default("") // one per line
   requirements String           @default("") // one per line
   commitment   String           @default("")
+  area         String           @default("") // Electronics | Mechanical | Admin | Marketing | Business (public filter)
+  programs     String           @default("") // preferred Seneca program codes, comma separated
+  spots        String           @default("") // e.g. "2–3 volunteers"
   status       String           @default("draft") // draft | open | closed
   sortOrder    Int              @default(0) @map("sort_order")
   createdAt    DateTime         @default(now()) @map("created_at")

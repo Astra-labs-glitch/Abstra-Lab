@@ -289,7 +289,7 @@ export function SiteShell({ children }: Readonly<{ children: React.ReactNode }>)
               Discord
             </a>
             {" · "}
-            <Link href="/jobs">Open roles</Link>
+            <Link href="/jobs">Volunteer with us</Link>
             {" · "}
             {me.role ? <Link href="/dashboard">Member area</Link> : <Link href="/accounts/login">Member login</Link>}
             {" · "}

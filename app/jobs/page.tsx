@@ -3,15 +3,17 @@ import { getSiteText, isPageLive } from "../../lib/site-text";
 import { UnderConstruction } from "../under-construction";
 import { discordHref } from "../content";
 import { pageMetadata } from "../seo";
+import { Handbook } from "./handbook";
 import { RoleList } from "./role-list";
+import { JobsTabs } from "./tabs";
 
 // Rebuilt whenever an admin changes a role or this page's text; hourly as a backstop.
 export const revalidate = 3600;
 
 export const metadata = pageMetadata({
-  title: "Join us",
+  title: "Volunteer with us",
   description:
-    "Join Astra Labs, Seneca's student rocketry team. Any program, about five hours a week, weekly meetings Fridays 5–7 pm in the SSF clubs room.",
+    "Volunteer with Astra Labs, Seneca's student rocketry team. Unpaid student roles in electronics, mechanical, admin, marketing and business, 2–6 hours a week. Any program can apply.",
   path: "/jobs",
 });
 
@@ -25,27 +27,27 @@ const subteams = [
 
 const steps = [
   ["01", "Come to a Friday meeting", "5–7 pm in the SSF clubs room. Just show up and say hi."],
-  ["02", "Pick a subteam", "See what each one does below. You can switch later."],
-  ["03", "Apply when roles open", "Roles are posted above. We reply to your Seneca email within 5 days."],
+  ["02", "Pick a role", "Filter by area and read what you'd do. You can switch later."],
+  ["03", "Apply when roles open", "Roles are posted above and the handbook explains the rest. We reply to your Seneca email within 5 days."],
   ["04", "First task, first week", "You'll be paired with a subteam lead right away."],
 ] as const;
 
 export default async function JobsPage() {
   const [t, roles] = await Promise.all([getSiteText(), openRoles()]);
-  if (!(await isPageLive("jobs"))) return <UnderConstruction t={t} page="jobs" name="Join us" />;
+  if (!(await isPageLive("jobs"))) return <UnderConstruction t={t} page="jobs" name="Volunteer with us" />;
   return (
     <>
       <section className="ax-wrap" style={{ paddingTop: 72, paddingBottom: 56 }}>
         <div className="ax-cols" style={{ alignItems: "center", gap: 48 }}>
           <div style={{ flex: "1 1 480px" }}>
-            <p className="ax-label ax-pink" data-edit-key="jobs.hero.label">{t("jobs.hero.label", "Join the team · Fall 2026")}</p>
-            <h1 className="ax-display ax-display--xl" style={{ marginBottom: 20, fontSize: "clamp(38px, 5vw, 64px)" }} data-edit-key="jobs.hero.title">{t("jobs.hero.title", "We're recruiting.")}</h1>
-            <p className="ax-lede" style={{ fontSize: 20, marginTop: 0 }} data-edit-key="jobs.hero.body">{t("jobs.hero.body", "These are volunteer spots on a student team, not paid jobs. Pick a role, read what you'd actually do, and apply with your resume. You don't need to have built a rocket. Here's the deal:")}</p>
+            <p className="ax-label ax-pink" data-edit-key="jobs.hero.label">{t("jobs.hero.label", "Volunteer with us · Fall 2026")}</p>
+            <h1 className="ax-display ax-display--xl" style={{ marginBottom: 20, fontSize: "clamp(38px, 5vw, 64px)" }} data-edit-key="jobs.hero.title">{t("jobs.hero.title", "Volunteer on a rocket team.")}</h1>
+            <p className="ax-lede" style={{ fontSize: 20, marginTop: 0 }} data-edit-key="jobs.hero.body">{t("jobs.hero.body", "Every role here is unpaid and voluntary, run by students for students. Pick a role, read what you'd actually do, and apply with your résumé. You don't need to have built a rocket. Here's the deal:")}</p>
             <dl className="ax-deal">
               <dt data-edit-key="jobs.who">{t("jobs.who", "Who")}</dt>
-              <dd data-edit-key="jobs.deal.who">{t("jobs.deal.who", "Any Seneca student, any program")}</dd>
+              <dd data-edit-key="jobs.deal.who">{t("jobs.deal.who", "Any Seneca student, any program. Each role lists preferred programs.")}</dd>
               <dt data-edit-key="jobs.time">{t("jobs.time", "Time")}</dt>
-              <dd data-edit-key="jobs.deal.time">{t("jobs.deal.time", "About five hours a week")}</dd>
+              <dd data-edit-key="jobs.deal.time">{t("jobs.deal.time", "2–6 hours a week")}</dd>
               <dt data-edit-key="jobs.commitment">{t("jobs.commitment", "Commitment")}</dt>
               <dd data-edit-key="jobs.deal.commitment">{t("jobs.deal.commitment", "At least six months, so you see a build through")}</dd>
               <dt data-edit-key="jobs.where">{t("jobs.where", "Where")}</dt>
@@ -66,21 +68,27 @@ export default async function JobsPage() {
       </section>
 
       <section id="roles" className="ax-wrap" style={{ paddingTop: 24, paddingBottom: 96 }}>
-        <p className="ax-label" data-edit-key="jobs.roles.label">{t("jobs.roles.label", "Open roles · Fall 2026")}</p>
-        <h2 className="ax-display ax-display--lg" style={{ marginBottom: 32, fontSize: "clamp(38px, 5vw, 72px)" }} data-edit-key="jobs.open-roles">{t("jobs.open-roles", "Open roles")}</h2>
-        {roles.length ? (
-          <RoleList roles={roles} />
-        ) : (
-          <div className="ax-tuned">
-            <div style={{ flex: "1 1 460px", minWidth: 0 }}>
-              <p className="ax-tuned__title" data-edit-key="jobs.tuned.title">{t("jobs.tuned.title", "Stay tuned.")}</p>
-              <p style={{ margin: 0, fontSize: 19, color: "#d9d9d9", maxWidth: 560 }} data-edit-key="jobs.tuned.body">{t("jobs.tuned.body", "New roles are on the way. The exec team posts them here, each with what you'd do, the projects and how to apply. Until then, come to a Friday meeting and say hi.")}</p>
-            </div>
-            <a className="ax-btn ax-btn--red" href={discordHref} target="_blank" rel="noopener noreferrer">
-              Get notified on Discord
-            </a>
-          </div>
-        )}
+        <JobsTabs
+          roles={
+            <>
+              <h2 className="ax-display ax-display--lg" style={{ margin: "32px 0", fontSize: "clamp(32px, 4vw, 56px)" }} data-edit-key="jobs.open-roles">{t("jobs.open-roles", "Open volunteer roles")}</h2>
+              {roles.length ? (
+                <RoleList roles={roles} />
+              ) : (
+                <div className="ax-tuned">
+                  <div style={{ flex: "1 1 460px", minWidth: 0 }}>
+                    <p className="ax-tuned__title" data-edit-key="jobs.tuned.title">{t("jobs.tuned.title", "Stay tuned.")}</p>
+                    <p style={{ margin: 0, fontSize: 19, color: "#d9d9d9", maxWidth: 560 }} data-edit-key="jobs.tuned.body">{t("jobs.tuned.body", "New roles are on the way. The exec team posts them here, each with what you'd do, the projects and how to apply. Until then, come to a Friday meeting and say hi.")}</p>
+                  </div>
+                  <a className="ax-btn ax-btn--red" href={discordHref} target="_blank" rel="noopener noreferrer">
+                    Get notified on Discord
+                  </a>
+                </div>
+              )}
+            </>
+          }
+          handbook={<Handbook t={t} />}
+        />
       </section>
 
       <section className="ax-wrap" style={{ paddingBottom: 96 }}>
