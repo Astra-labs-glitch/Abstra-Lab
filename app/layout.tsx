@@ -3,6 +3,7 @@ import { Archivo } from "next/font/google";
 import "./globals.css";
 import "./astra.css";
 import { SiteShell } from "./site-shell";
+import { Analytics } from "@vercel/analytics/next";
 
 // Self-hosted at build time, so visitors' browsers never contact Google Fonts.
 const archivo = Archivo({ subsets: ["latin"], axes: ["wdth"], display: "swap", variable: "--font-archivo" });
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={archivo.variable}>
       <body className="home">
         <SiteShell>{children}</SiteShell>
+        <Analytics />
       </body>
     </html>
   );
