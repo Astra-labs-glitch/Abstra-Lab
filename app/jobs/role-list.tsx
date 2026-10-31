@@ -2,59 +2,108 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 
-import type { PublicRole } from "../../lib/jobs";
+import { ROLE_AREAS, type PublicRole } from "../../lib/jobs";
 import { applyForRole, type ApplyState } from "./actions";
 
 const initial: ApplyState = { ok: false, message: "" };
 
+const AREAS = ["All", ...ROLE_AREAS] as const;
+
 export function RoleList({ roles }: { roles: PublicRole[] }) {
   const [active, setActive] = useState<PublicRole | null>(null);
+  const [area, setArea] = useState<string>("All");
+  const [open, setOpen] = useState<Set<number>>(new Set());
   const dialog = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     if (active) dialog.current?.showModal();
   }, [active]);
 
+  const shown = roles.filter((r) => area === "All" || r.area === area);
+  const present = new Set(roles.map((r) => r.area));
+
+  function toggle(id: number) {
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
   return (
     <>
-      <div className="ax-roles">
-        {roles.map((role) => (
-          <article key={role.id} className="ax-role">
-            <div className="ax-role__head">
-              {role.subteam ? <p className="ax-label ax-pink">{role.subteam}</p> : null}
-              <h3>{role.title}</h3>
-              {role.summary ? <p className="ax-role__summary">{role.summary}</p> : null}
-            </div>
-            <div className="ax-role__body">
-              {role.duties.length ? (
-                <div>
-                  <p className="ax-role__k">What you&apos;d do</p>
-                  <ul>
-                    {role.duties.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {role.requirements.length ? (
-                <div>
-                  <p className="ax-role__k">Good to have</p>
-                  <ul>
-                    {role.requirements.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-            <div className="ax-role__foot">
-              {role.commitment ? <span className="ax-dim">{role.commitment}</span> : <span />}
-              <button type="button" className="ax-btn ax-btn--red" onClick={() => setActive(role)}>
-                Apply
-              </button>
-            </div>
-          </article>
+      <div className="ax-filters" role="group" aria-label="Filter roles by area">
+        {AREAS.filter((a) => a === "All" || present.has(a)).map((a) => (
+          <button key={a} type="button" className="ax-chip" aria-pressed={area === a} onClick={() => setArea(a)}>
+            {a}
+          </button>
         ))}
+        <span className="ax-filters__count" aria-live="polite">
+          {shown.length} volunteer role{shown.length === 1 ? "" : "s"}
+        </span>
+      </div>
+
+      <div className="ax-roles">
+        {shown.map((role) => {
+          const expanded = open.has(role.id);
+          return (
+            <article key={role.id} className="ax-role">
+              <div className="ax-role__head">
+                {role.area ? <p className="ax-label ax-pink">{role.area}</p> : null}
+                <h3>{role.title}</h3>
+                {role.summary ? <p className="ax-role__summary">{role.summary}</p> : null}
+              </div>
+              {role.programs.length ? (
+                <div className="ax-progs">
+                  <small>Preferred</small>
+                  {role.programs.map((p) => (
+                    <span key={p} className="ax-prog">
+                      {p}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              {expanded ? (
+                <div className="ax-role__body" id={`role-${role.id}`}>
+                  {role.duties.length ? (
+                    <div>
+                      <p className="ax-role__k">What you&apos;d do</p>
+                      <ul>
+                        {role.duties.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  {role.requirements.length ? (
+                    <div>
+                      <p className="ax-role__k">Good to have</p>
+                      <ul>
+                        {role.requirements.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+              <div className="ax-role__foot">
+                <span className="ax-dim">
+                  {[role.commitment, role.spots, "volunteer"].filter(Boolean).join(" · ")}
+                </span>
+                <span className="ax-role__btns">
+                  <button type="button" className="ax-btn ax-btn--outline" aria-expanded={expanded} aria-controls={`role-${role.id}`} onClick={() => toggle(role.id)}>
+                    {expanded ? "Hide" : "Details"}
+                  </button>
+                  <button type="button" className="ax-btn ax-btn--red" onClick={() => setActive(role)}>
+                    Apply
+                  </button>
+                </span>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <dialog ref={dialog} className="ax-dialog" onClose={() => setActive(null)} aria-labelledby="apply-title">

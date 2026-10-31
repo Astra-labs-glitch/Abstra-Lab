@@ -38,7 +38,19 @@ export type PublicRole = {
   duties: string[];
   requirements: string[];
   commitment: string;
+  area: string;
+  programs: string[];
+  spots: string;
 };
+
+export const ROLE_AREAS = ["Electronics", "Mechanical", "Admin", "Marketing", "Business"] as const;
+
+export function codes(value: string) {
+  return value
+    .split(/[,\n]/)
+    .map((c) => c.trim().toUpperCase())
+    .filter(Boolean);
+}
 
 /** Open roles for the public /jobs page. Never throws: no database means no roles. */
 export async function openRoles(): Promise<PublicRole[]> {
@@ -56,6 +68,9 @@ export async function openRoles(): Promise<PublicRole[]> {
       duties: lines(r.duties),
       requirements: lines(r.requirements),
       commitment: r.commitment,
+      area: r.area,
+      programs: codes(r.programs),
+      spots: r.spots,
     }));
   } catch (error) {
     console.error("job roles unavailable", error);

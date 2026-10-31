@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ROLE_STATUSES } from "../../../lib/jobs";
+import { ROLE_AREAS, ROLE_STATUSES } from "../../../lib/jobs";
 import { saveRole } from "../admin-actions";
 
 type Role = {
@@ -11,6 +11,9 @@ type Role = {
   duties: string;
   requirements: string;
   commitment: string;
+  area: string;
+  programs: string;
+  spots: string;
   status: string;
   sortOrder: number;
 };
@@ -40,6 +43,29 @@ export function RoleForm({ role, error }: { role?: Role; error?: string }) {
         <label className="adm-field">
           <span>Time commitment</span>
           <input name="commitment" maxLength={140} defaultValue={role?.commitment} placeholder="e.g. ~5 hrs/week, Fall–Winter" />
+        </label>
+      </div>
+
+      <div className="adm-form__grid">
+        <label className="adm-field">
+          <span>Area (public filter)</span>
+          <select name="area" defaultValue={role?.area ?? ""}>
+            <option value="">None</option>
+            {ROLE_AREAS.map((a) => (
+              <option key={a} value={a}>
+                {a}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="adm-field">
+          <span>Preferred Seneca programs</span>
+          <small>Program codes, comma separated, e.g. EET, EMA, MIT. Any program can still apply.</small>
+          <input name="programs" maxLength={200} defaultValue={role?.programs} placeholder="EET, EMA, MIT" />
+        </label>
+        <label className="adm-field">
+          <span>Volunteers needed</span>
+          <input name="spots" maxLength={60} defaultValue={role?.spots} placeholder="e.g. 2–3 volunteers" />
         </label>
       </div>
 

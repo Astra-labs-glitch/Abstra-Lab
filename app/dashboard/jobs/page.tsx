@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { requireStaff } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
-import { setRoleStatus } from "../admin-actions";
+import { seedStarterRoles, setRoleStatus } from "../admin-actions";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Job roles", robots: { index: false, follow: false } };
@@ -40,6 +40,11 @@ export default async function JobsAdminPage({
           <a className="adm-btn" href="/jobs#roles" target="_blank" rel="noopener noreferrer">
             View on site ↗
           </a>
+          <form action={seedStarterRoles}>
+            <button className="adm-btn" type="submit">
+              Add starter volunteer roles
+            </button>
+          </form>
           <Link className="adm-btn adm-btn--red" href="/dashboard/jobs/new">
             + New role
           </Link>

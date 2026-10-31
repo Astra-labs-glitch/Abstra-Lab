@@ -7,6 +7,7 @@ import { requireStaff, requireUser } from "../../lib/auth";
 import { audit } from "../../lib/audit";
 import { APPLICATION_STATUSES, ROLE_STATUSES } from "../../lib/jobs";
 import { prisma } from "../../lib/prisma";
+import { STARTER_ROLES } from "../../lib/starter-roles";
 import { EVENT_TYPES, SITE_PAGES, TEAM_GROUPS } from "../../lib/site-text";
 
 async function guardStaff() {
@@ -46,6 +47,9 @@ function roleData(formData: FormData) {
     duties: str(formData, "duties", 3000),
     requirements: str(formData, "requirements", 3000),
     commitment: str(formData, "commitment", 140),
+    area: str(formData, "area", 40),
+    programs: str(formData, "programs", 200),
+    spots: str(formData, "spots", 60),
     status: roleStatuses.has(status) ? status : "draft",
     sortOrder: Number(formData.get("sortOrder")) || 0,
   };
@@ -59,6 +63,17 @@ export async function saveRole(formData: FormData) {
   if (id) await prisma.jobRole.update({ where: { id }, data });
   else await prisma.jobRole.create({ data });
   await audit(me.username, id ? "Edited job role" : "Posted job role", data.title);
+  refreshJobs();
+  redirect("/dashboard/jobs?saved=1");
+}
+
+/** Adds the starter volunteer roles as drafts. Skips any title that already exists. */
+export async function seedStarterRoles() {
+  const me = await guardStaff();
+  const have = new Set((await prisma.jobRole.findMany({ select: { title: true } })).map((r) => r.title));
+  const fresh = STARTER_ROLES.filter((r) => !have.has(r.title));
+  for (const [i, r] of fresh.entries()) await prisma.jobRole.create({ data: { ...r, status: "draft", sortOrder: i + 1 } });
+  await audit(me.username, "Added starter volunteer roles (drafts)", `${fresh.length} roles`);
   refreshJobs();
   redirect("/dashboard/jobs?saved=1");
 }
