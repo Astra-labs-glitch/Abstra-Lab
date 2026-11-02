@@ -12,20 +12,22 @@ Seneca Polytechnic (Team 06, Launch Canada 2026).
 
 Full docs live in [`docs/`](./docs/README.md):
 
-| Topic | Link |
-|---|---|
-| Local setup | [Getting started](./docs/getting-started.md) |
-| System map | [Architecture](./docs/architecture.md) |
-| Copy, galleries, media | [Content editing](./docs/content-editing.md) |
-| Login, roles, master admin | [Authentication](./docs/authentication.md) |
-| Prisma / Neon | [Data model](./docs/data-model.md) |
-| HTTP APIs | [API reference](./docs/api.md) |
-| Member area & staff CMS | [Dashboard](./docs/dashboard.md) |
-| Vercel & env vars | [Deploying](./docs/deploying.md) |
-| Smoke tests | [Testing](./docs/testing.md) |
-| Optional Docker | [Local Docker](./docs/local-docker.md) |
-| Ownership transfer | [Handover](./docs/handover.md) |
-| Conventions | [Contributing](./docs/contributing.md) |
+| Topic                      | Link                                                   |
+| -------------------------- | ------------------------------------------------------ |
+| Local setup                | [Getting started](./docs/getting-started.md)           |
+| System map                 | [Architecture](./docs/architecture.md)                 |
+| Copy, galleries, media     | [Content editing](./docs/content-editing.md)           |
+| Login, roles, master admin | [Authentication](./docs/authentication.md)             |
+| Prisma / Neon              | [Data model](./docs/data-model.md)                     |
+| HTTP APIs                  | [API reference](./docs/api.md)                         |
+| Member area & staff CMS    | [Dashboard](./docs/dashboard.md)                       |
+| Vercel & env vars          | [Deploying](./docs/deploying.md)                       |
+| Smoke tests                | [Testing](./docs/testing.md)                           |
+| Optional Docker            | [Local Docker](./docs/local-docker.md)                 |
+| Ownership transfer         | [Handover](./docs/handover.md)                         |
+| Conventions                | [Contributing](./docs/contributing.md)                 |
+| Change backlog             | [Website improvements](./docs/website-improvements.md) |
+| Staging / DEV              | [Staging](./docs/staging.md)                           |
 
 Club mission and member onboarding (non-code): [`PROJECT_CONTEXT.md`](./PROJECT_CONTEXT.md).
 
@@ -70,15 +72,17 @@ docs/          Detailed documentation
 
 ## Common commands
 
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Local server |
-| `npm run typecheck` | TypeScript check |
-| `npm run build` | Production build |
-| `npm run db:generate` | Regenerate Prisma client |
-| `npm run db:migrate` | Create/apply migrations |
-| `npm run e2e` | Public-site smoke test |
-| `vercel --prod` | Deploy to production |
+| Command                  | Purpose                             |
+| ------------------------ | ----------------------------------- |
+| `npm run dev`            | Local server                        |
+| `npm run typecheck`      | TypeScript check                    |
+| `npm run build`          | Production build                    |
+| `npm run db:generate`    | Regenerate Prisma client            |
+| `npm run db:migrate`     | Create/apply migrations             |
+| `npm run e2e`            | Public-site smoke test              |
+| `npm run e2e:staging`    | Smoke test against `dev.alsp.ca`    |
+| `npm run deploy:preview` | Vercel preview deploy               |
+| `npm run deploy:prod`    | Production deploy (`vercel --prod`) |
 
 ```sh
 BASE_URL=https://alsp.ca npm run e2e

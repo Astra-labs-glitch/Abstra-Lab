@@ -1,32 +1,35 @@
 {
-  "name": "astra-labs-web",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "e2e": "node scripts/e2e-smoke.mjs"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.1085.0",
-    "@aws-sdk/s3-request-presigner": "^3.1085.0",
-    "@prisma/client": "^6.19.3",
-    "next": "^16.2.9",
-    "prisma": "^6.19.3",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
-  },
-  "devDependencies": {
-    "@types/node": "^26.0.1",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "typescript": "^6.0.3"
-  },
-  "overrides": {
-    "postcss": "8.5.10"
-  }
+	"name": "astra-labs-web",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"typecheck": "tsc --noEmit",
+		"db:generate": "prisma generate",
+		"db:push": "prisma db push",
+		"db:migrate": "prisma migrate dev",
+		"e2e": "node scripts/e2e-smoke.mjs",
+		"e2e:staging": "BASE_URL=https://dev.alsp.ca node scripts/e2e-smoke.mjs",
+		"deploy:preview": "npx vercel",
+		"deploy:prod": "npx vercel --prod"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.1085.0",
+		"@aws-sdk/s3-request-presigner": "^3.1085.0",
+		"@prisma/client": "^6.19.3",
+		"next": "^16.2.9",
+		"prisma": "^6.19.3",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7"
+	},
+	"devDependencies": {
+		"@types/node": "^26.0.1",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"typescript": "^6.0.3"
+	},
+	"overrides": {
+		"postcss": "8.5.10"
+	}
 }

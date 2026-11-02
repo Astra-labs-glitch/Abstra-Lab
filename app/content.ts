@@ -209,15 +209,24 @@ export const sponsorPartnerValue = [
 
 export const sponsorGallery = [
   ["pick/lc-team-laugh.jpg", "Team 06 at Launch Canada", "Astra Labs crew and mentors with the Pioneer airframe at Launch Canada 2026.", "feature"],
-  ["pick/ground-station-alt.jpg", "Electronics table", "Avionics and ground-support gear ready for flight windows.", ""],
-  ["pick/range-under-tent.jpg", "Range tent", "Briefing and prep under the operations tent.", ""],
   ["pick/outreach-model-alt.jpg", "Student builder", "New members meeting the club through model rockets and demos.", ""],
   ["pick/cslc-banquet.jpg", "Industry banquet", "Canadian Space Launch Conference dinner with aerospace partners.", "wide"],
   ["pick/cslc-stage.jpg", "Conference stage", "National launch-sector talks that connect students to industry.", ""],
   ["pick/seneca-display-alt.jpg", "Campus rockets", "Display hardware and crew outside Seneca for outreach.", "feature"],
   ["pick/airframe-carry.jpg", "Airframe work", "Hands-on structural work outdoors with faculty and students.", ""],
-  ["pick/flight-data.jpg", "Flight data", "Telemetry logs and range gear during a field session.", ""],
   ["pick/outreach-group.jpg", "Club fair", "Students discovering Astra Labs at a campus recruitment fair.", ""],
   ["pick/ground-equipment.jpg", "Range instruments", "Close-up of launch-day measurement and support hardware.", ""],
   ["pick/range-launch-canada.jpg", "Launch Canada ops", "Tents, teams, and vehicles on the active range.", "wide"],
+] as const;
+
+/** Featured external coverage shown on /posts (CMS posts list below). */
+export const featuredNews = [
+  {
+    title: "Preparing for launch: Student-run rocketry club blazing new path at Seneca",
+    source: "Seneca MyNews",
+    excerpt:
+      "Seneca Students feature on Astra Labs, Pioneer, and Launch Canada 2026 — how the club grew from a high-school rocketry interest into a campus aerospace community.",
+    href: "https://students.senecapolytechnic.ca/spaces/112/mynews/articles/feature-stories/18426/preparing-for-launch-student-run-rocketry-club-blazing-new-path-at-seneca?language=en-US",
+    dateLabel: "Seneca feature",
+  },
 ] as const;
