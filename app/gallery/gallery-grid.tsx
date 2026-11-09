@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-type Cat = "rocket" | "timmins" | "behind";
+type Cat = "rocket" | "timmins" | "behind" | "outreach";
 type Photo = { cat: Cat; file: string; alt: string; caption: string; date: string };
 
 const photos: Photo[] = [
@@ -28,6 +28,9 @@ const photos: Photo[] = [
   { cat: "timmins", file: "mentor-table.jpg", alt: "Members pointing at a rocket on a table during a mentor review", caption: "Mentor review", date: "Aug 18" },
   { cat: "behind", file: "store-run.jpg", alt: "Three members walking through a store with a shopping cart", caption: "Another supply run", date: "Aug 18" },
   { cat: "timmins", file: "conf-table.jpg", alt: "Members at a table at the conference hall", caption: "At the conference tables", date: "Aug 16" },
+  { cat: "outreach", file: "outreach-talk.webp", alt: "A member in a tan suit presenting beside a rugged case with a built-in screen and keyboard, rockets laid on tables behind him", caption: "Presenting at the Seneca Space Society intro talk", date: "" },
+  { cat: "outreach", file: "outreach-rockets.webp", alt: "Seven people in front of a Seneca Space Society screen with two rockets laid on a table in front of them", caption: "The group with the rockets after the talk", date: "" },
+  { cat: "outreach", file: "outreach-group.webp", alt: "Four members in jackets and suits standing in front of a red screen", caption: "Four of us before the talk", date: "" },
 ];
 
 const filters: ReadonlyArray<readonly ["all" | Cat, string]> = [
@@ -35,6 +38,7 @@ const filters: ReadonlyArray<readonly ["all" | Cat, string]> = [
   ["rocket", "The rocket"],
   ["timmins", "Timmins"],
   ["behind", "Behind the scenes"],
+  ["outreach", "Outreach"],
 ];
 
 export function GalleryGrid() {
