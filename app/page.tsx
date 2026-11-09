@@ -130,6 +130,7 @@ export default async function Home() {
             </Link>
           </div>
           <SupporterLogos />
+          <p className="ax-dim" style={{ fontSize: 14, margin: "20px 0 0" }} data-edit-key="home.software-sponsors-note">{t("home.software-sponsors-note", "Ansys and SOLIDWORKS support our design and simulation work. Ansys and SOLIDWORKS are trademarks of their owners.")}</p>
         </div>
       </section>
 

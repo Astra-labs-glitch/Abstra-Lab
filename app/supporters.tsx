@@ -4,6 +4,12 @@ export function SupporterLogos() {
   return (
     <div className="ax-logos">
       <div className="ax-logo-tile">
+        <img src={`${L}/ansys.svg`} alt="Ansys, part of Synopsys" style={{ height: 84, width: "auto" }} />
+      </div>
+      <div className="ax-logo-tile">
+        <img src={`${L}/solidworks.svg`} alt="SOLIDWORKS" style={{ width: 190, height: "auto" }} />
+      </div>
+      <div className="ax-logo-tile">
         <img src={`${L}/ssf.png`} alt="Seneca Student Federation" style={{ maxHeight: 54 }} />
       </div>
       <div className="ax-logo-tile">
