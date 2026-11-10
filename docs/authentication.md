@@ -51,7 +51,7 @@ UPDATE auth_user SET is_staff = TRUE WHERE email = 'person@example.com';
 
 ## Master admin (`ADMIN_EMAILS`)
 
-Comma-separated emails (defaults to `astralabsengineering@gmail.com`, the club account, when unset).
+Comma-separated emails (defaults to `info@alsp.ca`, the club account, when unset).
 
 - Signup with a listed email → created **active + staff + superuser**
 - Existing account with a listed email → **promoted on next successful login**
@@ -68,7 +68,7 @@ Login and sign-up show **Continue with Google** once `GOOGLE_CLIENT_ID` and `GOO
 
 Setup (Google Cloud Console → APIs & Services):
 
-1. **OAuth consent screen:** External, app name "Astra Labs", support email `astralabsengineering@gmail.com`, scopes `openid`, `email`, `profile`. Publish the app so anyone can sign in.
+1. **OAuth consent screen:** External, app name "Astra Labs", support email `info@alsp.ca`, scopes `openid`, `email`, `profile`. Publish the app so anyone can sign in.
 2. **Credentials → Create credentials → OAuth client ID → Web application.**
    - Authorized redirect URIs: `https://www.alsp.ca/api/auth/google/callback` (add `http://localhost:3001/api/auth/google/callback` for local testing).
 3. In Vercel → Settings → Environment Variables, add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` (Production), then redeploy.

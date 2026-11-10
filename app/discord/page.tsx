@@ -26,7 +26,7 @@ export default function DiscordPage() {
           ],
         },
       ]}
-      cta={discordInviteUrl ? { label: "Open Discord", href: discordInviteUrl } : { label: "Contact us for an invite", href: "mailto:astralabsengineering@gmail.com" }}
+      cta={discordInviteUrl ? { label: "Open Discord", href: discordInviteUrl } : { label: "Contact us for an invite", href: "mailto:info@alsp.ca" }}
     />
   );
 }
