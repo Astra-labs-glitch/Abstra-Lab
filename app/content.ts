@@ -134,7 +134,7 @@ export const discordInviteUrl = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL || "h
 export const discordHref = discordInviteUrl || "/discord";
 
 export const contact = {
-  email: "astralabsengineering@gmail.com",
+  email: "info@alsp.ca",
   linkedinUrl: "https://www.linkedin.com/company/astra-labs-engineers/",
   campus: "Seneca Polytechnic, Newnham Campus",
   address: "1750 Finch Ave E, North York, ON M2J 2X5",

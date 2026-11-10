@@ -58,7 +58,7 @@ ok(/Under construction/i.test(html("/team")), "team page shows the under-constru
 ok(/Stay tuned/i.test(html("/volunteer")) && /SSF clubs room/.test(html("/volunteer")) && /Friday, 5–7 pm/.test(html("/volunteer")), "jobs page has Stay tuned and the Friday meeting details");
 ok(/sponsorship-package-astra-labs\.pdf/.test(html("/sponsorship")), "sponsorship page links the package PDF");
 ok((html("/sponsorship").match(/class="ax-logo-tile"/g) ?? []).length >= 6, "sponsorship page shows the supporter logo wall");
-ok(/mailto:astralabsengineering@gmail\.com/.test(html("/")), "footer has the club email");
+ok(/mailto:info@alsp\.ca/.test(html("/")), "footer has the club email");
 ok(/href="https:\/\/discord\.gg\/[A-Za-z0-9]+"[^>]*target="_blank"/.test(html("/")), "footer Discord link opens the invite in a new tab");
 ok(/href="https:\/\/discord\.gg\//.test(html("/discord")), "discord page links to the invite");
 ok(/Launch the rocket back to the top/.test(html("/gallery")), "launch-to-top rocket is in the footer on every page");

@@ -23,7 +23,7 @@ Ensure `NEXT_PUBLIC_SITE_URL=https://alsp.ca` in Vercel and that DNS for `alsp.c
 | **AWS S3** bucket `astra-labs-uploads` (`ca-central-1`) | Private member uploads                                 | Dat's AWS account                    | Club AWS, or drop S3 (see below)                 |
 | **Discord**                                             | Member chat                                            | Club (Saiprasad)                     | Already club-owned — keep invite non-expiring    |
 | **Forgejo** mirror                                      | Private git mirror                                     | Dat's home server                    | Remove remote; decommission                      |
-| **Email** `astralabsengineering@gmail.com`              | Public contact                                         | Club                                 | Already club-owned                               |
+| **Email** `info@alsp.ca`              | Public contact                                         | Club                                 | Already club-owned                               |
 
 Exact Neon host / project IDs may change after transfer — update this table when ownership moves.
 

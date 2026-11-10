@@ -67,7 +67,7 @@ export default function PrivacyPage() {
           id: "rights",
           heading: "Your choices",
           paras: [
-            "You can see and change your profile in My account at any time. To get a copy of what we hold about you, correct it, withdraw an application, delete your account, or have a photo taken down, email astralabsengineering@gmail.com. We'll do it within 30 days, usually much sooner.",
+            "You can see and change your profile in My account at any time. To get a copy of what we hold about you, correct it, withdraw an application, delete your account, or have a photo taken down, email info@alsp.ca. We'll do it within 30 days, usually much sooner.",
             "We follow Canada's privacy law (PIPEDA). If you're unhappy with how we handled your information, you can also contact the Office of the Privacy Commissioner of Canada.",
           ],
         },
